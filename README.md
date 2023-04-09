@@ -63,7 +63,8 @@
 1. 开发环境：JetBrains Runtime 17，Angular 15
 2. IDE需要安装lombok插件
 3. 解压lib目录下的opencv(原版备份).jar文件，Windows系统下将opencv.dll放入至jdk/bin目录，macOS系统下将libopencv.dylib放入至jdk/Contents/Home/lib目录
-4. 编译Angular项目，将dist目录下的web文件夹放入SpringBoot项目的resource目录下
+4. 在SpringBoot项目中，解压db.7z，将db.sqlite3放入至resource目录下
+5. 编译Angular项目，将dist目录下的web文件夹放入SpringBoot项目的resource目录下
 
 #### 软件说明
 1. 使用SpringBoot+Swing+Angular开发的桌面程序
