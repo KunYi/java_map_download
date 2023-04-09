@@ -56,7 +56,7 @@
 - 2020-11-27：初步添加错误瓦片图自动重新下载功能，解决无法下载天地图的问题
 
 #### JetBrains Runtime下载地址
-- https://github.com/JetBrains/JetBrainsRuntime/releases
+- https://github.com/JetBrains/JetBrainsRuntime/tree/jbr17
 - 在Binaries for developers这一栏中下载“JBR with JCEF”，文件名以“jbrsdk_jcef”开头的
 
 #### 代码运行说明
