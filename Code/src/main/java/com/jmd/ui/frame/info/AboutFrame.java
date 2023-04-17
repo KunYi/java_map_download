@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 
+import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
 import com.jmd.ui.common.NoScalingIcon;
@@ -57,11 +58,9 @@ public class AboutFrame extends CommonSubFrame {
         panel.setLayout(null);
         this.getContentPane().add(panel, BorderLayout.CENTER);
 
-        var jdkIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/jetbrains.png")));
         var jdkIconLabel = new JLabel("");
         jdkIconLabel.setBounds(15, 10, 30, 30);
-        jdkIconImage.setImage(jdkIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        jdkIconLabel.setIcon(new NoScalingIcon(jdkIconImage));
+        jdkIconLabel.setIcon(new AutoScalingIcon(30, 30, "/com/jmd/assets/icon/jetbrains.png"));
         panel.add(jdkIconLabel);
 
         var jdkTextLabel = new JLabel("JetBrains Runtime 17");
@@ -69,11 +68,9 @@ public class AboutFrame extends CommonSubFrame {
         jdkTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(jdkTextLabel);
 
-        var jcefIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/cef.png")));
         var jcefIconLabel = new JLabel("");
         jcefIconLabel.setBounds(238, 10, 40, 30);
-        jcefIconImage.setImage(jcefIconImage.getImage().getScaledInstance(40, 30, Image.SCALE_SMOOTH));
-        jcefIconLabel.setIcon(new NoScalingIcon(jcefIconImage));
+        jcefIconLabel.setIcon(new AutoScalingIcon(40, 30, "/com/jmd/assets/icon/cef.png"));
         panel.add(jcefIconLabel);
 
         var jcefTextLabel = new JLabel("JCEF 104");
@@ -83,31 +80,17 @@ public class AboutFrame extends CommonSubFrame {
 
         var openlayersIconLabel = new JLabel("");
         openlayersIconLabel.setBounds(15, 46, 30, 30);
-        ImageIcon openlayersIconImage = new ImageIcon(
-                Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/openlayers.png")));
-        openlayersIconImage.setImage(openlayersIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        openlayersIconLabel.setIcon(new NoScalingIcon(openlayersIconImage));
+        openlayersIconLabel.setIcon(new AutoScalingIcon(30, 30, "/com/jmd/assets/icon/openlayers.png"));
         panel.add(openlayersIconLabel);
 
-        var eclipseIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/eclipse.png")));
         var openlayersTextLabel = new JLabel("OpenLayers 7.1.0");
         openlayersTextLabel.setBounds(55, 46, 166, 30);
         openlayersTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        eclipseIconImage.setImage(eclipseIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
         panel.add(openlayersTextLabel);
 
-        var gitIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/git.png")));
-        var gitIconLabel = new JLabel("");
-        gitIconLabel.setBounds(15, 118, 30, 30);
-        gitIconImage.setImage(gitIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        gitIconLabel.setIcon(new NoScalingIcon(gitIconImage));
-        panel.add(gitIconLabel);
-
-        var angularIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/angular.png")));
         var angularIconLabel = new JLabel("");
         angularIconLabel.setBounds(238, 46, 30, 30);
-        angularIconImage.setImage(angularIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        angularIconLabel.setIcon(new NoScalingIcon(angularIconImage));
+        angularIconLabel.setIcon(new AutoScalingIcon(30, 30, "/com/jmd/assets/icon/angular.png"));
         panel.add(angularIconLabel);
 
         var angularTextLabel = new JLabel("Angular 15.2.2");
@@ -115,11 +98,9 @@ public class AboutFrame extends CommonSubFrame {
         angularTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(angularTextLabel);
 
-        var opencvIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/opencv.png")));
         var opencvIconLabel = new JLabel("");
         opencvIconLabel.setBounds(15, 82, 30, 30);
-        opencvIconImage.setImage(opencvIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        opencvIconLabel.setIcon(new NoScalingIcon(opencvIconImage));
+        opencvIconLabel.setIcon(new AutoScalingIcon(30, 30, "/com/jmd/assets/icon/opencv.png"));
         panel.add(opencvIconLabel);
 
         var opencvTextLabel = new JLabel("OpenCV 4.5.5");
@@ -127,10 +108,15 @@ public class AboutFrame extends CommonSubFrame {
         opencvTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(opencvTextLabel);
 
-        var gitTextlabel = new JLabel(git);
-        gitTextlabel.setBounds(55, 118, 389, 30);
-        gitTextlabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(gitTextlabel);
+        var gitIconLabel = new JLabel("");
+        gitIconLabel.setBounds(15, 118, 30, 30);
+        gitIconLabel.setIcon(new AutoScalingIcon(30, 30, "/com/jmd/assets/icon/git.png"));
+        panel.add(gitIconLabel);
+
+        var gitTextLabel = new JLabel(git);
+        gitTextLabel.setBounds(55, 118, 389, 30);
+        gitTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(gitTextLabel);
 
         var gitCopyButton = new JButton("复制git地址");
         gitCopyButton.setBounds(10, 158, 217, 29);

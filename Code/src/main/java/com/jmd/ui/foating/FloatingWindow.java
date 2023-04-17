@@ -73,6 +73,11 @@ public class FloatingWindow extends JWindow {
 
     }
 
+    @PreDestroy
+    private void destroy() {
+        this.disposeInnerMqMessage();
+    }
+
     public void subInnerMqMessage() throws Exception {
         this.client = this.innerMqService.createClient();
         this.client.<String>sub(Topic.TASK_STATUS_PROGRESS, (res) -> {

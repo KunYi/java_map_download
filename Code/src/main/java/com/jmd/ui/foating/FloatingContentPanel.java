@@ -1,17 +1,13 @@
 package com.jmd.ui.foating;
 
 import com.jmd.common.StaticVar;
-import com.jmd.rx.Topic;
-import com.jmd.rx.client.InnerMqClient;
-import com.jmd.rx.service.InnerMqService;
-import com.jmd.ui.common.NoScalingIcon;
+import com.jmd.ui.common.AutoScalingIcon;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serial;
-import java.util.Objects;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -30,13 +26,11 @@ public class FloatingContentPanel extends JPanel {
 
     @PostConstruct
     private void init() {
-        
+
         this.setBackground(new Color(0, 0, 0, 0));
 
-        var logoImage = new ImageIcon(Objects.requireNonNull(FloatingContentPanel.class.getResource("/com/jmd/assets/icon/map.png")));
         var logoIconLabel = new JLabel();
-        logoImage.setImage(logoImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        logoIconLabel.setIcon(new NoScalingIcon(logoImage));
+        logoIconLabel.setIcon(new AutoScalingIcon(26, 26, "/com/jmd/assets/icon/map.png"));
 
         progressValueLabel = new JLabel("0%");
         progressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
@@ -52,8 +46,8 @@ public class FloatingContentPanel extends JPanel {
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addGap(7)
-                                .addComponent(logoIconLabel, 30, 30, 30)
+                                .addGap(8)
+                                .addComponent(logoIconLabel, 26, 26, 26)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addComponent(downloadSpeedValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
@@ -63,14 +57,14 @@ public class FloatingContentPanel extends JPanel {
         groupLayout.setVerticalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addGap(5)
+                                .addGap(7)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(logoIconLabel, 30, 30, 30)
+                                        .addComponent(logoIconLabel, 26, 26, 26)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(progressValueLabel, 15, 15, 15)
+                                                .addComponent(progressValueLabel, 13, 13, 13)
                                                 .addGap(0)
-                                                .addComponent(downloadSpeedValueLabel, 15, 15, 15)))
-                                .addGap(5))
+                                                .addComponent(downloadSpeedValueLabel, 13, 13, 13)))
+                                .addGap(7))
         );
         this.setLayout(groupLayout);
 

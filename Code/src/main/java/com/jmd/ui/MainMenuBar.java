@@ -5,12 +5,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.Serial;
 import java.util.HashMap;
-import java.util.Objects;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import com.jmd.ApplicationSetting;
@@ -19,9 +14,8 @@ import com.jmd.common.WsSendTopic;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.taskfunc.TaskState;
+import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.common.CommonDialog;
-import com.jmd.ui.common.NoScalingIcon;
-import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
@@ -36,8 +30,6 @@ import com.jmd.entity.theme.ThemeEntity;
 import com.jmd.taskfunc.TaskExecFunc;
 import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
 import com.jmd.util.TaskUtils;
-
-import javax.swing.ImageIcon;
 
 @Component
 public class MainMenuBar extends JMenuBar {
@@ -65,7 +57,7 @@ public class MainMenuBar extends JMenuBar {
     private BrowserEngine browserEngine;
 
     private final JMenuItem themeNameLabel = new JMenuItem();
-    private final ImageIcon selectedIcon = new ImageIcon(Objects.requireNonNull(MainMenuBar.class.getResource("/com/jmd/assets/icon/selected.png")));
+    private final Icon selectedIcon = new AutoScalingIcon(13, 13, "/com/jmd/assets/icon/selected.png");
     private boolean floatingMenuIcon = true;
 
     @PostConstruct
@@ -142,7 +134,7 @@ public class MainMenuBar extends JMenuBar {
                 if (e.getButton() == 1) {
                     browserPanel.toggleDevTools();
                     if (browserPanel.isDevToolOpen()) {
-                        consoleMenuItem.setIcon(new NoScalingIcon(selectedIcon));
+                        consoleMenuItem.setIcon(selectedIcon);
                     } else {
                         consoleMenuItem.setIcon(null);
                     }
@@ -213,6 +205,7 @@ public class MainMenuBar extends JMenuBar {
 
         var floatingMenuItem = new JMenuItem("悬浮窗");
         floatingMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        floatingMenuItem.setIcon(selectedIcon);
         settingMenu.add(floatingMenuItem);
         floatingMenuItem.addMouseListener(new MouseAdapter() {
             @Override
@@ -221,7 +214,7 @@ public class MainMenuBar extends JMenuBar {
                     innerMqService.pub(Topic.FLOATING_WINDOW_TOGGLE, true);
                     floatingMenuIcon = !floatingMenuIcon;
                     if (floatingMenuIcon) {
-                        floatingMenuItem.setIcon(new NoScalingIcon(selectedIcon));
+                        floatingMenuItem.setIcon(selectedIcon);
                     } else {
                         floatingMenuItem.setIcon(null);
                     }

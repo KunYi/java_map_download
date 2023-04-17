@@ -3,21 +3,23 @@ package com.jmd.ui.common;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Objects;
 
 public class NoScalingIcon implements Icon {
 
-    private final Icon icon;
+    private final ImageIcon image;
 
-    public NoScalingIcon(Icon icon) {
-        this.icon = icon;
+    public NoScalingIcon(int width, int height, String path) {
+        this.image = new ImageIcon(Objects.requireNonNull(NoScalingIcon.class.getResource(path)));
+        this.image.setImage(this.image.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
     }
 
     public int getIconWidth() {
-        return icon.getIconWidth();
+        return image.getIconWidth();
     }
 
     public int getIconHeight() {
-        return icon.getIconHeight();
+        return image.getIconHeight();
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -29,8 +31,8 @@ public class NoScalingIcon implements Icon {
         int scaleX = (int) (x * at.getScaleX());
         int scaleY = (int) (y * at.getScaleY());
 
-        int offsetX = (int) (icon.getIconWidth() * (at.getScaleX() - 1) / 2);
-        int offsetY = (int) (icon.getIconHeight() * (at.getScaleY() - 1) / 2);
+        int offsetX = (int) (image.getIconWidth() * (at.getScaleX() - 1) / 2);
+        int offsetY = (int) (image.getIconHeight() * (at.getScaleY() - 1) / 2);
 
         int locationX = scaleX + offsetX;
         int locationY = scaleY + offsetY;
@@ -41,7 +43,7 @@ public class NoScalingIcon implements Icon {
         at.concatenate(scaled);
         g2d.setTransform(at);
 
-        icon.paintIcon(c, g2d, locationX, locationY);
+        image.paintIcon(c, g2d, locationX, locationY);
 
         g2d.dispose();
 

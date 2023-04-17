@@ -9,6 +9,7 @@ import javax.swing.*;
 
 import com.jmd.common.StaticVar;
 
+import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.frame.info.AboutFrame;
 import lombok.Getter;
 
@@ -35,9 +36,6 @@ public class StartupWindow extends JWindow {
     public StartupWindow() {
 
         this.getContentPane().setLayout(null);
-        ImageIcon backgroundIconImage = new ImageIcon(
-                Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/img/load-background-hi.png")));
-        backgroundIconImage.setImage(backgroundIconImage.getImage().getScaledInstance(398, 298, Image.SCALE_SMOOTH));
 
         var backgroundPanel = new JPanel();
         var borderColor = new Color(112, 112, 112);
@@ -67,7 +65,7 @@ public class StartupWindow extends JWindow {
         backgroundPanel.add(progressLabel);
 
         var backgroundLabel = new JLabel("");
-        backgroundLabel.setIcon(backgroundIconImage);
+        backgroundLabel.setIcon(new AutoScalingIcon(398, 298, "/com/jmd/assets/img/load-background-hi.png"));
         backgroundLabel.setBounds(1, 1, 398, 298);
         backgroundPanel.add(backgroundLabel);
 
