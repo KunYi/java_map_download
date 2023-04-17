@@ -97,7 +97,7 @@ public class DownloadTaskPanel extends JPanel {
                     if (!TaskState.IS_TASKING) {
                         return;
                     }
-                    taskExec.pauseTask();
+                    taskExec.taskPause();
                 }
             }
         });
@@ -115,7 +115,7 @@ public class DownloadTaskPanel extends JPanel {
                     }
                     var f = CommonDialog.confirm("确认", "是否取消当前任务");
                     if (f) {
-                        taskExec.cancelTaks();
+                        taskExec.taskCancel();
                     }
                 }
             }

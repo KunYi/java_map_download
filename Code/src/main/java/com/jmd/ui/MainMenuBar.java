@@ -20,6 +20,8 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.taskfunc.TaskState;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.ui.common.NoScalingIcon;
+import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
@@ -64,6 +66,7 @@ public class MainMenuBar extends JMenuBar {
 
     private final JMenuItem themeNameLabel = new JMenuItem();
     private final ImageIcon selectedIcon = new ImageIcon(Objects.requireNonNull(MainMenuBar.class.getResource("/com/jmd/assets/icon/selected.png")));
+    private boolean floatingMenuIcon = true;
 
     @PostConstruct
     private void init() {
@@ -139,7 +142,7 @@ public class MainMenuBar extends JMenuBar {
                 if (e.getButton() == 1) {
                     browserPanel.toggleDevTools();
                     if (browserPanel.isDevToolOpen()) {
-                        consoleMenuItem.setIcon(selectedIcon);
+                        consoleMenuItem.setIcon(new NoScalingIcon(selectedIcon));
                     } else {
                         consoleMenuItem.setIcon(null);
                     }
@@ -192,18 +195,36 @@ public class MainMenuBar extends JMenuBar {
             }
         });
 
-        var networkMenu = new JMenu("网络");
-        networkMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(networkMenu);
+        var settingMenu = new JMenu("设置");
+        settingMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(settingMenu);
 
         var proxyMenuItem = new JMenuItem("代理设置");
         proxyMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        networkMenu.add(proxyMenuItem);
+        settingMenu.add(proxyMenuItem);
         proxyMenuItem.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == 1) {
                     proxySettingFrame.setVisible(true);
+                }
+            }
+        });
+
+        var floatingMenuItem = new JMenuItem("悬浮窗");
+        floatingMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        settingMenu.add(floatingMenuItem);
+        floatingMenuItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == 1) {
+                    innerMqService.pub(Topic.FLOATING_WINDOW_TOGGLE, true);
+                    floatingMenuIcon = !floatingMenuIcon;
+                    if (floatingMenuIcon) {
+                        floatingMenuItem.setIcon(new NoScalingIcon(selectedIcon));
+                    } else {
+                        floatingMenuItem.setIcon(null);
+                    }
                 }
             }
         });

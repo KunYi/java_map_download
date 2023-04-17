@@ -8,6 +8,7 @@ import java.awt.Desktop;
 
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
+import com.jmd.ui.common.NoScalingIcon;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.stereotype.Component;
@@ -60,7 +61,7 @@ public class AboutFrame extends CommonSubFrame {
         var jdkIconLabel = new JLabel("");
         jdkIconLabel.setBounds(15, 10, 30, 30);
         jdkIconImage.setImage(jdkIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        jdkIconLabel.setIcon(jdkIconImage);
+        jdkIconLabel.setIcon(new NoScalingIcon(jdkIconImage));
         panel.add(jdkIconLabel);
 
         var jdkTextLabel = new JLabel("JetBrains Runtime 17");
@@ -72,7 +73,7 @@ public class AboutFrame extends CommonSubFrame {
         var jcefIconLabel = new JLabel("");
         jcefIconLabel.setBounds(238, 10, 40, 30);
         jcefIconImage.setImage(jcefIconImage.getImage().getScaledInstance(40, 30, Image.SCALE_SMOOTH));
-        jcefIconLabel.setIcon(jcefIconImage);
+        jcefIconLabel.setIcon(new NoScalingIcon(jcefIconImage));
         panel.add(jcefIconLabel);
 
         var jcefTextLabel = new JLabel("JCEF 104");
@@ -85,7 +86,7 @@ public class AboutFrame extends CommonSubFrame {
         ImageIcon openlayersIconImage = new ImageIcon(
                 Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/openlayers.png")));
         openlayersIconImage.setImage(openlayersIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        openlayersIconLabel.setIcon(openlayersIconImage);
+        openlayersIconLabel.setIcon(new NoScalingIcon(openlayersIconImage));
         panel.add(openlayersIconLabel);
 
         var eclipseIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/eclipse.png")));
@@ -99,14 +100,14 @@ public class AboutFrame extends CommonSubFrame {
         var gitIconLabel = new JLabel("");
         gitIconLabel.setBounds(15, 118, 30, 30);
         gitIconImage.setImage(gitIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        gitIconLabel.setIcon(gitIconImage);
+        gitIconLabel.setIcon(new NoScalingIcon(gitIconImage));
         panel.add(gitIconLabel);
 
         var angularIconImage = new ImageIcon(Objects.requireNonNull(AboutFrame.class.getResource("/com/jmd/assets/icon/angular.png")));
         var angularIconLabel = new JLabel("");
         angularIconLabel.setBounds(238, 46, 30, 30);
         angularIconImage.setImage(angularIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        angularIconLabel.setIcon(angularIconImage);
+        angularIconLabel.setIcon(new NoScalingIcon(angularIconImage));
         panel.add(angularIconLabel);
 
         var angularTextLabel = new JLabel("Angular 15.2.2");
@@ -118,7 +119,7 @@ public class AboutFrame extends CommonSubFrame {
         var opencvIconLabel = new JLabel("");
         opencvIconLabel.setBounds(15, 82, 30, 30);
         opencvIconImage.setImage(opencvIconImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        opencvIconLabel.setIcon(opencvIconImage);
+        opencvIconLabel.setIcon(new NoScalingIcon(opencvIconImage));
         panel.add(opencvIconLabel);
 
         var opencvTextLabel = new JLabel("OpenCV 4.5.5");

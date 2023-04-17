@@ -10,6 +10,7 @@ import com.jmd.ApplicationStore;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.taskfunc.TaskState;
+import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.util.CommonUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class MainFrame extends JFrame {
     @Autowired
     private BrowserEngine browserEngine;
 
+    @Autowired
+    private FloatingWindow floatingWindow;
     @Autowired
     private MapViewPanel mapViewPanel;
     @Autowired
@@ -161,14 +164,19 @@ public class MainFrame extends JFrame {
             });
         });
         client.<Integer>sub(Topic.MAIN_FRAME_SELECTED_INDEX, (res) -> {
-            tabbedPane.setSelectedIndex(res);
+            this.tabbedPane.setSelectedIndex(res);
+        });
+        client.sub(Topic.FLOATING_WINDOW_TOGGLE, (res) -> {
+            SwingUtilities.invokeLater(() -> {
+                this.floatingWindow.setVisible(!this.floatingWindow.isVisible());
+            });
         });
     }
 
     private void processExit() {
         this.setVisible(false);
         if (TaskState.IS_TASKING) {
-            taskExec.cancelTaks();
+            taskExec.taskCancel();
         }
         browserEngine.dispose();
         System.exit(0);

@@ -10,6 +10,7 @@ import java.util.Random;
 import javax.swing.SwingWorker;
 
 import com.jmd.async.pool.scheduler.IntervalConfig;
+import com.jmd.entity.task.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,6 @@ import com.jmd.async.pool.executor.TileMergeExecutorPool;
 import com.jmd.async.task.scheduler.DownloadMonitoringInterval;
 import com.jmd.async.task.scheduler.TileMergeMonitoringInterval;
 import com.jmd.entity.geo.Tile;
-import com.jmd.entity.task.ErrorTileEntity;
-import com.jmd.entity.task.TaskAllInfoEntity;
-import com.jmd.entity.task.TaskBlockEntity;
-import com.jmd.entity.task.TaskCreateEntity;
-import com.jmd.entity.task.TaskInstEntity;
-import com.jmd.entity.task.TaskProgressEntity;
 import com.jmd.inst.DownloadAmountInstance;
 import com.jmd.os.CPUMonitor;
 import com.jmd.os.RAMMonitor;
@@ -62,9 +57,7 @@ public class TaskExecFunc {
     private boolean isHandlerCancel = false;
     private SwingWorker<Void, Void> downloadWorker;
 
-    /**
-     * 创建任务
-     */
+    // 创建任务
     public void createTask(TaskCreateEntity taskCreate) {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
@@ -110,9 +103,7 @@ public class TaskExecFunc {
         worker.execute();
     }
 
-    /**
-     * 加载任务
-     */
+    // 加载任务
     public void loadTask(TaskAllInfoEntity taskAllInfo) {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
@@ -156,9 +147,7 @@ public class TaskExecFunc {
         worker.execute();
     }
 
-    /**
-     * 开始下载
-     */
+    // 开始下载
     public void downloadTask(TaskAllInfoEntity _taskAllInfo) {
         int id = new Random().nextInt(1000000000);
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
@@ -168,7 +157,7 @@ public class TaskExecFunc {
                 TaskAllInfoEntity[] taskAllInfo = new TaskAllInfoEntity[1];
                 taskAllInfo[0] = _taskAllInfo;
                 TaskState.IS_TASKING = true;
-                downloadStart();
+                taskStart();
                 // 配置HTTP
                 taskAllInfo[0] = taskStep.setHttpConfig(taskAllInfo[0], (e) -> innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e));
                 // 开启定时任务
@@ -192,7 +181,7 @@ public class TaskExecFunc {
                 // 下载结束
                 TaskState.IS_TASKING = false;
                 innerMqService.pub(Topic.CLEAR_INTERVAL, id);
-                downloadFinish(taskAllInfo[0]);
+                taskFinish(taskAllInfo[0]);
                 System.gc();
                 return null;
             }
@@ -202,9 +191,7 @@ public class TaskExecFunc {
         downloadWorker = worker;
     }
 
-    /**
-     * 任务每秒回调
-     */
+    // 任务每秒回调
     private void taskSecInterval(TaskAllInfoEntity taskAllInfo, TaskProgressEntity progress) {
         // 显示资源使用率
         innerMqService.pub(Topic.RESOURCE_USAGE_THREAD_COUNT, String.valueOf(tileDownloadExecutorPool.getActiveCount()));
@@ -233,9 +220,7 @@ public class TaskExecFunc {
         }
     }
 
-    /**
-     * 瓦片图下载回调
-     */
+    // 瓦片图下载回调
     private void eachTileDownloadedCallback(TaskAllInfoEntity taskAllInfo, int z, String name, long count, long xRun, long yRun, boolean success) {
         if (!success) {
             String key = z + "-" + xRun + "-" + yRun;
@@ -252,9 +237,7 @@ public class TaskExecFunc {
         taskAllInfo.getEachLayerTask().get(z).getBlocks().put(name, block);
     }
 
-    /**
-     * 层级下载结束回调 - 下载错误瓦片
-     */
+    // 层级下载结束回调 - 下载错误瓦片
     private void eachLayerDownloadedTileErrorCallback(TaskAllInfoEntity taskAllInfo) {
         if (isHandlerCancel) {
             return;
@@ -265,9 +248,7 @@ public class TaskExecFunc {
         taskStep.tileErrorDownload(taskAllInfo, (e) -> innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e));
     }
 
-    /**
-     * 层级下载结束回调 - 合并图片
-     */
+    // 层级下载结束回调 - 合并图片
     private void eachLayerDownloadedTileMergeCallback(TaskAllInfoEntity taskAllInfo, int z) {
         if (isHandlerCancel) {
             return;
@@ -299,19 +280,15 @@ public class TaskExecFunc {
         }
     }
 
-    /**
-     * 更新下载进度
-     */
+    // 更新下载进度
     private void updateDownloadProcess(TaskProgressEntity progress) {
         innerMqService.pub(Topic.TASK_STATUS_TILE_DOWNLOADED_COUNT, String.valueOf(progress.getCurrentCount()));
         innerMqService.pub(Topic.TASK_STATUS_PROGRESS, df2.format(100 * progress.getPerc()) + "%");
         innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PROGRESS, (int) Math.round(100 * progress.getPerc()));
     }
 
-    /**
-     * 下载开始
-     */
-    private void downloadStart() {
+    // 下载开始
+    private void taskStart() {
         TaskState.IS_TASK_PAUSING = false;
         isHandlerCancel = false;
         innerMqService.pub(Topic.CPU_PERCENTAGE_CLEAR, true);
@@ -323,10 +300,8 @@ public class TaskExecFunc {
         downloadAmountInstance.reset();
     }
 
-    /**
-     * 下载结束
-     */
-    private void downloadFinish(TaskAllInfoEntity taskAllInfo) {
+    // 下载结束
+    private void taskFinish(TaskAllInfoEntity taskAllInfo) {
         TaskState.IS_TASK_PAUSING = false;
         downloadWorker = null;
         innerMqService.pub(Topic.RESOURCE_USAGE_CLEAR, true);
@@ -335,8 +310,8 @@ public class TaskExecFunc {
         innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, false);
         if (!isHandlerCancel) {
             long allRunCount = 0L;
-            for (TaskInstEntity inst : taskAllInfo.getEachLayerTask().values()) {
-                for (TaskBlockEntity block : inst.getBlocks().values()) {
+            for (var inst : taskAllInfo.getEachLayerTask().values()) {
+                for (var block : inst.getBlocks().values()) {
                     allRunCount = allRunCount + block.getRunCount();
                 }
             }
@@ -344,6 +319,7 @@ public class TaskExecFunc {
             updateDownloadProcess(new TaskProgressEntity(0, taskAllInfo.getAllRunCount(), (double) taskAllInfo.getAllRunCount() / (double) taskAllInfo.getAllRealCount()));
             innerMqService.pub(Topic.TASK_STATUS_CURRENT, "下载完成");
             innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "下载完成");
+            innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.FINISH);
             System.out.println("[下载完成]");
             deleteTaskFile(taskAllInfo);
         } else {
@@ -353,49 +329,44 @@ public class TaskExecFunc {
         }
     }
 
-    /**
-     * 是否取消
-     */
+    // 是否取消
     public boolean isCancel() {
         return this.isHandlerCancel;
     }
 
-    /**
-     * 暂停下载任务
-     */
-    public void pauseTask() {
+    // 暂停下载任务
+    public void taskPause() {
         if (TaskState.IS_TASKING && downloadWorker != null) {
             if (TaskState.IS_TASK_PAUSING) { // 继续
                 TaskState.IS_TASK_PAUSING = false;
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "暂停任务");
                 innerMqService.pub(Topic.TASK_STATUS_CURRENT, "继续下载");
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "继续下载任务");
+                innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CONTINUE);
             } else { // 暂停
                 TaskState.IS_TASK_PAUSING = true;
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "继续任务");
                 innerMqService.pub(Topic.TASK_STATUS_CURRENT, "暂停下载");
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "已暂停下载任务");
+                innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.PAUSE);
             }
         }
     }
 
-    /**
-     * 取消下载任务
-     */
-    public void cancelTaks() {
+    // 取消下载任务
+    public void taskCancel() {
         if (TaskState.IS_TASKING && downloadWorker != null) {
             innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, true);
             innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在取消下载任务...");
             innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在取消下载任务...");
+            innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CANCEL);
             downloadWorker.cancel(true);
             this.isHandlerCancel = true;
             TaskState.IS_TASKING = false;
         }
     }
 
-    /**
-     * 保存下载任务
-     */
+    // 保存下载任务
     private void saveTaskFile(TaskAllInfoEntity taskAllInfo) {
         try {
             CommonUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
@@ -404,9 +375,7 @@ public class TaskExecFunc {
         }
     }
 
-    /**
-     * 删除下载任务
-     */
+    // 删除下载任务
     private void deleteTaskFile(TaskAllInfoEntity taskAllInfo) {
         File file = new File(taskAllInfo.getSavePath() + "/task_info.jmd");
         if (file.exists() && file.isFile()) {
