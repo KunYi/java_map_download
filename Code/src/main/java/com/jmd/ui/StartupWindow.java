@@ -1,6 +1,5 @@
 package com.jmd.ui;
 
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -9,14 +8,12 @@ import javax.swing.*;
 
 import com.jmd.common.StaticVar;
 
-import com.jmd.ui.common.AutoScalingIcon;
-import com.jmd.ui.frame.info.AboutFrame;
+import com.jmd.ui.common.IconLabel;
 import lombok.Getter;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.Serial;
-import java.util.Objects;
 import javax.swing.border.LineBorder;
 
 public class StartupWindow extends JWindow {
@@ -64,8 +61,7 @@ public class StartupWindow extends JWindow {
         progressLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         backgroundPanel.add(progressLabel);
 
-        var backgroundLabel = new JLabel("");
-        backgroundLabel.setIcon(new AutoScalingIcon(398, 298, "/com/jmd/assets/img/load-background-hi.png"));
+        var backgroundLabel = new IconLabel("/com/jmd/assets/img/load-background-hi.png");
         backgroundLabel.setBounds(1, 1, 398, 298);
         backgroundPanel.add(backgroundLabel);
 

@@ -5,8 +5,8 @@ import java.io.Serial;
 
 import javax.swing.*;
 
-import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.common.CommonSubFrame;
+import com.jmd.ui.common.IconLabel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -25,14 +25,12 @@ public class DonateFrame extends CommonSubFrame {
         panel.setBounds(0, 0, 633, 450);
         panel.setLayout(null);
 
-        var alipayImageLabel = new JLabel("");
+        var alipayImageLabel = new IconLabel("/com/jmd/assets/donate/alipay.jpg");
         alipayImageLabel.setBounds(0, 0, 296, 460);
-        alipayImageLabel.setIcon(new AutoScalingIcon(296, 460, "/com/jmd/assets/donate/alipay.jpg"));
         panel.add(alipayImageLabel);
 
-        var wechatImageLabel = new JLabel("");
+        var wechatImageLabel = new IconLabel("/com/jmd/assets/donate/wechat.png");
         wechatImageLabel.setBounds(296, 0, 337, 460);
-        wechatImageLabel.setIcon(new AutoScalingIcon(337, 460, "/com/jmd/assets/donate/wechat.png"));
         panel.add(wechatImageLabel);
         getContentPane().add(panel);
 

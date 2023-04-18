@@ -1,7 +1,7 @@
 package com.jmd.ui.foating;
 
 import com.jmd.common.StaticVar;
-import com.jmd.ui.common.AutoScalingIcon;
+import com.jmd.ui.common.IconLabel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +29,7 @@ public class FloatingContentPanel extends JPanel {
 
         this.setBackground(new Color(0, 0, 0, 0));
 
-        var logoIconLabel = new JLabel();
-        logoIconLabel.setIcon(new AutoScalingIcon(26, 26, "/com/jmd/assets/icon/map.png"));
+        var logoIconLabel = new IconLabel("/com/jmd/assets/icon/map.png");
 
         progressValueLabel = new JLabel("0%");
         progressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
