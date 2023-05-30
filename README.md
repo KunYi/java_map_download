@@ -34,7 +34,7 @@
 - 使用多网盘发布，防止链接失效
 - 百度网盘：https://pan.baidu.com/s/1CA7sdH6zL4OjJxVydKwrWQ  密码：mdve 
 - 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码:5bgb
-- 联通云盘：https://pan.wo.cn/s/1W1t0v642 密码:eZB0
+- 联通云盘：https://pan.wo.cn/s/8N3I3q863 密码:ZGkm
 
 #### 新版内容
 - 优化自定义图层功能，你甚至可以去找相关资源，下载游戏地图
@@ -42,7 +42,7 @@
 ![输入图片说明](Other/image/D37FAQN9BVIXZIO5.png)
 ![输入图片说明](Other/image/AQGA19U6SF0O7TQJGZGR8Q.png)
 - 优化错误瓦片处理
-![输入图片说明](Other/image/JVZ6UWEMBVKHHH21_ZZBN.png
+![输入图片说明](Other/image/JVZ6UWEMBVKHHH21_ZZBN.png)
 
 #### 更新历史
 - 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
