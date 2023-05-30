@@ -10,10 +10,8 @@
     <description>地图下载器</description>
 
     <!--
-        基于spring boot
-        不能使用dependencyManagement
-        否则会打包失败
-        直接使用mvn clean package即可
+        打包指令：
+        mvn clean kotlin:compile package
      -->
     <parent>
         <groupId>org.springframework.boot</groupId>

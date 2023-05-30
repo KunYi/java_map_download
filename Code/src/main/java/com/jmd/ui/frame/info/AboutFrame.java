@@ -69,7 +69,7 @@ public class AboutFrame extends CommonSubFrame {
         openlayersIconLabel.setBounds(15, 46, 30, 30);
         panel.add(openlayersIconLabel);
 
-        var openlayersTextLabel = new JLabel("OpenLayers 7.1.0");
+        var openlayersTextLabel = new JLabel("OpenLayers 7.3.0");
         openlayersTextLabel.setBounds(55, 46, 166, 30);
         openlayersTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(openlayersTextLabel);
@@ -139,7 +139,7 @@ public class AboutFrame extends CommonSubFrame {
         tipTextArea.setBounds(10, 193, 434, 78);
         tipTextArea.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         tipTextArea.setLineWrap(true);
-        tipTextArea.setText("Build日期：2023-04-09");
+        tipTextArea.setText("Build日期：2023-05-30");
         tipTextArea.setEditable(false);
         panel.add(tipTextArea);
 
