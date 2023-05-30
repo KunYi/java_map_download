@@ -38,10 +38,13 @@
 
 #### 新版内容
 - 优化自定义图层功能，你甚至可以去找相关资源，下载游戏地图
+
 ![输入图片说明](Other/image/DHVB2QC4DA5SPKS880YLI4.png)
 ![输入图片说明](Other/image/D37FAQN9BVIXZIO5.png)
 ![输入图片说明](Other/image/AQGA19U6SF0O7TQJGZGR8Q.png)
+
 - 优化错误瓦片处理
+
 ![输入图片说明](Other/image/JVZ6UWEMBVKHHH21_ZZBN.png)
 
 #### 更新历史
