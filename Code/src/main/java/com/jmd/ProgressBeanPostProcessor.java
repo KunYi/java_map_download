@@ -19,7 +19,7 @@ public class ProgressBeanPostProcessor implements BeanPostProcessor, Application
 
     private final AtomicInteger count = new AtomicInteger(0);
 
-    private Integer total = 218;
+    private Integer total = 221;
 
     private final static Subject<ProcessInitializationResult> beans = BehaviorSubject.create();
 

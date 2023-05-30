@@ -20,38 +20,40 @@ public class TaskProgressPanel extends JPanel {
     private final InnerMqService innerMqService = InnerMqService.getInstance();
     private InnerMqClient client;
 
-    private JProgressBar progressBar;
+    private final JProgressBar progressBar;
 
-    @PostConstruct
-    private void init() {
+    public TaskProgressPanel() {
 
         this.progressBar = new JProgressBar();
         this.progressBar.setMinimum(0);
         this.progressBar.setMaximum(100);
 
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addComponent(this.progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addGap(10)
-                                .addComponent(progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addComponent(this.progressBar, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                 .addGap(10))
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy

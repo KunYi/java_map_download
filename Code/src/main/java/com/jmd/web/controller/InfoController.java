@@ -2,6 +2,7 @@ package com.jmd.web.controller;
 
 import com.jmd.ApplicationConfig;
 import com.jmd.web.common.RESTfulResult;
+
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/info")
 public class InfoController {
 
-    @RequestMapping(value = "getWsPath", method = RequestMethod.GET)
+    @RequestMapping(value = "/getWsPath", method = RequestMethod.GET)
     @ResponseBody
     public RESTfulResult<String> getPort() {
         RESTfulResult<String> result = new RESTfulResult<>();

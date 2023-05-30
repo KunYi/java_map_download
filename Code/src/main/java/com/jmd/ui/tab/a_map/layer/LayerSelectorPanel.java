@@ -48,8 +48,7 @@ public class LayerSelectorPanel extends JPanel {
     private final JTree layerTypeTree = new JTree();
     private final DefaultTreeModel treeModel = this.getTree();
 
-    @PostConstruct
-    private void init() {
+    public LayerSelectorPanel() {
 
         this.setLayout(new BorderLayout(0, 0));
 
@@ -68,6 +67,10 @@ public class LayerSelectorPanel extends JPanel {
 
         this.add(layerTypeScrollPane, BorderLayout.CENTER);
 
+    }
+
+    @PostConstruct
+    private void init() {
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {

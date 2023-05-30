@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Desktop;
 
 import com.jmd.ui.common.*;
-import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.stereotype.Component;
 
@@ -29,12 +28,7 @@ public class AboutFrame extends CommonSubFrame {
 
     private final String git = "https://gitee.com/CrimsonHu/java_map_download";
 
-//	public AboutFrame() {
-//		init();
-//	}
-
-    @PostConstruct
-    private void init() {
+    public AboutFrame() {
 
         var springBootTextArea = new JTextArea();
         this.getContentPane().add(springBootTextArea, BorderLayout.NORTH);

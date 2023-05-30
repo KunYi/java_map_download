@@ -39,56 +39,29 @@ public class MapViewPanel extends JPanel {
     @Autowired
     private CustomLayerButtonPanel customLayerButtonPanel;
     @Autowired
-    private BrowserPanel browserPanel;
+    private BrowserPanel browserInstPanel;
     @Autowired
     private BottomInfoPanel bottomInfoPanel;
 
-//    public MapViewPanel() {
-//        init();
-//    }
+    private final CommonContainerPanel controlPanel;
+    private final CommonContainerPanel districtPanel;
+    private final CommonContainerPanel statusPanel;
+    private final CommonContainerPanel drawPanel;
+    private final CommonContainerPanel layerPanel;
+    private final CommonContainerPanel customPanel;
+    private final CommonContainerPanel bottomPanel;
+    private final CommonContainerPanel browserPanel;
 
-    @PostConstruct
-    private void init() {
+    public MapViewPanel() {
 
-        /* 地图操作 */
-        var control = new CommonContainerPanel("地图操作");
-        control.addContent(mapControlButtonPanel);
-        /* 地图操作 */
-
-        /* 快速选择 */
-        var district = new CommonContainerPanel("快速选择");
-        district.addContent(districtSelectorPanel);
-        /* 快速选择 */
-
-        /* 状态信息 */
-        var status = new CommonContainerPanel("状态信息");
-        status.addContent(statusInfoPanel);
-        /* 状态信息 */
-
-        /* 绘制类型 */
-        var draw = new CommonContainerPanel("绘制类型");
-        draw.addContent(drawTypePanel);
-        /* 绘制类型 */
-
-        /* 图层选择 */
-        var layer = new CommonContainerPanel("图层选择");
-        layer.addContent(layerSelectorPanel);
-        /* 绘制类型 */
-
-        /* 自定义 */
-        var custom = new CommonContainerPanel("自定义");
-        custom.addContent(customLayerButtonPanel);
-        /* 自定义 */
-
-        /* 底部信息 */
-        var bottom = new CommonContainerPanel(null);
-        bottom.addContent(bottomInfoPanel);
-        /* 底部信息 */
-
-        /* 浏览器 */
-        var browser = new CommonContainerPanel("浏览器");
-        browser.addContent(browserPanel);
-        /* 浏览器 */
+        this.controlPanel = new CommonContainerPanel("地图操作");
+        this.districtPanel = new CommonContainerPanel("快速选择");
+        this.statusPanel = new CommonContainerPanel("状态信息");
+        this.drawPanel = new CommonContainerPanel("绘制类型");
+        this.layerPanel = new CommonContainerPanel("图层选择");
+        this.customPanel = new CommonContainerPanel("自定义");
+        this.browserPanel = new CommonContainerPanel("浏览器");
+        this.bottomPanel = new CommonContainerPanel(null);
 
         var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
@@ -97,19 +70,19 @@ public class MapViewPanel extends JPanel {
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(control, 300, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(this.controlPanel, 300, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(district, 300, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(this.districtPanel, 300, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(status, 180, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                                .addComponent(this.statusPanel, 180, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                                        .addComponent(custom, 220, 220, 220)
-                                                        .addComponent(draw, 220, 220, 220)
-                                                        .addComponent(layer, 220, 220, 220))
+                                                        .addComponent(this.drawPanel, 220, 220, 220)
+                                                        .addComponent(this.layerPanel, 220, 220, 220)
+                                                        .addComponent(this.customPanel, 220, 220, 220))
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(browser, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
-                                        .addComponent(bottom, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                                .addComponent(this.browserPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                        .addComponent(this.bottomPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -117,23 +90,61 @@ public class MapViewPanel extends JPanel {
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                        .addComponent(control, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(status, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(district, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                        .addComponent(this.controlPanel, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.districtPanel, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.statusPanel, 50, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(draw, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(this.drawPanel, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(layer, 100, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                                .addComponent(this.layerPanel, 100, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(custom, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(browser, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                                .addComponent(this.customPanel, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.browserPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(bottom, 10, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(this.bottomPanel, 10, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
-        setLayout(groupLayout);
+        this.setLayout(groupLayout);
 
     }
+
+    @PostConstruct
+    private void init() {
+
+        /* 地图操作 */
+        this.controlPanel.addContent(this.mapControlButtonPanel);
+        /* 地图操作 */
+
+        /* 快速选择 */
+        this.districtPanel.addContent(this.districtSelectorPanel);
+        /* 快速选择 */
+
+        /* 状态信息 */
+        this.statusPanel.addContent(this.statusInfoPanel);
+        /* 状态信息 */
+
+        /* 绘制类型 */
+        this.drawPanel.addContent(this.drawTypePanel);
+        /* 绘制类型 */
+
+        /* 图层选择 */
+        this.layerPanel.addContent(this.layerSelectorPanel);
+        /* 绘制类型 */
+
+        /* 自定义 */
+        this.customPanel.addContent(this.customLayerButtonPanel);
+        /* 自定义 */
+
+        /* 浏览器 */
+        this.browserPanel.addContent(this.browserInstPanel);
+        /* 浏览器 */
+
+        /* 底部信息 */
+        this.bottomPanel.addContent(this.bottomInfoPanel);
+        /* 底部信息 */
+
+    }
+
 }

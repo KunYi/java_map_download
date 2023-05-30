@@ -16,6 +16,7 @@ import com.jmd.rx.service.InnerMqService;
 import com.jmd.taskfunc.TaskState;
 import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.ui.common.NoScalingIcon;
 import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
@@ -57,7 +58,7 @@ public class MainMenuBar extends JMenuBar {
     private BrowserEngine browserEngine;
 
     private final JMenuItem themeNameLabel = new JMenuItem();
-    private final Icon selectedIcon = new AutoScalingIcon(13, 13, "/com/jmd/assets/icon/selected.png");
+    private final Icon selectedIcon = new AutoScalingIcon(15, 15, "/com/jmd/assets/icon/selected.png");
     private boolean floatingMenuIcon = true;
 
     @PostConstruct

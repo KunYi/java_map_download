@@ -20,26 +20,21 @@ public class FloatingContentPanel extends JPanel {
     public JLabel progressValueLabel;
     public JLabel downloadSpeedValueLabel;
 
-//    public FloatingContentPanel() {
-//        init();
-//    }
-
-    @PostConstruct
-    private void init() {
+    public FloatingContentPanel() {
 
         this.setBackground(new Color(0, 0, 0, 0));
 
         var logoIconLabel = new IconLabel("/com/jmd/assets/icon/map.png");
 
-        progressValueLabel = new JLabel("0%");
-        progressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-        progressValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        progressValueLabel.setForeground(new Color(192, 192, 192));
+        this.progressValueLabel = new JLabel("0%");
+        this.progressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+        this.progressValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.progressValueLabel.setForeground(new Color(192, 192, 192));
 
-        downloadSpeedValueLabel = new JLabel("0B/s");
-        downloadSpeedValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-        downloadSpeedValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        downloadSpeedValueLabel.setForeground(new Color(192, 192, 192));
+        this.downloadSpeedValueLabel = new JLabel("0B/s");
+        this.downloadSpeedValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+        this.downloadSpeedValueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        this.downloadSpeedValueLabel.setForeground(new Color(192, 192, 192));
 
         var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
@@ -49,8 +44,8 @@ public class FloatingContentPanel extends JPanel {
                                 .addComponent(logoIconLabel, 26, 26, 26)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(downloadSpeedValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(progressValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                        .addComponent(this.downloadSpeedValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.progressValueLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addGap(10))
         );
         groupLayout.setVerticalGroup(
@@ -60,12 +55,17 @@ public class FloatingContentPanel extends JPanel {
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addComponent(logoIconLabel, 26, 26, 26)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(progressValueLabel, 13, 13, 13)
+                                                .addComponent(this.progressValueLabel, 13, 13, 13)
                                                 .addGap(0)
-                                                .addComponent(downloadSpeedValueLabel, 13, 13, 13)))
+                                                .addComponent(this.downloadSpeedValueLabel, 13, 13, 13)))
                                 .addGap(7))
         );
         this.setLayout(groupLayout);
+
+    }
+
+    @PostConstruct
+    private void init() {
 
     }
 

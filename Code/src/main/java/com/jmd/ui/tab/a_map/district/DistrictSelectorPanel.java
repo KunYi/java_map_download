@@ -34,45 +34,81 @@ public class DistrictSelectorPanel extends JPanel {
     @Autowired
     private AllDistrictService allDistrictService;
 
-    private JComboBox<String> provinceComboBox;
-    private JComboBox<String> cityComboBox;
-    private JComboBox<String> districtComboBox;
+    private final JComboBox<String> provinceComboBox;
+    private final JComboBox<String> cityComboBox;
+    private final JComboBox<String> districtComboBox;
+    private final JButton okButton;
 
     private final HashMap<String, String> provinceAdcodeMap = new HashMap<>();
     private final HashMap<String, String> cityAdcodeMap = new HashMap<>();
     private final HashMap<String, String> districtAdcodeMap = new HashMap<>();
 
-    @PostConstruct
-    private void init() {
+    public DistrictSelectorPanel() {
 
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-        provinceComboBox = new JComboBox<String>();
-        provinceComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        provinceComboBox.setFocusable(false);
-        provinceComboBox.addItemListener((e) -> {
+        this.provinceComboBox = new JComboBox<>();
+        this.provinceComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.provinceComboBox.setFocusable(false);
+
+        this.cityComboBox = new JComboBox<>();
+        this.cityComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.cityComboBox.setFocusable(false);
+
+        this.districtComboBox = new JComboBox<>();
+        this.districtComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.districtComboBox.setFocusable(false);
+
+
+        this.okButton = new JButton("确定");
+        this.okButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.okButton.setFocusable(false);
+
+        var groupLayout = new GroupLayout(this);
+        groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.provinceComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(this.cityComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(this.districtComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.okButton))
+                                .addContainerGap())
+        );
+        groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(this.provinceComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(this.cityComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(this.districtComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(this.okButton)
+                                .addContainerGap())
+        );
+        this.setLayout(groupLayout);
+
+    }
+
+    @PostConstruct
+    private void init() {
+        this.getAllProvinces();
+        this.provinceComboBox.addItemListener((e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 this.getCitysByProvinceAdcode(this.provinceAdcodeMap.get(e.getItem()));
             }
         });
-
-        cityComboBox = new JComboBox<String>();
-        cityComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        cityComboBox.setFocusable(false);
-        cityComboBox.addItemListener((e) -> {
+        this.cityComboBox.addItemListener((e) -> {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 this.getDistrictsByCityAdcode(this.cityAdcodeMap.get(e.getItem()));
             }
         });
-
-        districtComboBox = new JComboBox<String>();
-        districtComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        districtComboBox.setFocusable(false);
-
-        var okButton = new JButton("确定");
-        okButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        okButton.setFocusable(false);
-        okButton.addMouseListener(new MouseAdapter() {
+        this.okButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
@@ -93,38 +129,6 @@ public class DistrictSelectorPanel extends JPanel {
                 }
             }
         });
-
-        var groupLayout = new GroupLayout(this);
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(provinceComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(cityComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(districtComboBox, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(okButton))
-                                .addContainerGap())
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(provinceComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(cityComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(districtComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(okButton)
-                                .addContainerGap())
-        );
-        this.setLayout(groupLayout);
-
-        this.getAllProvinces();
-
     }
 
     private void getAllProvinces() {

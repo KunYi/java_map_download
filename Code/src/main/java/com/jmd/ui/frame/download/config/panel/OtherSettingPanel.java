@@ -15,20 +15,15 @@ public class OtherSettingPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 5896768433169791370L;
 
-    private JComboBox<String> imgTypeComboBox;
-    private JComboBox<String> pathStyleDefaultComboBox;
-    private JCheckBox isCoverCheckBox;
-    private JCheckBox mergeTileCheckBox;
-    private JLabel mergeTypeLabel;
-    private JComboBox<String> mergeTypeComboBox;
-    private JTextArea mergeTipTextArea;
+    private final JComboBox<String> imgTypeComboBox;
+    private final JComboBox<String> pathStyleDefaultComboBox;
+    private final JCheckBox isCoverCheckBox;
+    private final JCheckBox mergeTileCheckBox;
+    private final JLabel mergeTypeLabel;
+    private final JComboBox<String> mergeTypeComboBox;
+    private final JTextArea mergeTipTextArea;
 
-//    public OtherSettingPanel() {
-//        init();
-//    }
-
-    @PostConstruct
-    private void init() {
+    public OtherSettingPanel() {
 
         var imgTypeLabel = new JLabel("图片格式：");
         imgTypeLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
@@ -50,7 +45,7 @@ public class OtherSettingPanel extends JPanel {
         var pathStyleBtnGroup = new ButtonGroup();
         pathStyleBtnGroup.add(pathStyleRadioButton1);
 
-        this.pathStyleDefaultComboBox = new JComboBox<String>();
+        this.pathStyleDefaultComboBox = new JComboBox<>();
         this.pathStyleDefaultComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.pathStyleDefaultComboBox.setFocusable(false);
         this.pathStyleDefaultComboBox.setModel(new DefaultComboBoxModel<>(
@@ -71,12 +66,6 @@ public class OtherSettingPanel extends JPanel {
         this.mergeTileCheckBox = new JCheckBox("合并下载的瓦片");
         this.mergeTileCheckBox.setFocusable(false);
         this.mergeTileCheckBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.mergeTileCheckBox.addActionListener((e) -> {
-            var f = this.mergeTileCheckBox.isSelected();
-            this.mergeTypeLabel.setVisible(f);
-            this.mergeTypeComboBox.setVisible(f);
-            this.mergeTipTextArea.setVisible(f);
-        });
 
         this.mergeTypeLabel = new JLabel("合并格式：");
         this.mergeTypeLabel.setVisible(false);
@@ -100,7 +89,7 @@ public class OtherSettingPanel extends JPanel {
         this.mergeTipTextArea.setEditable(false);
         this.mergeTipTextArea.setFocusable(false);
 
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
@@ -109,19 +98,19 @@ public class OtherSettingPanel extends JPanel {
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addComponent(imgTypeLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(imgTypeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(this.imgTypeComboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addComponent(pathStyleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(pathStyleRadioButton1))
-                                        .addComponent(pathStyleDefaultComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(isCoverCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(mergeTileCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.pathStyleDefaultComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.isCoverCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.mergeTileCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(mergeTypeLabel)
+                                                .addComponent(this.mergeTypeLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(mergeTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(mergeTipTextArea, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                                .addComponent(this.mergeTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.mergeTipTextArea, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -130,27 +119,37 @@ public class OtherSettingPanel extends JPanel {
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(imgTypeLabel)
-                                        .addComponent(imgTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.imgTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(ComponentPlacement.UNRELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(pathStyleLabel)
                                         .addComponent(pathStyleRadioButton1))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pathStyleDefaultComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(this.pathStyleDefaultComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(isCoverCheckBox)
+                                .addComponent(this.isCoverCheckBox)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(mergeTileCheckBox)
+                                .addComponent(this.mergeTileCheckBox)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(mergeTypeLabel)
-                                        .addComponent(mergeTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(this.mergeTypeLabel)
+                                        .addComponent(this.mergeTypeComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(mergeTipTextArea, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addComponent(this.mergeTipTextArea, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                 .addContainerGap())
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.mergeTileCheckBox.addActionListener((e) -> {
+            var f = this.mergeTileCheckBox.isSelected();
+            this.mergeTypeLabel.setVisible(f);
+            this.mergeTypeComboBox.setVisible(f);
+            this.mergeTipTextArea.setVisible(f);
+        });
     }
 
     public String getPathStyle() {

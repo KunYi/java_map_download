@@ -1,10 +1,8 @@
 package com.jmd.http;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,15 +19,11 @@ public class HttpDownload {
     private DownloadAmountInstance downloadAmountInstance;
 
     // 通过URL下载文件
-    public DownloadResult downloadTile(
-            String url, HashMap<String, String> headers,
-            int imgType, String pathAndName,
-            int retry
-    ) {
+    public DownloadResult downloadTile(String url, int imgType, String pathAndName, int retry) {
         pathAndName = CommonUtils.checkFilePathAndName(pathAndName);
         var result = new DownloadResult();
         var success = false;
-        var bytes = http.getFileBytes(url, headers);
+        var bytes = http.getFileBytes(url, HttpClient.HEADERS);
         if (null != bytes) {
             try {
                 var fileLength = this.saveImage(imgType, bytes, pathAndName);
@@ -53,7 +47,7 @@ public class HttpDownload {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                return downloadTile(url, headers, imgType, pathAndName, retry);
+                return downloadTile(url, imgType, pathAndName, retry);
             } else {
                 result.setSuccess(false);
             }

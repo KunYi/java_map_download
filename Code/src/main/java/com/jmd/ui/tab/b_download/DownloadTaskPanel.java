@@ -51,46 +51,101 @@ public class DownloadTaskPanel extends JPanel {
     @Autowired
     private TaskExecFunc taskExec;
 
-    private JButton pauseButton;
-    private JButton cancelButton;
+    private final CommonContainerPanel taskPanel;
+    private final CommonContainerPanel usagePanel;
+    private final CommonContainerPanel mergePanel;
+    private final CommonContainerPanel logPanel;
+    private final CommonContainerPanel progressPanel;
+    private final JButton pauseButton;
+    private final JButton cancelButton;
 
-//    public DownloadTaskPanel() {
-//        init();
-//    }
+    public DownloadTaskPanel() {
+
+        this.taskPanel = new CommonContainerPanel("任务状态");
+        this.usagePanel = new CommonContainerPanel("资源使用量");
+        this.mergePanel = new CommonContainerPanel("瓦片图合并进度");
+        this.logPanel = new CommonContainerPanel("任务日志");
+        this.progressPanel = new CommonContainerPanel("下载进度");
+
+        this.pauseButton = new JButton("暂停任务");
+        this.pauseButton.setEnabled(false);
+        this.pauseButton.setFocusable(false);
+        this.pauseButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        this.cancelButton = new JButton("取消任务");
+        this.cancelButton.setEnabled(false);
+        this.cancelButton.setFocusable(false);
+        this.cancelButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        var groupLayout = new GroupLayout(this);
+        groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(Alignment.TRAILING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.taskPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                                                        .addComponent(this.usagePanel, Alignment.TRAILING, 450, 450, 450)
+                                                        .addComponent(this.mergePanel, Alignment.TRAILING, 450, 450, 450)))
+                                        .addComponent(this.logPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.progressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.pauseButton)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(this.cancelButton)))
+                                .addContainerGap())
+        );
+        groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(Alignment.LEADING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+                                        .addComponent(this.taskPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.usagePanel, 155, 155, 155)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(this.mergePanel, 155, 155, 155)))
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(this.logPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(this.progressPanel, 67, 67, 67)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(this.cancelButton)
+                                        .addComponent(this.pauseButton))
+                                .addContainerGap())
+        );
+        this.setLayout(groupLayout);
+
+    }
 
     @PostConstruct
     private void init() {
 
         /* 任务状态 */
-        var taskPanel = new CommonContainerPanel("任务状态");
-        taskPanel.addContent(taskStatusPanel);
+        this.taskPanel.addContent(this.taskStatusPanel);
         /* 任务状态 */
 
         /* 资源使用量 */
-        var usagePanel = new CommonContainerPanel("资源使用量");
-        usagePanel.addContent(resourceUsagePanel);
+        this.usagePanel.addContent(this.resourceUsagePanel);
         /* 资源使用量 */
 
         /* 瓦片图合并进度 */
-        var mergePanel = new CommonContainerPanel("瓦片图合并进度");
-        mergePanel.addContent(tileMergeProgressPanel);
+        this.mergePanel.addContent(this.tileMergeProgressPanel);
         /* 瓦片图合并进度 */
 
         /* 任务日志 */
-        var logPanel = new CommonContainerPanel("任务日志");
-        logPanel.addContent(taskLogPanel);
+        this.logPanel.addContent(this.taskLogPanel);
         /* 任务日志 */
 
         /* 下载进度 */
-        var progressPanel = new CommonContainerPanel("下载进度");
-        progressPanel.addContent(taskProgressPanel);
+        this.progressPanel.addContent(taskProgressPanel);
         /* 下载进度 */
 
-        pauseButton = new JButton("暂停任务");
-        pauseButton.setEnabled(false);
-        pauseButton.setFocusable(false);
-        pauseButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        pauseButton.addMouseListener(new MouseAdapter() {
+        /* 暂停任务 */
+        this.pauseButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == 1 && pauseButton.isEnabled()) {
@@ -101,12 +156,10 @@ public class DownloadTaskPanel extends JPanel {
                 }
             }
         });
+        /* 暂停任务 */
 
-        cancelButton = new JButton("取消任务");
-        cancelButton.setEnabled(false);
-        cancelButton.setFocusable(false);
-        cancelButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        cancelButton.addMouseListener(new MouseAdapter() {
+        /* 取消任务 */
+        this.cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == 1 && cancelButton.isEnabled()) {
@@ -120,48 +173,7 @@ public class DownloadTaskPanel extends JPanel {
                 }
             }
         });
-
-        var groupLayout = new GroupLayout(this);
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(taskPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                                        .addComponent(usagePanel, Alignment.TRAILING, 450, 450, 450)
-                                                        .addComponent(mergePanel, Alignment.TRAILING, 450, 450, 450)))
-                                        .addComponent(logPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(progressPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(pauseButton)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(cancelButton)))
-                                .addContainerGap())
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-                                        .addComponent(taskPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(usagePanel, 155, 155, 155)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(mergePanel, 155, 155, 155)))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(logPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(progressPanel, 67, 67, 67)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(cancelButton)
-                                        .addComponent(pauseButton))
-                                .addContainerGap())
-        );
-        this.setLayout(groupLayout);
+        /* 取消任务 */
 
         try {
             this.subInnerMqMessage();

@@ -33,8 +33,7 @@ public class FloatingWindow extends JWindow {
     @Autowired
     private FloatingContentPanel contentPanel;
 
-    @PostConstruct
-    private void init() {
+    public FloatingWindow() {
 
         this.setAlwaysOnTop(true);
         this.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -42,8 +41,15 @@ public class FloatingWindow extends JWindow {
         this.setBackground(new Color(0, 0, 0, 0));
         this.setLayout(new BorderLayout());
 
-        this.add(this.contentPanel, BorderLayout.CENTER);
+        this.setSize(this.width, this.height);
+        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 125);
+        this.setVisible(false);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.add(this.contentPanel, BorderLayout.CENTER);
         this.getContentPane().addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -51,7 +57,6 @@ public class FloatingWindow extends JWindow {
                 first_y = e.getY(); // 记录下位移的初点
             }
         });
-
         this.getContentPane().addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -60,22 +65,16 @@ public class FloatingWindow extends JWindow {
                 setBounds(x - first_x, y - first_y, width, height);
             }
         });
-
-        this.setSize(this.width, this.height);
-        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - 300, 125);
-        this.setVisible(true);
-
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy
     private void destroy() {
-        this.disposeInnerMqMessage();
+        this.innerMqService.destroyClient(this.client);
     }
 
     public void subInnerMqMessage() throws Exception {
@@ -83,13 +82,17 @@ public class FloatingWindow extends JWindow {
         this.client.<String>sub(Topic.TASK_STATUS_PROGRESS, (res) -> {
             SwingUtilities.invokeLater(() -> {
                 this.contentPanel.progressValueLabel.setText(res);
-                this.repaint();
+                if (this.isVisible()) {
+                    this.repaint();
+                }
             });
         });
         this.client.<String>sub(Topic.RESOURCE_USAGE_DOWNLOAD_SPEED, (res) -> {
             SwingUtilities.invokeLater(() -> {
                 this.contentPanel.downloadSpeedValueLabel.setText(res);
-                this.repaint();
+                if (this.isVisible()) {
+                    this.repaint();
+                }
             });
         });
         this.client.<TaskStatusEnum>sub(Topic.TASK_STATUS_ENUM, (res) -> {
@@ -104,29 +107,11 @@ public class FloatingWindow extends JWindow {
         });
     }
 
-    public void disposeInnerMqMessage() {
-        this.innerMqService.destroyClient(this.client);
-    }
-
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         super.paint(g2d);
-    }
-
-    @Override
-    public void setVisible(boolean f) {
-        super.setVisible(f);
-        if (f) {
-            try {
-                this.subInnerMqMessage();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            this.disposeInnerMqMessage();
-        }
     }
 
 }

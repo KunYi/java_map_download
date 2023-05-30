@@ -1,6 +1,6 @@
-package com.jmd.rx;
+package com.jmd.rx
 
-public enum Topic {
+enum class Topic {
 
     CHANGE_THEME,
 
@@ -9,9 +9,7 @@ public enum Topic {
     UPDATE_PROXY_STATUS,
 
     MAIN_FRAME_SELECTED_INDEX,
-
     FLOATING_WINDOW_TOGGLE,
-
     SET_INTERVAL,
     CLEAR_INTERVAL,
 
@@ -50,7 +48,6 @@ public enum Topic {
     DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT,
     DOWNLOAD_CONSOLE_PAUSE_BUTTON_STATE,
     DOWNLOAD_CONSOLE_CLEAR,
-
     DOWNLOAD_CONFIG_FRAME_ZOOM_SELECTED,
     DOWNLOAD_CONFIG_FRAME_PATH_SELECTED,
 

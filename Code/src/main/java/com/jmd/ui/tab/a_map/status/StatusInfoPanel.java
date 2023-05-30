@@ -23,15 +23,14 @@ public class StatusInfoPanel extends JPanel {
     private final InnerMqService innerMqService = InnerMqService.getInstance();
     private InnerMqClient client;
 
-    private JLabel proxyStatusValue;
+    private final JLabel proxyStatusValue;
 
-    @PostConstruct
-    private void init() {
+    public StatusInfoPanel() {
 
         JLabel proxyStatusLabel = new JLabel("代理状态：");
         proxyStatusLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        proxyStatusValue = new JLabel("");
+        this.proxyStatusValue = new JLabel("");
         proxyStatusLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         GroupLayout groupLayout = new GroupLayout(this);
@@ -47,14 +46,16 @@ public class StatusInfoPanel extends JPanel {
                                 .addContainerGap(0, Short.MAX_VALUE)));
         this.setLayout(groupLayout);
 
-        this.updateProxyStatus();
+    }
 
+    @PostConstruct
+    private void init() {
+        this.updateProxyStatus();
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy

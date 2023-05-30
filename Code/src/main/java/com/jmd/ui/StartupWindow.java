@@ -55,11 +55,11 @@ public class StartupWindow extends JWindow {
         runtimeLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         backgroundPanel.add(runtimeLabel);
 
-        progressLabel = new JLabel("正在加载");
-        progressLabel.setForeground(Color.BLACK);
-        progressLabel.setBounds(10, 273, 100, 18);
-        progressLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        backgroundPanel.add(progressLabel);
+        this.progressLabel = new JLabel("正在加载");
+        this.progressLabel.setForeground(Color.BLACK);
+        this.progressLabel.setBounds(10, 273, 100, 18);
+        this.progressLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        backgroundPanel.add(this.progressLabel);
 
         var backgroundLabel = new IconLabel("/com/jmd/assets/img/load-background-hi.png");
         backgroundLabel.setBounds(1, 1, 398, 298);
@@ -71,10 +71,10 @@ public class StartupWindow extends JWindow {
         beanNamePanel.setLayout(null);
         getContentPane().add(beanNamePanel);
 
-        beanNameLabel = new JLabel("org.springframework.boot");
-        beanNameLabel.setBounds(10, 0, 380, 25);
-        beanNameLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        beanNamePanel.add(beanNameLabel);
+        this.beanNameLabel = new JLabel("org.springframework.boot");
+        this.beanNameLabel.setBounds(10, 0, 380, 25);
+        this.beanNameLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        beanNamePanel.add(this.beanNameLabel);
 
         var progressBarPanel = new JPanel();
         progressBarPanel.setBorder(new LineBorder(borderColor));
@@ -82,8 +82,8 @@ public class StartupWindow extends JWindow {
         getContentPane().add(progressBarPanel);
         progressBarPanel.setLayout(new BorderLayout());
 
-        progressBar = new JProgressBar();
-        progressBarPanel.add(progressBar, BorderLayout.CENTER);
+        this.progressBar = new JProgressBar();
+        progressBarPanel.add(this.progressBar, BorderLayout.CENTER);
 
         this.setSize(400, 340);
         this.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth()) / 2,

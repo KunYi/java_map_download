@@ -59,7 +59,6 @@ public class TileErrorDownloadTask {
             // 下载瓦片
             var downloadResult = download.downloadTile(
                     url,
-                    taskAllInfo.getHttpConfig().getHeaders(),
                     taskAllInfo.getImgType(),
                     pathAndName,
                     retry
@@ -69,8 +68,10 @@ public class TileErrorDownloadTask {
             if (success) {
                 // 下载成功，删除ErrorTile
                 taskAllInfo.getErrorTiles().remove(errorTile.getKeyName());
+                // 更新进度
                 var block = taskAllInfo.getEachLayerTask().get(z).getBlocks().get(errorTile.getBlockName());
                 block.setRunCount(block.getRunCount() + 1);
+                // 更新block信息
                 taskAllInfo.getEachLayerTask().get(z).getBlocks().put(errorTile.getBlockName(), block);
             } else {
                 // 下载失败，打印日志

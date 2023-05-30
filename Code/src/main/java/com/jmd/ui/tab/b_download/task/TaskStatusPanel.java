@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.io.Serial;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;

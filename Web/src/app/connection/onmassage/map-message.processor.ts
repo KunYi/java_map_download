@@ -6,6 +6,7 @@ import { MapWrap } from '../../map/draw/map-wrap';
 import { GeoUtil } from "../../map/geo-util";
 import { Point } from "../../map/entity/Point";
 import { MapSource } from "../../map/map-source";
+import { AddLayerType } from "../../model/add-layer.type";
 import { DEFAULT_LAYER_NAME } from "../../common/common-var";
 
 export class MapMessageProcessor {
@@ -16,7 +17,7 @@ export class MapMessageProcessor {
 		mapPage.getMqClient().sub<string>(Topic.INIT_MAP_CONFIG, (res) => {
 			// 来自服务端的配置文件
 			let resData = <{
-				addedLayers: Array<{ name: string, url: string, type: string }>,
+				addedLayers: Array<AddLayerType>,
 			}>JSON.parse(res);
 			// 添加图层
 			let mapSource = new MapSource();
@@ -83,7 +84,7 @@ export class MapMessageProcessor {
 		});
 		/** 切换自定义图层源 */
 		mapPage.getMqClient().sub<string>(Topic.SWITCH_ADDED_RESOURCE, (res) => {
-			let resData = <{ name: string, url: string, type: string }>JSON.parse(res);
+			let resData = <AddLayerType>JSON.parse(res);
 			// 保存自定义图层
 			mapPage.getMapBase().getMapSource().putAddedLayers([resData]);
 			// 本地回环发送，调用上述方法

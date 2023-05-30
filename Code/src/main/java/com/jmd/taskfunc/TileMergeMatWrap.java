@@ -47,14 +47,18 @@ public class TileMergeMatWrap {
         if (flag) {
             // 读取图片
             var tileMat = Imgcodecs.imread(pathAndName, Imgcodecs.IMREAD_UNCHANGED);
-            // 转换图片至RGBA格式
-            Imgproc.cvtColor(tileMat, tileMat, Imgproc.COLOR_BGR2BGRA);
-            // 确定坐标位置
-            var rectForDes = this.des
-                    .colRange(new Range((int) x, (int) x + tileWidth))
-                    .rowRange(new Range((int) y, (int) y + tileHeight));
-            // 填充至合并大图
-            tileMat.copyTo(rectForDes);
+            try {
+                // 转换图片至RGBA格式
+                Imgproc.cvtColor(tileMat, tileMat, Imgproc.COLOR_BGR2BGRA);
+                // 确定坐标位置
+                var rectForDes = this.des
+                        .colRange(new Range((int) x, (int) x + tileWidth))
+                        .rowRange(new Range((int) y, (int) y + tileHeight));
+                // 填充至合并大图
+                tileMat.copyTo(rectForDes);
+            } catch (Exception ignored) {
+
+            }
         }
         // 完成后计算已合并的像素数量
         this.runPixel += (long) tileWidth * tileHeight;

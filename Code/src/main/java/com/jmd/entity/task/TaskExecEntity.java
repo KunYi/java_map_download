@@ -3,7 +3,6 @@ package com.jmd.entity.task;
 import java.util.List;
 
 import com.jmd.callback.TileDownloadedCallback;
-import com.jmd.entity.config.HttpClientConfigEntity;
 import com.jmd.entity.geo.Polygon;
 
 import lombok.Data;
@@ -27,6 +26,5 @@ public class TaskExecEntity {
 	private String savePath;
 	private Boolean isCoverExists;
 	private TileDownloadedCallback tileCB;
-	private HttpClientConfigEntity httpConfig;
 
 }

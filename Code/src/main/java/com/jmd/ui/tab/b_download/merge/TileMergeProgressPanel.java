@@ -24,16 +24,11 @@ public class TileMergeProgressPanel extends JPanel {
     private final InnerMqService innerMqService = InnerMqService.getInstance();
     private InnerMqClient client;
 
-    private JLabel pixelCountValueLabel;
-    private JLabel threadCountValueLabel;
-    private JLabel mergeProgressValueLabel;
+    private final JLabel pixelCountValueLabel;
+    private final JLabel threadCountValueLabel;
+    private final JLabel mergeProgressValueLabel;
 
-//	public TileMergeProgressPanel() {
-//		init();
-//	}
-
-    @PostConstruct
-    private void init() {
+    public TileMergeProgressPanel() {
 
         /* label */
         var tablePanel = new JPanel();
@@ -41,20 +36,20 @@ public class TileMergeProgressPanel extends JPanel {
         var pixelCountTitleLabel = new JLabel("像素数量：");
         pixelCountTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        pixelCountValueLabel = new JLabel("0/0");
-        pixelCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.pixelCountValueLabel = new JLabel("0/0");
+        this.pixelCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         var threadCountTitleLabel = new JLabel("任务线程数：");
         threadCountTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        threadCountValueLabel = new JLabel("0");
-        threadCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.threadCountValueLabel = new JLabel("0");
+        this.threadCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         var mergeProgressTitleLabel = new JLabel("合并进度：");
         mergeProgressTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        mergeProgressValueLabel = new JLabel("0.00%");
-        mergeProgressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.mergeProgressValueLabel = new JLabel("0.00%");
+        this.mergeProgressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         var gl_tablePanel = new GroupLayout(tablePanel);
         gl_tablePanel.setHorizontalGroup(
@@ -64,15 +59,15 @@ public class TileMergeProgressPanel extends JPanel {
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(pixelCountTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(pixelCountValueLabel))
+                                                .addComponent(this.pixelCountValueLabel))
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(threadCountTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(threadCountValueLabel))
+                                                .addComponent(this.threadCountValueLabel))
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(mergeProgressTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(mergeProgressValueLabel)))
+                                                .addComponent(this.mergeProgressValueLabel)))
                                 .addContainerGap(40, Short.MAX_VALUE))
         );
         gl_tablePanel.setVerticalGroup(
@@ -80,15 +75,15 @@ public class TileMergeProgressPanel extends JPanel {
                         .addGroup(gl_tablePanel.createSequentialGroup()
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(pixelCountTitleLabel)
-                                        .addComponent(pixelCountValueLabel))
+                                        .addComponent(this.pixelCountValueLabel))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(threadCountTitleLabel)
-                                        .addComponent(threadCountValueLabel))
+                                        .addComponent(this.threadCountValueLabel))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(mergeProgressTitleLabel)
-                                        .addComponent(mergeProgressValueLabel))
+                                        .addComponent(this.mergeProgressValueLabel))
                                 .addContainerGap(18, Short.MAX_VALUE))
         );
         tablePanel.setLayout(gl_tablePanel);
@@ -121,12 +116,15 @@ public class TileMergeProgressPanel extends JPanel {
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy

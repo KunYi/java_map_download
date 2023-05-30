@@ -28,12 +28,15 @@ public class CPUPercentageLinePanel extends JPanel {
     private final double[] systemCpuUsage = new double[60];
     private final double[] processCpuUsage = new double[60];
 
-    @PostConstruct
-    private void init() {
+    public CPUPercentageLinePanel() {
         this.setForeground(Color.CYAN);
         this.setBorder(new LineBorder(new Color(128, 128, 128)));
         this.setBounds(260, 17, 120, 100);
         this.setLayout(null);
+    }
+
+    @PostConstruct
+    private void init() {
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {

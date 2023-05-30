@@ -10,6 +10,7 @@ import com.jmd.taskfunc.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
+import com.jmd.ui.frame.download.config.panel.ErrorHandlerPanel;
 import com.jmd.ui.frame.download.preview.DownloadPreviewFrame;
 import com.jmd.ui.frame.download.config.panel.OtherSettingPanel;
 import com.jmd.ui.frame.download.config.panel.PathSelectorPanel;
@@ -56,6 +57,8 @@ public class DownloadConfigFrame extends CommonSubFrame {
     @Autowired
     private OtherSettingPanel otherSettingPanel;
     @Autowired
+    private ErrorHandlerPanel errorHandlerPanel;
+    @Autowired
     private PathSelectorPanel pathSelectorPanel;
 
     private String url;
@@ -63,32 +66,102 @@ public class DownloadConfigFrame extends CommonSubFrame {
     private String tileName;
     private String mapType;
 
-    private JButton previewButton;
-    private JButton downloadButton;
+    private final CommonContainerPanel zoomPanel;
+    private final CommonContainerPanel otherPanel;
+    private final CommonContainerPanel errorPanel;
+    private final CommonContainerPanel pathPanel;
+    private final JButton previewButton;
+    private final JButton downloadButton;
+    private final JButton cancelButton;
 
-//    public DownloadConfigFrame() {
-//        init();
-//    }
+    public DownloadConfigFrame() {
 
-    @PostConstruct
-    private void init() {
-
-        // 层级选择
-        var zoomPanel = new CommonContainerPanel("层级选择");
-        zoomPanel.addContent(zoomSelectorPanel);
-
-        // 其他设置
-        var otherPanel = new CommonContainerPanel("其他设置");
-        otherPanel.addContent(otherSettingPanel);
-
-        // 路径选择
-        var pathPanel = new CommonContainerPanel("路径选择");
-        pathPanel.addContent(pathSelectorPanel);
+        this.zoomPanel = new CommonContainerPanel("层级选择");
+        this.otherPanel = new CommonContainerPanel("其他设置");
+        this.errorPanel = new CommonContainerPanel("错误处理");
+        this.pathPanel = new CommonContainerPanel("路径选择");
 
         this.previewButton = new JButton("预估下载量");
         this.previewButton.setFocusable(false);
         this.previewButton.setEnabled(false);
         this.previewButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        this.downloadButton = new JButton("下载");
+        this.downloadButton.setFocusable(false);
+        this.downloadButton.setEnabled(false);
+        this.downloadButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        this.cancelButton = new JButton("取消");
+        this.cancelButton.setFocusable(false);
+        this.cancelButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        var groupLayout = new GroupLayout(getContentPane());
+        groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(Alignment.LEADING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(zoomPanel, 100, 120, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(otherPanel, GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
+                                        .addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                                        .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(previewButton, 100, 100, 100)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(downloadButton, 100, 100, 100)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(cancelButton, 100, 100, 100)))
+                                .addContainerGap())
+        );
+        groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(Alignment.LEADING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(zoomPanel, 365, 365, 365)
+                                        .addComponent(otherPanel, 365, 365, 365))
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(cancelButton)
+                                        .addComponent(downloadButton)
+                                        .addComponent(previewButton))
+                                .addContainerGap())
+        );
+        this.getContentPane().setLayout(groupLayout);
+
+        this.setTitle("下载设置");
+        this.setSize(new Dimension(480, 780));
+        this.setVisible(false);
+        this.setResizable(false);
+
+    }
+
+    @PostConstruct
+    private void init() {
+
+        /* 层级选择 */
+        this.zoomPanel.addContent(zoomSelectorPanel);
+        /* 层级选择 */
+
+        /* 其他设置 */
+        this.otherPanel.addContent(otherSettingPanel);
+        /* 其他设置 */
+
+        /* 错误处理 */
+        this.errorPanel.addContent(errorHandlerPanel);
+        /* 其他设置 */
+
+        /* 路径选择 */
+        this.pathPanel.addContent(pathSelectorPanel);
+        /* 路径选择 */
+
+        /* 预估 */
         this.previewButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -97,13 +170,9 @@ public class DownloadConfigFrame extends CommonSubFrame {
                 }
             }
         });
+        /* 预估 */
 
-        this.downloadButton = new JButton("下载");
-        this.downloadButton.setFocusable(false);
-        this.downloadButton.setEnabled(false);
-        this.downloadButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-
-        /* 开始下载按钮点击事件 */
+        /* 开始下载 */
         this.downloadButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -145,56 +214,14 @@ public class DownloadConfigFrame extends CommonSubFrame {
             }
         });
 
-        var cancelButton = new JButton("取消");
-        cancelButton.setFocusable(false);
-        cancelButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        GroupLayout groupLayout = new GroupLayout(getContentPane());
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(zoomPanel, 100, 120, GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(otherPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
-                                        .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-                                                .addComponent(previewButton, 100, 100, 100)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(downloadButton, 100, 100, 100)
-                                                .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(cancelButton, 100, 100, 100)))
-                                .addContainerGap())
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(zoomPanel, 365, 365, 365)
-                                        .addComponent(otherPanel, 365, 365, 365))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(cancelButton)
-                                        .addComponent(downloadButton)
-                                        .addComponent(previewButton))
-                                .addContainerGap())
-        );
-        getContentPane().setLayout(groupLayout);
+        /* 取消 */
         cancelButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 setVisible(false);
             }
         });
-
-        this.setTitle("下载设置");
-        this.setSize(new Dimension(480, 650));
-        this.setVisible(false);
-        this.setResizable(false);
+        /* 取消 */
 
         try {
             this.subInnerMqMessage();
@@ -227,7 +254,8 @@ public class DownloadConfigFrame extends CommonSubFrame {
     }
 
     // 创建任务，打开面板
-    public void createNewTask(String url, List<Polygon> polygons, String tileName, String mapType) throws InterruptedException, InvocationTargetException {
+    public void createNewTask(String url, List<Polygon> polygons, String tileName, String mapType)
+            throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> {
             this.setVisible(true);
         });
@@ -254,6 +282,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
         taskCreate.setIsCoverExists(this.otherSettingPanel.isCoverExist());
         taskCreate.setIsMergeTile(this.otherSettingPanel.isMergeTile());
         taskCreate.setMergeType(this.otherSettingPanel.getMergeType());
+        taskCreate.setErrorHandlerType(this.errorHandlerPanel.getErrorHandlerType());
         return taskCreate;
     }
 

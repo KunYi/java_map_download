@@ -85,9 +85,7 @@ public class TaskExecFunc {
                     }
                 }
                 // 生成任务
-                TaskAllInfoEntity taskAllInfo = taskStep.tileDownloadTaskCreate(taskCreate, (e) -> {
-                    innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e); // 日志回调
-                });
+                TaskAllInfoEntity taskAllInfo = taskStep.tileDownloadTaskCreate(taskCreate);
                 // 保存下载任务
                 saveTaskFile(taskAllInfo);
                 // 显示任务信息
@@ -158,8 +156,6 @@ public class TaskExecFunc {
                 taskAllInfo[0] = _taskAllInfo;
                 TaskState.IS_TASKING = true;
                 taskStart();
-                // 配置HTTP
-                taskAllInfo[0] = taskStep.setHttpConfig(taskAllInfo[0], (e) -> innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e));
                 // 开启定时任务
                 innerMqService.pub(Topic.SET_INTERVAL, new IntervalConfig(id, new DownloadMonitoringInterval(taskAllInfo[0], (progress) -> taskSecInterval(taskAllInfo[0], progress)), 1000L));
                 // 下载地图
@@ -172,11 +168,8 @@ public class TaskExecFunc {
                     // 层级下载结束回调 - 合并图片
                     eachLayerDownloadedTileMergeCallback(taskAllInfo[0], z);
                 }, (z, name, count, xRun, yRun, success) -> {
-                    // 瓦片图下载回调
+                    // 瓦片图下载回调 tileCB
                     eachTileDownloadedCallback(taskAllInfo[0], z, name, count, xRun, yRun, success);
-                }, (e) -> {
-                    // 日志回调
-                    innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e);
                 });
                 // 下载结束
                 TaskState.IS_TASKING = false;
@@ -245,7 +238,7 @@ public class TaskExecFunc {
         if (taskAllInfo.getErrorTiles().size() == 0) {
             return;
         }
-        taskStep.tileErrorDownload(taskAllInfo, (e) -> innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e));
+        taskStep.tileErrorDownload(taskAllInfo, 0);
     }
 
     // 层级下载结束回调 - 合并图片
@@ -268,7 +261,7 @@ public class TaskExecFunc {
                 innerMqService.pub(Topic.TILE_MERGE_PROCESS_PROGRESS, df2.format(progress.getPerc() * 100) + "%");
             }), 100L));
             // 开始合并
-            taskStep.mergeTileImage(mat, taskAllInfo, z, (e) -> innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e), (e) -> {
+            taskStep.mergeTileImage(mat, taskAllInfo, z, () -> {
                 innerMqService.pub(Topic.TILE_MERGE_PROCESS_PIXEL_COUNT, mat.getAllPixel() + "/" + mat.getAllPixel());
                 innerMqService.pub(Topic.TILE_MERGE_PROCESS_THREAD, "0");
                 innerMqService.pub(Topic.TILE_MERGE_PROCESS_PROGRESS, "100.00%");
@@ -337,13 +330,15 @@ public class TaskExecFunc {
     // 暂停下载任务
     public void taskPause() {
         if (TaskState.IS_TASKING && downloadWorker != null) {
-            if (TaskState.IS_TASK_PAUSING) { // 继续
+            if (TaskState.IS_TASK_PAUSING) {
+                // 继续
                 TaskState.IS_TASK_PAUSING = false;
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "暂停任务");
                 innerMqService.pub(Topic.TASK_STATUS_CURRENT, "继续下载");
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "继续下载任务");
                 innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CONTINUE);
-            } else { // 暂停
+            } else {
+                // 暂停
                 TaskState.IS_TASK_PAUSING = true;
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "继续任务");
                 innerMqService.pub(Topic.TASK_STATUS_CURRENT, "暂停下载");

@@ -31,35 +31,35 @@ public class ResourceUsagePanel extends JPanel {
     @Autowired
     private CPUPercentageLinePanel cpuPercentageLinePanel;
 
-    private JLabel threadCountValueLabel;
-    private JLabel downloadSpeedValueLabel;
-    private JLabel downloadPerSecCountValueLabel;
-    private JLabel systemCpuUsageValueLabel;
-    private JLabel processCpuUsageValueLabel;
+    private final JLabel threadCountValueLabel;
+    private final JLabel downloadSpeedValueLabel;
+    private final JLabel downloadPerSecCountValueLabel;
+    private final JLabel systemCpuUsageValueLabel;
+    private final JLabel processCpuUsageValueLabel;
+    private final JPanel cpuPercPanel;
 
-    @PostConstruct
-    private void init() {
+    public ResourceUsagePanel() {
 
         /* label */
-        JPanel tablePanel = new JPanel();
+        var tablePanel = new JPanel();
 
-        JLabel threadCountTitleLabel = new JLabel("下载线程数：");
+        var threadCountTitleLabel = new JLabel("下载线程数：");
         threadCountTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        threadCountValueLabel = new JLabel("0");
-        threadCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.threadCountValueLabel = new JLabel("0");
+        this.threadCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        JLabel downloadSpeedTitleLabel = new JLabel("下载速度：");
+        var downloadSpeedTitleLabel = new JLabel("下载速度：");
         downloadSpeedTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        downloadSpeedValueLabel = new JLabel("0B/s");
-        downloadSpeedValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.downloadSpeedValueLabel = new JLabel("0B/s");
+        this.downloadSpeedValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        JLabel downloadPerSecCountTitleLabel = new JLabel("每秒下载量：");
+        var downloadPerSecCountTitleLabel = new JLabel("每秒下载量：");
         downloadPerSecCountTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        downloadPerSecCountValueLabel = new JLabel("0");
-        downloadPerSecCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.downloadPerSecCountValueLabel = new JLabel("0");
+        this.downloadPerSecCountValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         GroupLayout gl_tablePanel = new GroupLayout(tablePanel);
         gl_tablePanel.setHorizontalGroup(
@@ -69,78 +69,77 @@ public class ResourceUsagePanel extends JPanel {
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(threadCountTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(threadCountValueLabel))
+                                                .addComponent(this.threadCountValueLabel))
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(downloadSpeedTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(downloadSpeedValueLabel))
+                                                .addComponent(this.downloadSpeedValueLabel))
                                         .addGroup(gl_tablePanel.createSequentialGroup()
                                                 .addComponent(downloadPerSecCountTitleLabel)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(downloadPerSecCountValueLabel)))
+                                                .addComponent(this.downloadPerSecCountValueLabel)))
                                 .addContainerGap(40, Short.MAX_VALUE))
         );
         gl_tablePanel.setVerticalGroup(
                 gl_tablePanel.createParallelGroup(Alignment.LEADING)
                         .addGroup(gl_tablePanel.createSequentialGroup()
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(threadCountValueLabel)
-                                        .addComponent(threadCountTitleLabel))
+                                        .addComponent(threadCountTitleLabel)
+                                        .addComponent(this.threadCountValueLabel))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(downloadSpeedTitleLabel)
-                                        .addComponent(downloadSpeedValueLabel))
+                                        .addComponent(this.downloadSpeedValueLabel))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(gl_tablePanel.createParallelGroup(Alignment.BASELINE)
                                         .addComponent(downloadPerSecCountTitleLabel)
-                                        .addComponent(downloadPerSecCountValueLabel))
+                                        .addComponent(this.downloadPerSecCountValueLabel))
                                 .addContainerGap(18, Short.MAX_VALUE))
         );
         tablePanel.setLayout(gl_tablePanel);
         /* label */
 
         /* 折线图 */
-        JPanel cpuPercPanel = new JPanel();
-        cpuPercPanel.setLayout(new BorderLayout(0, 0));
-        cpuPercPanel.add(cpuPercentageLinePanel, BorderLayout.CENTER);
+        this.cpuPercPanel = new JPanel();
+        this.cpuPercPanel.setLayout(new BorderLayout(0, 0));
         /* 折线图 */
 
         /* CPU使用率文字 */
-        JPanel cpuUsageTextPanel = new JPanel();
+        var cpuUsageTextPanel = new JPanel();
 
-        JLabel systemCpuUsageTitleLabel = new JLabel("系统CPU使用率");
+        var systemCpuUsageTitleLabel = new JLabel("系统CPU使用率");
         systemCpuUsageTitleLabel.setForeground(new Color(51, 102, 204));
         systemCpuUsageTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        systemCpuUsageValueLabel = new JLabel("0.0%");
-        systemCpuUsageValueLabel.setForeground(new Color(51, 102, 204));
-        systemCpuUsageValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.systemCpuUsageValueLabel = new JLabel("0.0%");
+        this.systemCpuUsageValueLabel.setForeground(new Color(51, 102, 204));
+        this.systemCpuUsageValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        JLabel processCpuUsageTitleLabel = new JLabel("程序CPU使用率");
+        var processCpuUsageTitleLabel = new JLabel("程序CPU使用率");
         processCpuUsageTitleLabel.setForeground(new Color(255, 102, 0));
         processCpuUsageTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        processCpuUsageValueLabel = new JLabel("0.0%");
-        processCpuUsageValueLabel.setForeground(new Color(255, 102, 0));
-        processCpuUsageValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        GroupLayout gl_cpuUsageTextPanel = new GroupLayout(cpuUsageTextPanel);
+        this.processCpuUsageValueLabel = new JLabel("0.0%");
+        this.processCpuUsageValueLabel.setForeground(new Color(255, 102, 0));
+        this.processCpuUsageValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        var gl_cpuUsageTextPanel = new GroupLayout(cpuUsageTextPanel);
         gl_cpuUsageTextPanel.setHorizontalGroup(gl_cpuUsageTextPanel.createParallelGroup(Alignment.LEADING)
                 .addGroup(gl_cpuUsageTextPanel.createSequentialGroup().addContainerGap(20, Short.MAX_VALUE)
                         .addGroup(gl_cpuUsageTextPanel.createParallelGroup(Alignment.LEADING)
                                 .addComponent(systemCpuUsageTitleLabel, Alignment.TRAILING)
-                                .addComponent(systemCpuUsageValueLabel, Alignment.TRAILING)
+                                .addComponent(this.systemCpuUsageValueLabel, Alignment.TRAILING)
                                 .addComponent(processCpuUsageTitleLabel, Alignment.TRAILING)
-                                .addComponent(processCpuUsageValueLabel, Alignment.TRAILING))));
+                                .addComponent(this.processCpuUsageValueLabel, Alignment.TRAILING))));
         gl_cpuUsageTextPanel.setVerticalGroup(gl_cpuUsageTextPanel.createParallelGroup(Alignment.LEADING)
                 .addGroup(gl_cpuUsageTextPanel.createSequentialGroup().addComponent(systemCpuUsageTitleLabel)
-                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(systemCpuUsageValueLabel)
+                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(this.systemCpuUsageValueLabel)
                         .addPreferredGap(ComponentPlacement.RELATED).addComponent(processCpuUsageTitleLabel)
-                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(processCpuUsageValueLabel)
+                        .addPreferredGap(ComponentPlacement.RELATED).addComponent(this.processCpuUsageValueLabel)
                         .addContainerGap(18, Short.MAX_VALUE)));
         cpuUsageTextPanel.setLayout(gl_cpuUsageTextPanel);
         /* CPU使用率文字 */
 
-        GroupLayout groupLayout = new GroupLayout(this);
+        var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.TRAILING)
                         .addGroup(groupLayout.createSequentialGroup()
@@ -166,12 +165,16 @@ public class ResourceUsagePanel extends JPanel {
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.cpuPercPanel.add(this.cpuPercentageLinePanel, BorderLayout.CENTER);
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy

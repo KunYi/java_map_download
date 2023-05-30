@@ -28,14 +28,14 @@ public class BrowserPanel extends JPanel {
     @Autowired
     private BrowserEngine browserEngine;
 
-    private JPanel browserPanel;
-    private JPanel devToolPanel;
     @Getter
     private boolean devToolOpen = false;
-    private JSplitPane splitPane;
 
-    @PostConstruct
-    private void init() {
+    private final JPanel browserPanel;
+    private final JPanel devToolPanel;
+    private final JSplitPane splitPane;
+
+    public BrowserPanel() {
 
         this.setLayout(new BorderLayout());
 
@@ -61,8 +61,11 @@ public class BrowserPanel extends JPanel {
         label.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.browserPanel.add(label, BorderLayout.CENTER);
 
-        this.createBrowser();
+    }
 
+    @PostConstruct
+    private void init() {
+        this.createBrowser();
     }
 
     private void createBrowser() {

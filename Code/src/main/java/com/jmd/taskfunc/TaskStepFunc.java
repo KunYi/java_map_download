@@ -1,14 +1,16 @@
 package com.jmd.taskfunc;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import org.apache.commons.io.FileUtils;
+import com.jmd.callback.LogCallback;
+import com.jmd.callback.TileMergeFirstFinishBack;
+import com.jmd.rx.Topic;
+import com.jmd.rx.service.InnerMqService;
+import com.jmd.ui.common.CommonDialog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -19,10 +21,8 @@ import com.jmd.async.task.executor.TileDownloadTask;
 import com.jmd.async.task.executor.TileErrorDownloadTask;
 import com.jmd.async.task.executor.TileMergeTask;
 import com.jmd.callback.LayerDownloadCallback;
-import com.jmd.callback.LogCallback;
 import com.jmd.callback.TileDownloadedCallback;
 import com.jmd.common.StaticVar;
-import com.jmd.entity.config.HttpClientConfigEntity;
 import com.jmd.entity.geo.Bound;
 import com.jmd.entity.geo.Polygon;
 import com.jmd.entity.geo.Tile;
@@ -36,13 +36,10 @@ import com.jmd.entity.task.TaskCreateEntity;
 import com.jmd.entity.task.TaskExecEntity;
 import com.jmd.entity.task.TaskInstEntity;
 import com.jmd.http.HttpClient;
-import com.jmd.http.HttpConfig;
 import com.jmd.util.GeoUtils;
 import com.jmd.util.TaskUtils;
 
 import lombok.extern.slf4j.Slf4j;
-
-import javax.swing.*;
 
 @Slf4j
 @Component
@@ -51,14 +48,14 @@ public class TaskStepFunc {
     @Value("${tile.block-divide}")
     private int blockDivide;
 
+    private final InnerMqService innerMqService = InnerMqService.getInstance();
+
     @Lazy
     @Autowired
     private TaskExecFunc taskExecFunc;
 
     @Autowired
     private HttpClient httpClient;
-    @Autowired
-    private HttpConfig httpConfig;
     @Autowired
     private TileCalculationTask tileCalculationTask;
     @Autowired
@@ -68,18 +65,18 @@ public class TaskStepFunc {
     @Autowired
     private TileMergeTask tileMergeTask;
 
-    /**
-     * 创建下载任务
-     */
-    public TaskAllInfoEntity tileDownloadTaskCreate(TaskCreateEntity taskCreate, LogCallback logback) {
+    // 创建下载任务
+    public TaskAllInfoEntity tileDownloadTaskCreate(TaskCreateEntity taskCreate) {
         TaskAllInfoEntity taskAllInfo = new TaskAllInfoEntity();
         ConcurrentHashMap<Integer, TaskInstEntity> eachLayerTask = new ConcurrentHashMap<>();
-        logback.execute("开始计算...");
+        this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "开始计算...");
         long count = 0L;
         long start = System.currentTimeMillis();
         for (int z : taskCreate.getZoomList()) {
             try {
-                TaskInstEntity inst = tileTaskInstCalculation(z, taskCreate.getPolygons(), logback);
+                TaskInstEntity inst = tileTaskInstCalculation(z, taskCreate.getPolygons(), (e) -> {
+                    this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, e);
+                });
                 inst.setNeedMerge(taskCreate.getIsMergeTile());
                 inst.setIsMerged(false);
                 count = count + inst.getRealCount();
@@ -98,20 +95,19 @@ public class TaskStepFunc {
         taskAllInfo.setIsCoverExists(taskCreate.getIsCoverExists());
         taskAllInfo.setIsMergeTile(taskCreate.getIsMergeTile());
         taskAllInfo.setMergeType(taskCreate.getMergeType());
+        taskAllInfo.setErrorHandlerType(taskCreate.getErrorHandlerType());
         taskAllInfo.setAllRealCount(count);
         taskAllInfo.setAllRunCount(0L);
         taskAllInfo.setEachLayerTask(eachLayerTask);
         taskAllInfo.setErrorTiles(new ConcurrentHashMap<>());
-        logback.execute("计算完成");
-        logback.execute("需要下载的总数：" + count + "，瓦片图计算所用时间：" + (end - start) / 1000 + "秒");
-        logback.execute("开始下载...");
+        this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "计算完成");
+        this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "需要下载的总数：" + count + "，瓦片图计算所用时间：" + (end - start) / 1000 + "秒");
+        this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "开始下载...");
         return taskAllInfo;
     }
 
-    /**
-     * 计算任务实例下载量
-     */
-    public TaskInstEntity tileTaskInstCalculation(int zoom, List<Polygon> polygons, LogCallback logback)
+    // 计算任务实例下载量
+    public TaskInstEntity tileTaskInstCalculation(int zoom, List<Polygon> polygons, LogCallback logCB)
             throws InterruptedException, ExecutionException {
         Bound bound = GeoUtils.getPolygonsBound(polygons);
         Tile topLeftTile = GeoUtils.getTile(zoom, bound.getTopLeft());
@@ -165,64 +161,26 @@ public class TaskStepFunc {
         inst.setRealCount(count);
         inst.setAllCount(countX * countY);
         inst.setBlocks(blocks);
-        logback.execute(zoom + "级该多边形bound内瓦片图总数" + inst.getAllCount() + "，需要下载的总数：" + count);
+        logCB.execute(zoom + "级该多边形bound内瓦片图总数" + inst.getAllCount() + "，需要下载的总数：" + count);
         return inst;
     }
 
-    /**
-     * 配置HTTP
-     */
-    public TaskAllInfoEntity setHttpConfig(TaskAllInfoEntity taskAllInfo, LogCallback logBack) {
-        HttpClientConfigEntity config;
-        if (taskAllInfo.getMapType().indexOf("OpenStreet") == 0) {
-            // logBack.execute("OpenStreet下载，配置okhttp3");
-            config = httpConfig.getOsmConfig();
-        } else if (taskAllInfo.getTileName().indexOf("Tianditu") == 0) {
-            // logBack.execute("天地图下载，配置okhttp3");
-            config = httpConfig.getTianConfig();
-        } else if (taskAllInfo.getTileName().indexOf("Google") == 0) {
-            // logBack.execute("谷歌地图下载，配置okhttp3");
-            config = httpConfig.getGoogleConfig();
-        } else if (taskAllInfo.getTileName().indexOf("AMap") == 0) {
-            // logBack.execute("高德地图下载，配置okhttp3");
-            config = httpConfig.getAmapConfig();
-        } else if (taskAllInfo.getTileName().indexOf("Tencent") == 0) {
-            // logBack.execute("腾讯地图下载，配置okhttp3");
-            config = httpConfig.getTencentConfig();
-        } else if (taskAllInfo.getTileName().indexOf("Bing") == 0) {
-            // logBack.execute("必应地图下载，配置okhttp3");
-            config = httpConfig.getBingConfig();
-        } else {
-            config = httpConfig.getDefaultConfig();
-        }
-//        logBack.execute("ConnectTimeout: " + config.getConnectTimeout() + "ms");
-//        logBack.execute("ReadTimeout: " + config.getReadTimeout() + "ms");
-//        logBack.execute("WriteTimeout: " + config.getWriteTimeout() + "ms");
-//        logBack.execute("KeepAliveDuration: " + config.getKeepAliveDuration() + "ms");
-//        logBack.execute("MaxIdleConnections: " + config.getMaxIdleConnections());
-        String result = httpClient.rebuild(config);
-        if (result.equals("success")) {
-            taskAllInfo.setHttpConfig(config);
-        } else {
-            JOptionPane.showMessageDialog(null, result);
-        }
-        return taskAllInfo;
-    }
-
-    /**
-     * 任务下载方法
-     */
-    public void tileDownload(TaskAllInfoEntity taskAllInfo, LayerDownloadCallback layerStartBack,
-                             LayerDownloadCallback layerEndBack, TileDownloadedCallback tileCB, LogCallback logBack) {
+    // 任务下载方法
+    public void tileDownload(
+            TaskAllInfoEntity taskAllInfo,
+            LayerDownloadCallback layerStartBack,
+            LayerDownloadCallback layerEndBack,
+            TileDownloadedCallback tileCB
+    ) {
         boolean isCanceled = false;
-        for (TaskInstEntity inst : taskAllInfo.getEachLayerTask().values()) {
+        for (var inst : taskAllInfo.getEachLayerTask().values()) {
             if (isCanceled || taskExecFunc.isCancel()) {
                 break;
             }
-            logBack.execute("正在下载第" + inst.getZ() + "级地图...");
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在下载第" + inst.getZ() + "级地图...");
             layerStartBack.execute(inst.getZ());
             // 分配多线程下载任务
-            List<Future<BlockAsyncTaskResult>> futures = new ArrayList<>();
+            var futures = new ArrayList<Future<BlockAsyncTaskResult>>();
             for (TaskBlockEntity block : inst.getBlocks().values()) {
                 long xStart = block.getXStart();
                 long yStart = block.getYStart();
@@ -252,34 +210,33 @@ public class TaskStepFunc {
                     }
                 }
                 if (addTaskFlag) {
-                    TaskExecEntity exec = new TaskExecEntity();
-                    exec.setZ(inst.getZ());
-                    exec.setXStart(xStart);
-                    exec.setXEnd(xEnd);
-                    exec.setYStart(yStart);
-                    exec.setYEnd(yEnd);
-                    exec.setXRun(xRun);
-                    exec.setYRun(yRun);
-                    exec.setStartCount(runCount);
-                    exec.setPolygons(inst.getPolygons());
-                    exec.setTileName(taskAllInfo.getTileName());
-                    exec.setDownloadUrl(taskAllInfo.getTileUrl());
-                    exec.setImgType(taskAllInfo.getImgType());
-                    exec.setSavePath(taskAllInfo.getSavePath());
-                    exec.setPathStyle(taskAllInfo.getPathStyle());
-                    exec.setIsCoverExists(taskAllInfo.getIsCoverExists());
-                    exec.setTileCB(tileCB);
-                    exec.setHttpConfig(taskAllInfo.getHttpConfig());
-                    Future<BlockAsyncTaskResult> future = tileDownloadTask.exec(exec);
+                    var execParam = new TaskExecEntity();
+                    execParam.setZ(inst.getZ());
+                    execParam.setXStart(xStart);
+                    execParam.setXEnd(xEnd);
+                    execParam.setYStart(yStart);
+                    execParam.setYEnd(yEnd);
+                    execParam.setXRun(xRun);
+                    execParam.setYRun(yRun);
+                    execParam.setStartCount(runCount);
+                    execParam.setPolygons(inst.getPolygons());
+                    execParam.setTileName(taskAllInfo.getTileName());
+                    execParam.setDownloadUrl(taskAllInfo.getTileUrl());
+                    execParam.setImgType(taskAllInfo.getImgType());
+                    execParam.setSavePath(taskAllInfo.getSavePath());
+                    execParam.setPathStyle(taskAllInfo.getPathStyle());
+                    execParam.setIsCoverExists(taskAllInfo.getIsCoverExists());
+                    execParam.setTileCB(tileCB);
+                    var future = tileDownloadTask.exec(execParam);
                     futures.add(future);
                 }
             }
-            for (Future<BlockAsyncTaskResult> future : futures) {
+            for (var future : futures) {
                 try {
                     future.get();
                 } catch (InterruptedException e1) {
                     isCanceled = true;
-                    for (Future<BlockAsyncTaskResult> f : futures) {
+                    for (var f : futures) {
                         f.cancel(true);
                     }
                     break;
@@ -289,56 +246,68 @@ public class TaskStepFunc {
             }
             if (!isCanceled) {
                 layerEndBack.execute(inst.getZ());
-                logBack.execute("第" + inst.getZ() + "级地图下载完成");
+                this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "第" + inst.getZ() + "级地图下载完成");
             }
         }
     }
 
-    /**
-     * 错误瓦片下载方法
-     */
-    public void tileErrorDownload(TaskAllInfoEntity taskAllInfo, LogCallback logBack) {
+    // 错误瓦片下载方法
+    public void tileErrorDownload(TaskAllInfoEntity taskAllInfo, int count) {
         if (taskAllInfo.getErrorTiles().size() == 0) {
             return;
         }
-        boolean isCanceled = false;
-        logBack.execute("正在重新下载该层级错误瓦片，剩余数量：" + taskAllInfo.getErrorTiles().size());
-        System.out.println("[正在重新下载该层级错误瓦片]");
-        int maxThread = blockDivide;
-        int eachDivide;
-        if ((double) taskAllInfo.getErrorTiles().size() / (double) maxThread <= 10.0) {
+        if (taskAllInfo.getErrorHandlerType() == 3) {
+            // 不处理，直接跳过
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "该层级有" + taskAllInfo.getErrorTiles().size() + "张错误瓦片未下载，用户选择跳过");
+            for (var entry : taskAllInfo.getErrorTiles().entrySet()) {
+                // 删除ErrorTile
+                taskAllInfo.getErrorTiles().remove(entry.getValue().getKeyName());
+                // 更新进度
+                var z = entry.getValue().getTile().getZ();
+                var block = taskAllInfo.getEachLayerTask().get(z).getBlocks().get(entry.getValue().getBlockName());
+                block.setRunCount(block.getRunCount() + 1);
+                // 更新block信息
+                taskAllInfo.getEachLayerTask().get(z).getBlocks().put(entry.getValue().getBlockName(), block);
+            }
+            return;
+        }
+        var isCanceled = false;
+        this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在重新下载该层级错误瓦片，剩余数量：" + taskAllInfo.getErrorTiles().size());
+        var eachDivide = 0;
+        if ((double) taskAllInfo.getErrorTiles().size() / (double) blockDivide <= 10.0) {
             eachDivide = 10;
-        } else if ((double) taskAllInfo.getErrorTiles().size() / (double) maxThread <= 15.0) {
+        } else if ((double) taskAllInfo.getErrorTiles().size() / (double) blockDivide <= 15.0) {
             eachDivide = 15;
-        } else if ((double) taskAllInfo.getErrorTiles().size() / (double) maxThread <= 20.0) {
+        } else if ((double) taskAllInfo.getErrorTiles().size() / (double) blockDivide <= 20.0) {
             eachDivide = 20;
         } else {
-            eachDivide = taskAllInfo.getErrorTiles().size() / maxThread;
+            eachDivide = taskAllInfo.getErrorTiles().size() / blockDivide;
         }
-        int mapIndex = 0;
-        int listIndex = 0;
         // 分配多线程下载任务
-        List<Future<BlockAsyncTaskResult>> futures = new ArrayList<>();
-        List<List<ErrorTileEntity>> errorTileList = new ArrayList<>();
-        for (Map.Entry<String, ErrorTileEntity> entry : taskAllInfo.getErrorTiles().entrySet()) {
-            mapIndex = mapIndex + 1;
+        var errorTileList = new ArrayList<ArrayList<ErrorTileEntity>>();
+        var futures = new ArrayList<Future<BlockAsyncTaskResult>>();
+        var mapIndex = 0;
+        var listIndex = 0;
+        for (var entry : taskAllInfo.getErrorTiles().entrySet()) {
             if (errorTileList.size() <= listIndex) {
                 errorTileList.add(new ArrayList<>());
             }
             errorTileList.get(listIndex).add(entry.getValue());
-            if (mapIndex % eachDivide == 0 || mapIndex == taskAllInfo.getErrorTiles().size()) {
-                Future<BlockAsyncTaskResult> future = tileErrorDownloadTask.exec(taskAllInfo,
-                        errorTileList.get(listIndex));
-                futures.add(future);
+            mapIndex = mapIndex + 1;
+            if (mapIndex % eachDivide == 0) {
                 listIndex = listIndex + 1;
             }
         }
-        for (Future<BlockAsyncTaskResult> future : futures) {
+        for (var list : errorTileList) {
+            var future = tileErrorDownloadTask.exec(taskAllInfo, list);
+            futures.add(future);
+        }
+        for (var future : futures) {
             try {
                 future.get();
             } catch (InterruptedException e1) {
                 isCanceled = true;
-                for (Future<BlockAsyncTaskResult> f : futures) {
+                for (var f : futures) {
                     f.cancel(true);
                 }
                 break;
@@ -346,7 +315,7 @@ public class TaskStepFunc {
                 e2.printStackTrace();
             }
         }
-        // 下载完成，递归
+        // 若仍然有未下载的瓦片，递归重复执行此方法
         if (!isCanceled && taskAllInfo.getErrorTiles().size() > 0) {
             try {
                 if (taskAllInfo.getErrorTiles().size() >= 6) {
@@ -359,21 +328,45 @@ public class TaskStepFunc {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            tileErrorDownload(taskAllInfo, logBack);
+            count += 1;
+            if (taskAllInfo.getErrorHandlerType() == 1) {
+                // 循环重试下载（失败10次后等待10分钟，继续循环重试）
+                if (count >= 10) {
+                    this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "连续失败10次，等待10分钟后将继续下载");
+                    count = 0;
+                    try {
+                        Thread.sleep(1000 * 60 * 10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                tileErrorDownload(taskAllInfo, count);
+            } else if (taskAllInfo.getErrorHandlerType() == 2) {
+                // 失败5次后弹窗询问是否跳过
+                if (count >= 5) {
+                    var flag = CommonDialog.confirm("选择", "连续失败5次，是否跳过该层级？");
+                    if (flag) {
+                        return;
+                    }
+                    count = 0;
+                    try {
+                        Thread.sleep(1000 * 60 * 10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                tileErrorDownload(taskAllInfo, count);
+            }
         }
     }
 
-    /**
-     * 合并图片
-     */
-    public void mergeTileImage(TileMergeMatWrap mat,
-                               TaskAllInfoEntity taskAllInfo, int zoom,
-                               LogCallback logBack, LogCallback firstFinishBack) {
+    // 合并图片
+    public void mergeTileImage(TileMergeMatWrap mat, TaskAllInfoEntity taskAllInfo, int zoom, TileMergeFirstFinishBack finishBack) {
         if (zoom == 0) {
             return;
         }
         try {
-            logBack.execute("正在合并第" + zoom + "级地图，请勿关闭程序 implemented by OpenCV");
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在合并第" + zoom + "级地图，请勿关闭程序 implemented by OpenCV");
             // 声明变量
             var taskInst = taskAllInfo.getEachLayerTask().get(zoom);
             var z = taskInst.getZ();
@@ -384,14 +377,14 @@ public class TaskStepFunc {
             long mergeImageWidth = StaticVar.TILE_WIDTH * (xEnd - xStart + 1);
             long mergeImageHeight = StaticVar.TILE_HEIGHT * (yEnd - yStart + 1);
             if (mergeImageWidth >= Integer.MAX_VALUE || mergeImageHeight >= Integer.MAX_VALUE) {
-                logBack.execute("合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，宽度或高度大于int最大值" + Integer.MAX_VALUE + "，不予合并。");
+                this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，宽度或高度大于int最大值" + Integer.MAX_VALUE + "，不予合并。");
                 return;
             }
             var xiangsudaxiao = mergeImageWidth * mergeImageHeight;
-            logBack.execute("合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，像素大小："
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，像素大小："
                     + xiangsudaxiao);
             if (xiangsudaxiao > (long) Integer.MAX_VALUE) {
-                logBack.execute("该" + zoom + "级地图合并后像素大小大于int最大值" + Integer.MAX_VALUE + "，合并时间可能会稍长，建议低配置电脑不要执行超大尺寸合并");
+                this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "该" + zoom + "级地图合并后像素大小大于int最大值" + Integer.MAX_VALUE + "，合并时间可能会稍长，建议低配置电脑不要执行超大尺寸合并");
             }
             // 开启线程
             mat.init((int) mergeImageWidth, (int) mergeImageHeight);
@@ -417,15 +410,15 @@ public class TaskStepFunc {
                     e.printStackTrace();
                 }
             }
-            firstFinishBack.execute("true");
-            logBack.execute("正在写入至硬盘...");
+            finishBack.execute();
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在写入至硬盘...");
             // 文件类型
             var outPath = taskAllInfo.getSavePath() + "/tile-merge" + "/";
             var outName = "z=" + z;
             // opencv导出
             mat.output(outPath, outName, taskAllInfo.getMergeType());
             mat.destroy();
-            logBack.execute("第" + zoom + "级地图合并完成");
+            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "第" + zoom + "级地图合并完成");
         } catch (Exception e) {
             e.printStackTrace();
         }

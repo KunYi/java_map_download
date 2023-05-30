@@ -15,27 +15,31 @@ import javax.swing.JScrollPane;
 @Component
 public class SystemLogPanel extends JPanel {
 
-	@Serial
-	private static final long serialVersionUID = 1300659845262270172L;
+    @Serial
+    private static final long serialVersionUID = 1300659845262270172L;
 
-	@PostConstruct
-	private void init() {
-		
-		this.setLayout(new BorderLayout(0, 0));
+    private final JScrollPane scrollPane;
 
-		var panel = new JPanel();
-		this.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new BorderLayout(0, 0));
+    public SystemLogPanel() {
 
-		var scrollPane = new JScrollPane();
-		panel.add(scrollPane, BorderLayout.CENTER);
+        this.setLayout(new BorderLayout(0, 0));
 
-		var textArea = ApplicationStore.consoleTextArea;
-		textArea.setEditable(false);
-		textArea.setFocusable(false);
-		textArea.setFont(StaticVar.FONT_YaHeiConsolas_13);
-		scrollPane.setViewportView(textArea);
-		
-	}
+        var panel = new JPanel();
+        this.add(panel, BorderLayout.CENTER);
+        panel.setLayout(new BorderLayout(0, 0));
+
+        this.scrollPane = new JScrollPane();
+        panel.add(this.scrollPane, BorderLayout.CENTER);
+
+    }
+
+    @PostConstruct
+    private void init() {
+        var textArea = ApplicationStore.consoleTextArea;
+        textArea.setEditable(false);
+        textArea.setFocusable(false);
+        textArea.setFont(StaticVar.FONT_YaHeiConsolas_13);
+        this.scrollPane.setViewportView(textArea);
+    }
 
 }

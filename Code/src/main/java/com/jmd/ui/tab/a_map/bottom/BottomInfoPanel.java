@@ -2,7 +2,6 @@ package com.jmd.ui.tab.a_map.bottom;
 
 import javax.swing.JPanel;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
@@ -10,7 +9,6 @@ import com.jmd.common.StaticVar;
 import lombok.Getter;
 
 import javax.swing.JLabel;
-import javax.swing.border.TitledBorder;
 import java.awt.BorderLayout;
 import java.io.Serial;
 
@@ -21,10 +19,9 @@ public class BottomInfoPanel extends JPanel {
     private static final long serialVersionUID = -5223551680329511378L;
 
     @Getter
-    private JLabel contentLabel;
+    private final JLabel contentLabel;
 
-    @PostConstruct
-    private void init() {
+    public BottomInfoPanel() {
 
         this.setLayout(new BorderLayout(0, 0));
 

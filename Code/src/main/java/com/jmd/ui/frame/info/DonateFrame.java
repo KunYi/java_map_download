@@ -7,7 +7,6 @@ import javax.swing.*;
 
 import com.jmd.ui.common.CommonSubFrame;
 import com.jmd.ui.common.IconLabel;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,8 +15,7 @@ public class DonateFrame extends CommonSubFrame {
     @Serial
     private static final long serialVersionUID = -7739920320485676764L;
 
-    @PostConstruct
-    private void init() {
+    public DonateFrame() {
 
         this.getContentPane().setLayout(null);
 

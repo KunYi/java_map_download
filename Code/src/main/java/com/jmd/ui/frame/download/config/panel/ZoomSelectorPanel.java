@@ -22,36 +22,51 @@ public class ZoomSelectorPanel extends JPanel {
     private final InnerMqService innerMqService = InnerMqService.getInstance();
 
     private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
-    private JCheckBox selectAllCheckBox;
+    private final JCheckBox selectAllCheckBox;
+    private final JPanel container;
 
     @Getter
     private boolean hasSelected = false;
 
-    @PostConstruct
-    private void init() {
+    public ZoomSelectorPanel() {
 
         this.setLayout(new BorderLayout(0, 0));
 
         var scrollPane = new JScrollPane();
         this.add(scrollPane, BorderLayout.CENTER);
 
-        var container = new JPanel();
-        scrollPane.setViewportView(container);
+        this.container = new JPanel();
+        scrollPane.setViewportView(this.container);
 
-        GridBagLayout gbl_layerPanelContent = new GridBagLayout();
+        var gbl_layerPanelContent = new GridBagLayout();
         gbl_layerPanelContent.columnWidths = new int[]{0, 0, 0, 0};
         gbl_layerPanelContent.rowHeights = new int[]{0, 0, 0, 0};
         gbl_layerPanelContent.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         gbl_layerPanelContent.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        container.setLayout(gbl_layerPanelContent);
+        this.container.setLayout(gbl_layerPanelContent);
 
         this.selectAllCheckBox = new JCheckBox();
         this.selectAllCheckBox.setFocusable(false);
-        GridBagConstraints gbc_selectAllCheckBox = new GridBagConstraints();
+
+        var gbc_selectAllCheckBox = new GridBagConstraints();
         gbc_selectAllCheckBox.insets = new Insets(0, 0, 5, 5);
         gbc_selectAllCheckBox.gridx = 0;
         gbc_selectAllCheckBox.gridy = 0;
-        container.add(this.selectAllCheckBox, gbc_selectAllCheckBox);
+        this.container.add(this.selectAllCheckBox, gbc_selectAllCheckBox);
+
+        var zoomTitleLabel = new JLabel("全选");
+        zoomTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        zoomTitleLabel.setFocusable(false);
+        GridBagConstraints gbc_layerTitleLabel = new GridBagConstraints();
+        gbc_layerTitleLabel.insets = new Insets(0, 0, 5, 5);
+        gbc_layerTitleLabel.gridx = 1;
+        gbc_layerTitleLabel.gridy = 0;
+        this.container.add(zoomTitleLabel, gbc_layerTitleLabel);
+
+    }
+
+    @PostConstruct
+    private void init() {
         this.selectAllCheckBox.addActionListener((e) -> {
             if (this.selectAllCheckBox.isSelected()) {
                 this.hasSelected = true;
@@ -66,16 +81,6 @@ public class ZoomSelectorPanel extends JPanel {
             }
             this.innerMqService.pub(Topic.DOWNLOAD_CONFIG_FRAME_ZOOM_SELECTED, this.hasSelected);
         });
-
-        var zoomTitleLabel = new JLabel("全选");
-        zoomTitleLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        zoomTitleLabel.setFocusable(false);
-        GridBagConstraints gbc_layerTitleLabel = new GridBagConstraints();
-        gbc_layerTitleLabel.insets = new Insets(0, 0, 5, 5);
-        gbc_layerTitleLabel.gridx = 1;
-        gbc_layerTitleLabel.gridy = 0;
-        container.add(zoomTitleLabel, gbc_layerTitleLabel);
-
         for (var i = 0; i <= 21; i++) {
             var zoomEachCheckBox = new JCheckBox("");
             zoomEachCheckBox.setFocusable(false);
@@ -83,7 +88,7 @@ public class ZoomSelectorPanel extends JPanel {
             gbc_layerEachCheckBox.insets = new Insets(0, 0, 5, 5);
             gbc_layerEachCheckBox.gridx = 0;
             gbc_layerEachCheckBox.gridy = i + 1;
-            container.add(zoomEachCheckBox, gbc_layerEachCheckBox);
+            this.container.add(zoomEachCheckBox, gbc_layerEachCheckBox);
             this.checkBoxList.add(zoomEachCheckBox);
             zoomEachCheckBox.addActionListener((e) -> {
                 if (zoomEachCheckBox.isSelected()) {
@@ -105,9 +110,8 @@ public class ZoomSelectorPanel extends JPanel {
             gbc_layerEachLabel.insets = new Insets(0, 0, 5, 5);
             gbc_layerEachLabel.gridx = 1;
             gbc_layerEachLabel.gridy = i + 1;
-            container.add(layerEachLabel, gbc_layerEachLabel);
+            this.container.add(layerEachLabel, gbc_layerEachLabel);
         }
-
     }
 
     public ArrayList<Integer> getSelectedZooms() {

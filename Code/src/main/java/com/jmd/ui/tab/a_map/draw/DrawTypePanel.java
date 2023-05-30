@@ -20,32 +20,24 @@ public class DrawTypePanel extends JPanel {
     @Autowired
     private BrowserEngine browserEngine;
 
-    @PostConstruct
-    private void init() {
+    private final JRadioButton drawTypePolygonRadioButton;
+    private final JRadioButton drawTypeCircleRadioButton;
 
-        var drawTypePolygonRadioButton = new JRadioButton("多边形");
-        drawTypePolygonRadioButton.setSelected(true);
-        drawTypePolygonRadioButton.setFocusable(false);
-        drawTypePolygonRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-        drawTypePolygonRadioButton.addItemListener((e) -> {
-            if (drawTypePolygonRadioButton == e.getSource() && drawTypePolygonRadioButton.isSelected()) {
-                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Polygon");
-            }
-        });
+    public DrawTypePanel() {
 
-        var drawTypeCircleRadioButton = new JRadioButton("圆形");
-        drawTypeCircleRadioButton.setSelected(false);
-        drawTypeCircleRadioButton.setFocusable(false);
-        drawTypeCircleRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-        drawTypeCircleRadioButton.addItemListener((e) -> {
-            if (drawTypeCircleRadioButton == e.getSource() && drawTypeCircleRadioButton.isSelected()) {
-                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Circle");
-            }
-        });
+        this.drawTypePolygonRadioButton = new JRadioButton("多边形");
+        this.drawTypePolygonRadioButton.setSelected(true);
+        this.drawTypePolygonRadioButton.setFocusable(false);
+        this.drawTypePolygonRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
+        this.drawTypeCircleRadioButton = new JRadioButton("圆形");
+        this.drawTypeCircleRadioButton.setSelected(false);
+        this.drawTypeCircleRadioButton.setFocusable(false);
+        this.drawTypeCircleRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         var btnGroup = new ButtonGroup();
-        btnGroup.add(drawTypePolygonRadioButton);
-        btnGroup.add(drawTypeCircleRadioButton);
+        btnGroup.add(this.drawTypePolygonRadioButton);
+        btnGroup.add(this.drawTypeCircleRadioButton);
 
         var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
@@ -53,8 +45,8 @@ public class DrawTypePanel extends JPanel {
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(drawTypePolygonRadioButton)
-                                        .addComponent(drawTypeCircleRadioButton))
+                                        .addComponent(this.drawTypePolygonRadioButton)
+                                        .addComponent(this.drawTypeCircleRadioButton))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -62,12 +54,26 @@ public class DrawTypePanel extends JPanel {
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(drawTypePolygonRadioButton)
-                                .addComponent(drawTypeCircleRadioButton)
+                                .addComponent(this.drawTypePolygonRadioButton)
+                                .addComponent(this.drawTypeCircleRadioButton)
                                 .addContainerGap())
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.drawTypePolygonRadioButton.addItemListener((e) -> {
+            if (this.drawTypePolygonRadioButton == e.getSource() && this.drawTypePolygonRadioButton.isSelected()) {
+                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Polygon");
+            }
+        });
+        this.drawTypeCircleRadioButton.addItemListener((e) -> {
+            if (this.drawTypeCircleRadioButton == e.getSource() && this.drawTypeCircleRadioButton.isSelected()) {
+                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Circle");
+            }
+        });
     }
 
 }

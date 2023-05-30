@@ -24,13 +24,51 @@ public class PathSelectorPanel extends JPanel {
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
 
+    private final JTextArea textArea;
+    private final JButton pathSelectorButton;
+
     private String lastDirPath;
-    private JTextArea textArea;
 
     @Getter
     private boolean hasSelected = false;
     @Getter
     private File selectedDirPath;
+
+    public PathSelectorPanel() {
+
+        var scrollPane = new JScrollPane();
+
+        this.textArea = new JTextArea();
+        this.textArea.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.textArea.setEditable(false);
+        this.textArea.setFocusable(false);
+        scrollPane.setViewportView(this.textArea);
+
+        this.pathSelectorButton = new JButton("选择路径");
+        this.pathSelectorButton.setFocusable(false);
+        this.pathSelectorButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+
+        var groupLayout = new GroupLayout(this);
+        groupLayout.setHorizontalGroup(
+                groupLayout.createParallelGroup(Alignment.LEADING)
+                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                        .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.pathSelectorButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
+        );
+        groupLayout.setVerticalGroup(
+                groupLayout.createParallelGroup(Alignment.TRAILING)
+                        .addGroup(groupLayout.createSequentialGroup()
+                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(ComponentPlacement.RELATED)
+                                .addComponent(this.pathSelectorButton)
+                                .addContainerGap())
+        );
+        this.setLayout(groupLayout);
+
+    }
 
     @PostConstruct
     private void init() {
@@ -45,21 +83,11 @@ public class PathSelectorPanel extends JPanel {
             }
         }
 
-        var scrollPane = new JScrollPane();
-
-        this.textArea = new JTextArea();
-        this.textArea.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.textArea.setEditable(false);
-        this.textArea.setFocusable(false);
         if (this.lastDirPath != null) {
             this.textArea.setText(this.lastDirPath);
         }
-        scrollPane.setViewportView(this.textArea);
 
-        var pathSelectorButton = new JButton("选择路径");
-        pathSelectorButton.setFocusable(false);
-        pathSelectorButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        pathSelectorButton.addMouseListener(new MouseAdapter() {
+        this.pathSelectorButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
@@ -89,26 +117,6 @@ public class PathSelectorPanel extends JPanel {
                 }
             }
         });
-
-        GroupLayout groupLayout = new GroupLayout(this);
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(pathSelectorButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pathSelectorButton)
-                                .addContainerGap())
-        );
-        this.setLayout(groupLayout);
 
     }
 

@@ -63,6 +63,7 @@ public class ApplicationSetting {
         try {
             _setting = (Setting) CommonUtils.readFile2Obj(file);
         } catch (Exception e) {
+            _setting = createDefault();
             e.printStackTrace();
         }
         return _setting;

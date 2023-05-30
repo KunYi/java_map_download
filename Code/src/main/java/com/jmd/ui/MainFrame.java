@@ -47,15 +47,20 @@ public class MainFrame extends JFrame {
     @Autowired
     private MainMenuBar mainMenuBar;
 
-    private JTabbedPane tabbedPane;
+    private final JTabbedPane tabbedPane;
 
-    @PostConstruct
-    private void init() {
+    public MainFrame() {
 
         ApplicationStore.commonParentFrame = this;
 
         /* 布局 */
         this.getContentPane().setLayout(new BorderLayout(0, 0));
+
+        /* Tabbed主界面 */
+        this.tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+        this.tabbedPane.setFocusable(false);
+        this.tabbedPane.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+        this.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
 
         /* 任务栏图标 */
         var defaultToolkit = Toolkit.getDefaultToolkit();
@@ -72,18 +77,6 @@ public class MainFrame extends JFrame {
         } else {
             this.setIconImage(image);
         }
-
-        /* Menu菜单 */
-        this.setJMenuBar(mainMenuBar);
-
-        /* Tabbed主界面 */
-        tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-        tabbedPane.setFocusable(false);
-        tabbedPane.addTab("地图预览", null, mapViewPanel, null);
-        tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
-        tabbedPane.addTab("系统日志", null, systemLogPanel, null);
-        tabbedPane.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-        this.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
         /* 任务栏图标菜单 */
         if (SystemTray.isSupported()) {
@@ -126,6 +119,7 @@ public class MainFrame extends JFrame {
                 (Toolkit.getDefaultToolkit().getScreenSize().height - this.getHeight()) / 2);
         this.setVisible(false);
         this.setResizable(true);
+
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -148,6 +142,22 @@ public class MainFrame extends JFrame {
             }
         });
 
+    }
+
+    @PostConstruct
+    private void init() {
+
+        /* Menu菜单 */
+        this.setJMenuBar(mainMenuBar);
+
+        /* Tabbed主界面 */
+        this.tabbedPane.addTab("地图预览", null, mapViewPanel, null);
+        this.tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
+        this.tabbedPane.addTab("系统日志", null, systemLogPanel, null);
+
+        /* 打开悬浮窗 */
+        this.floatingWindow.setVisible(true);
+
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
@@ -163,9 +173,7 @@ public class MainFrame extends JFrame {
                 SwingUtilities.updateComponentTreeUI(this);
             });
         });
-        client.<Integer>sub(Topic.MAIN_FRAME_SELECTED_INDEX, (res) -> {
-            this.tabbedPane.setSelectedIndex(res);
-        });
+        client.sub(Topic.MAIN_FRAME_SELECTED_INDEX, this.tabbedPane::setSelectedIndex);
         client.sub(Topic.FLOATING_WINDOW_TOGGLE, (res) -> {
             SwingUtilities.invokeLater(() -> {
                 this.floatingWindow.setVisible(!this.floatingWindow.isVisible());

@@ -20,5 +20,6 @@ public class TaskCreateEntity {
 	private Boolean isCoverExists;
 	private Boolean isMergeTile;
 	private Integer mergeType;
+	private Integer errorHandlerType;
 
 }

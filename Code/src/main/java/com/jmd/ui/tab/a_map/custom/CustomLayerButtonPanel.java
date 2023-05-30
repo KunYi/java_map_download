@@ -27,50 +27,56 @@ public class CustomLayerButtonPanel extends JPanel {
     @Autowired
     private AddLayerFrame addLayerFrame;
 
-    @PostConstruct
-    private void init() {
+    private final JButton addLayerButton;
+    private final JButton removeLayerButton;
 
-        var addLayerButton = new JButton("添加自定义图层 ＋");
-        addLayerButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        addLayerButton.setFocusable(false);
-        addLayerButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                addLayerFrame.inputNewLayer();
-            }
-        });
+    public CustomLayerButtonPanel() {
 
-        var removeLayerButton = new JButton("删除自定义图层 －");
-        removeLayerButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        removeLayerButton.setFocusable(false);
-        removeLayerButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                innerMqService.pub(Topic.REMOVE_ADDED_LAYER, true);
-            }
-        });
+        this.addLayerButton = new JButton("添加自定义图层 ＋");
+        this.addLayerButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.addLayerButton.setFocusable(false);
 
-        GroupLayout groupLayout = new GroupLayout(this);
+        this.removeLayerButton = new JButton("删除自定义图层 －");
+        this.removeLayerButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.removeLayerButton.setFocusable(false);
+
+        var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                        .addComponent(addLayerButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(removeLayerButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
+                                        .addComponent(this.addLayerButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.removeLayerButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(addLayerButton)
+                                .addComponent(this.addLayerButton)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(removeLayerButton)
+                                .addComponent(this.removeLayerButton)
                                 .addContainerGap())
         );
         this.setLayout(groupLayout);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.addLayerButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                addLayerFrame.inputNewLayer();
+            }
+        });
+        this.removeLayerButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                innerMqService.pub(Topic.REMOVE_ADDED_LAYER, true);
+            }
+        });
     }
 
 }
