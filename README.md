@@ -36,14 +36,16 @@
 - 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码:5bgb
 - 联通云盘：https://pan.wo.cn/s/1W1t0v642 密码:eZB0
 
-#### 版本预览
-以下功能在下次更新中加入：
-- 添加桌面悬浮窗，用于显示下载进度
-- 在长时间重试错误瓦片无效后，添加一个对话框，询问是否继续下载，是否合并瓦片。如遇到这个问题，点击暂停任务，过十几分钟再下载，就不会一直出错了。[相关issue](https://gitee.com/CrimsonHu/java_map_download/issues/I6NH24)
-
-![输入图片说明](Other/image/next.png)
+#### 新版内容
+- 优化自定义图层功能，你甚至可以去找相关资源，下载游戏地图
+![输入图片说明](Other/image/DHVB2QC4DA5SPKS880YLI4.png)
+![输入图片说明](Other/image/D37FAQN9BVIXZIO5.png)
+![输入图片说明](Other/image/AQGA19U6SF0O7TQJGZGR8Q.png)
+- 优化错误瓦片处理
+![输入图片说明](Other/image/JVZ6UWEMBVKHHH21_ZZBN.png
 
 #### 更新历史
+- 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
 - 2023-04-09：优化大量代码，添加[自定义图层功能](https://gitee.com/CrimsonHu/java_map_download/issues/I6KPWN)，添加webp支持，优化拼接大图导出格式
 - 2022-11-26：JRE换为JetBrains Runtime 17，更新至SpringBoot 3.0.0，删除JxBrowser与JavaFX WebView，优化大量代码，更新谷歌地图域名
 - 2022-03-25：更新至Java17 LTS，SpringBoot 2.6.4，JCEF更新至Chromium95内核；优化代码
