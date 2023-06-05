@@ -1,4 +1,4 @@
-package com.jmd.taskfunc;
+package com.jmd.task;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,6 @@ public class TaskExecFunc {
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
 
-    @Lazy
     @Autowired
     private TaskStepFunc taskStep;
     @Autowired
@@ -54,7 +53,6 @@ public class TaskExecFunc {
 
     private final DecimalFormat df1 = new DecimalFormat("#.#");
     private final DecimalFormat df2 = new DecimalFormat("#.##");
-    private boolean isHandlerCancel = false;
     private SwingWorker<Void, Void> downloadWorker;
 
     // 创建任务
@@ -207,7 +205,7 @@ public class TaskExecFunc {
             taskAllInfo.setAllRunCount(progress.getCurrentCount());
             saveTaskFile(taskAllInfo);
         } else {
-            if (!this.isHandlerCancel) {
+            if (!TaskState.IS_CANCEL) {
                 deleteTaskFile(taskAllInfo);
             }
         }
@@ -232,7 +230,7 @@ public class TaskExecFunc {
 
     // 层级下载结束回调 - 下载错误瓦片
     private void eachLayerDownloadedTileErrorCallback(TaskAllInfoEntity taskAllInfo) {
-        if (isHandlerCancel) {
+        if (TaskState.IS_CANCEL) {
             return;
         }
         if (taskAllInfo.getErrorTiles().size() == 0) {
@@ -243,7 +241,7 @@ public class TaskExecFunc {
 
     // 层级下载结束回调 - 合并图片
     private void eachLayerDownloadedTileMergeCallback(TaskAllInfoEntity taskAllInfo, int z) {
-        if (isHandlerCancel) {
+        if (TaskState.IS_CANCEL) {
             return;
         }
         if (z == 0) {
@@ -282,26 +280,42 @@ public class TaskExecFunc {
 
     // 下载开始
     private void taskStart() {
-        TaskState.IS_TASK_PAUSING = false;
-        isHandlerCancel = false;
+        TaskState.IS_PAUSING = false;
+        TaskState.IS_CANCEL = false;
         innerMqService.pub(Topic.CPU_PERCENTAGE_CLEAR, true);
         innerMqService.pub(Topic.RESOURCE_USAGE_CLEAR, true);
         innerMqService.pub(Topic.TILE_MERGE_PROCESS_CLEAR, true);
-        innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_STATE, true);
-        innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, true);
         innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在下载");
+        innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.START);
         downloadAmountInstance.reset();
+    }
+
+    // 暂停下载任务
+    public void taskPause() {
+        if (TaskState.IS_TASKING && downloadWorker != null) {
+            TaskState.IS_PAUSING = true;
+            innerMqService.pub(Topic.TASK_STATUS_CURRENT, "暂停下载");
+            innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "已暂停下载任务");
+            innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.PAUSE);
+        }
+    }
+
+    // 继续下载任务
+    public void taskContinue() {
+        if (TaskState.IS_TASKING && downloadWorker != null) {
+            TaskState.IS_PAUSING = false;
+            innerMqService.pub(Topic.TASK_STATUS_CURRENT, "继续下载");
+            innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "继续下载任务");
+            innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CONTINUE);
+        }
     }
 
     // 下载结束
     private void taskFinish(TaskAllInfoEntity taskAllInfo) {
-        TaskState.IS_TASK_PAUSING = false;
+        TaskState.IS_PAUSING = false;
         downloadWorker = null;
         innerMqService.pub(Topic.RESOURCE_USAGE_CLEAR, true);
-        innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "暂停任务");
-        innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_STATE, false);
-        innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, false);
-        if (!isHandlerCancel) {
+        if (!TaskState.IS_CANCEL) {
             long allRunCount = 0L;
             for (var inst : taskAllInfo.getEachLayerTask().values()) {
                 for (var block : inst.getBlocks().values()) {
@@ -322,42 +336,15 @@ public class TaskExecFunc {
         }
     }
 
-    // 是否取消
-    public boolean isCancel() {
-        return this.isHandlerCancel;
-    }
-
-    // 暂停下载任务
-    public void taskPause() {
-        if (TaskState.IS_TASKING && downloadWorker != null) {
-            if (TaskState.IS_TASK_PAUSING) {
-                // 继续
-                TaskState.IS_TASK_PAUSING = false;
-                innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "暂停任务");
-                innerMqService.pub(Topic.TASK_STATUS_CURRENT, "继续下载");
-                innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "继续下载任务");
-                innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CONTINUE);
-            } else {
-                // 暂停
-                TaskState.IS_TASK_PAUSING = true;
-                innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, "继续任务");
-                innerMqService.pub(Topic.TASK_STATUS_CURRENT, "暂停下载");
-                innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "已暂停下载任务");
-                innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.PAUSE);
-            }
-        }
-    }
-
     // 取消下载任务
     public void taskCancel() {
         if (TaskState.IS_TASKING && downloadWorker != null) {
-            innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, true);
             innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在取消下载任务...");
             innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在取消下载任务...");
             innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.CANCEL);
             downloadWorker.cancel(true);
-            this.isHandlerCancel = true;
             TaskState.IS_TASKING = false;
+            TaskState.IS_CANCEL = true;
         }
     }
 

@@ -12,23 +12,24 @@ import com.jmd.ApplicationSetting;
 import com.jmd.browser.BrowserEngine;
 import com.jmd.common.WsSendTopic;
 import com.jmd.rx.Topic;
+import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.ui.common.AutoScalingIcon;
 import com.jmd.ui.common.CommonDialog;
-import com.jmd.ui.common.NoScalingIcon;
 import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
 import com.jmd.ui.frame.setting.ProxySettingFrame;
 import com.jmd.ui.tab.a_map.browser.BrowserPanel;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
 import com.jmd.entity.theme.ThemeEntity;
-import com.jmd.taskfunc.TaskExecFunc;
+import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
 import com.jmd.util.TaskUtils;
 
@@ -39,6 +40,7 @@ public class MainMenuBar extends JMenuBar {
     private static final long serialVersionUID = 6614126656093043485L;
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
+    private InnerMqClient client;
 
     @Autowired
     private AboutFrame aboutFrame;
@@ -57,23 +59,106 @@ public class MainMenuBar extends JMenuBar {
     @Autowired
     private BrowserEngine browserEngine;
 
-    private final JMenuItem themeNameLabel = new JMenuItem();
-    private final Icon selectedIcon = new AutoScalingIcon(15, 15, "/com/jmd/assets/icon/selected.png");
-    private boolean floatingMenuIcon = true;
+    private final Icon selectedIcon = new AutoScalingIcon(
+            15, 15,
+            "/com/jmd/assets/icon/selected.png",
+            AutoScalingIcon.XPosition.LEFT, AutoScalingIcon.YPosition.CENTER,
+            6, 2
+    );
 
-    @PostConstruct
-    private void init() {
+    private final JMenu styleMenu;
+    private final JMenuItem refreshMenuItem;
+    private final JMenuItem revertMenuItem;
+    private final JMenuItem consoleMenuItem;
+    private final JMenuItem loadTaskMenuItem;
+    private final JMenuItem downloadAllWorldMenuItem;
+    private final JMenuItem proxyMenuItem;
+    private final JMenuItem floatingMenuItem;
+    private final JMenuItem aboutMenuItem;
+    private final JMenuItem licenseMenuItem;
+    private final JMenuItem donateMenuItem;
+    private final JMenuItem themeNameLabel;
+
+    public MainMenuBar() {
 
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-        var styleMenu = new JMenu("主题");
-        styleMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(styleMenu);
+        this.styleMenu = new JMenu("主题");
+        this.styleMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(this.styleMenu);
 
+        var browserMenu = new JMenu("浏览器");
+        browserMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(browserMenu);
+
+        this.refreshMenuItem = new JMenuItem("刷新");
+        this.refreshMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        browserMenu.add(this.refreshMenuItem);
+
+        this.revertMenuItem = new JMenuItem("清除缓存");
+        this.revertMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        browserMenu.add(this.revertMenuItem);
+
+        this.consoleMenuItem = new JMenuItem("开发者工具");
+        this.consoleMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        browserMenu.add(this.consoleMenuItem);
+
+        var taskMenu = new JMenu("任务");
+        taskMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(taskMenu);
+
+        this.loadTaskMenuItem = new JMenuItem("导入未完成的下载");
+        this.loadTaskMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        taskMenu.add(this.loadTaskMenuItem);
+
+        this.downloadAllWorldMenuItem = new JMenuItem("直接下载世界地图");
+        this.downloadAllWorldMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        taskMenu.add(this.downloadAllWorldMenuItem);
+
+        var settingMenu = new JMenu("设置");
+        settingMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(settingMenu);
+
+        this.proxyMenuItem = new JMenuItem("代理设置");
+        this.proxyMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        settingMenu.add(this.proxyMenuItem);
+
+        this.floatingMenuItem = new JMenuItem("悬浮窗");
+        this.floatingMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        settingMenu.add(this.floatingMenuItem);
+
+        var otherMenu = new JMenu("其他");
+        otherMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.add(otherMenu);
+
+        this.aboutMenuItem = new JMenuItem("关于");
+        this.aboutMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        otherMenu.add(this.aboutMenuItem);
+
+        this.licenseMenuItem = new JMenuItem("license");
+        this.licenseMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        otherMenu.add(this.licenseMenuItem);
+
+        this.donateMenuItem = new JMenuItem("捐赠开发者");
+        this.donateMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        otherMenu.add(this.donateMenuItem);
+
+        this.themeNameLabel = new JMenuItem();
+        this.themeNameLabel.setText("Theme: " + ApplicationSetting.getSetting().getThemeName());
+        this.themeNameLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.themeNameLabel.setFocusable(false);
+        this.themeNameLabel.setEnabled(false);
+        this.add(this.themeNameLabel);
+
+    }
+
+    @PostConstruct
+    private void init() {
+        // 主题
         for (ThemeEntity parent : StaticVar.THEME_LIST) {
             var themeMenu = new JMenu(parent.getName());
             themeMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-            styleMenu.add(themeMenu);
+            this.styleMenu.add(themeMenu);
             for (var theme : parent.getSub()) {
                 var themeSubMenuItem = new JMenuItem(theme.getName());
                 themeSubMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
@@ -93,29 +178,19 @@ public class MainMenuBar extends JMenuBar {
                 });
             }
         }
-
-        var browserMenu = new JMenu("浏览器");
-        browserMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(browserMenu);
-
-        var refreshMenuItem = new JMenuItem("刷新");
-        refreshMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        browserMenu.add(refreshMenuItem);
-        refreshMenuItem.addMouseListener(new MouseAdapter() {
+        // 浏览器 - 刷新
+        this.refreshMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     browserEngine.reload();
                 }
             }
         });
-
-        var revertMenuItem = new JMenuItem("清除缓存");
-        revertMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        browserMenu.add(revertMenuItem);
-        revertMenuItem.addMouseListener(new MouseAdapter() {
+        // 浏览器 - 清除缓存
+        this.revertMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     browserEngine.clearLocalStorage();
                     var f = CommonDialog.confirm("确认", "已清除缓存，是否刷新页面？");
@@ -125,13 +200,10 @@ public class MainMenuBar extends JMenuBar {
                 }
             }
         });
-
-        var consoleMenuItem = new JMenuItem("开发者工具");
-        consoleMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        browserMenu.add(consoleMenuItem);
-        consoleMenuItem.addMouseListener(new MouseAdapter() {
+        // 浏览器 - 开发者工具
+        this.consoleMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     browserPanel.toggleDevTools();
                     if (browserPanel.isDevToolOpen()) {
@@ -142,17 +214,10 @@ public class MainMenuBar extends JMenuBar {
                 }
             }
         });
-
-        var taskMenu = new JMenu("任务");
-        taskMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(taskMenu);
-
-        var loadTaskMenuItem = new JMenuItem("导入未完成的下载");
-        loadTaskMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        taskMenu.add(loadTaskMenuItem);
-        loadTaskMenuItem.addMouseListener(new MouseAdapter() {
+        // 任务 - 导入未完成的下载
+        this.loadTaskMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     if (TaskState.IS_TASKING) {
                         CommonDialog.alert(null, "当前正在进行下载任务");
@@ -171,13 +236,10 @@ public class MainMenuBar extends JMenuBar {
                 }
             }
         });
-
-        var downloadAllWorldMenuItem = new JMenuItem("直接下载世界地图");
-        downloadAllWorldMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        taskMenu.add(downloadAllWorldMenuItem);
-        downloadAllWorldMenuItem.addMouseListener(new MouseAdapter() {
+        // 任务 - 直接下载世界地图
+        this.downloadAllWorldMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     if (TaskState.IS_TASKING) {
                         CommonDialog.alert(null, "当前正在进行下载任务");
@@ -187,34 +249,27 @@ public class MainMenuBar extends JMenuBar {
                 }
             }
         });
-
-        var settingMenu = new JMenu("设置");
-        settingMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(settingMenu);
-
-        var proxyMenuItem = new JMenuItem("代理设置");
-        proxyMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        settingMenu.add(proxyMenuItem);
-        proxyMenuItem.addMouseListener(new MouseAdapter() {
+        // 设置 - 代理设置
+        this.proxyMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     proxySettingFrame.setVisible(true);
                 }
             }
         });
-
-        var floatingMenuItem = new JMenuItem("悬浮窗");
-        floatingMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        floatingMenuItem.setIcon(selectedIcon);
-        settingMenu.add(floatingMenuItem);
-        floatingMenuItem.addMouseListener(new MouseAdapter() {
+        // 设置 - 悬浮窗
+        if (ApplicationSetting.getSetting().getFloatingWindowShow()) {
+            this.floatingMenuItem.setIcon(this.selectedIcon);
+        }
+        this.floatingMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     innerMqService.pub(Topic.FLOATING_WINDOW_TOGGLE, true);
-                    floatingMenuIcon = !floatingMenuIcon;
-                    if (floatingMenuIcon) {
+                    ApplicationSetting.getSetting().setFloatingWindowShow(!ApplicationSetting.getSetting().getFloatingWindowShow());
+                    ApplicationSetting.save();
+                    if (ApplicationSetting.getSetting().getFloatingWindowShow()) {
                         floatingMenuItem.setIcon(selectedIcon);
                     } else {
                         floatingMenuItem.setIcon(null);
@@ -222,63 +277,47 @@ public class MainMenuBar extends JMenuBar {
                 }
             }
         });
-
-        var otherMenu = new JMenu("其他");
-        otherMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.add(otherMenu);
-
-        var aboutMenuItem = new JMenuItem("关于");
-        aboutMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        otherMenu.add(aboutMenuItem);
-        aboutMenuItem.addMouseListener(new MouseAdapter() {
+        // 其他 - 关于
+        this.aboutMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     aboutFrame.setVisible(true);
                 }
             }
         });
-
-        var licenseMenuItem = new JMenuItem("license");
-        licenseMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        otherMenu.add(licenseMenuItem);
-        licenseMenuItem.addMouseListener(new MouseAdapter() {
+        // 其他 - license
+        this.licenseMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     licenseFrame.setVisible(true);
                 }
             }
         });
-
-        var donateMenuItem = new JMenuItem("捐赠开发者");
-        donateMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        otherMenu.add(donateMenuItem);
-        donateMenuItem.addMouseListener(new MouseAdapter() {
+        // 其他 - 捐赠开发者
+        this.donateMenuItem.addMouseListener(new MouseAdapter() {
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     donateFrame.setVisible(true);
                 }
             }
         });
-
-        themeNameLabel.setText("Theme: " + ApplicationSetting.getSetting().getThemeName());
-        themeNameLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        themeNameLabel.setFocusable(false);
-        themeNameLabel.setEnabled(false);
-        this.add(themeNameLabel);
-
         try {
             this.subInnerMqMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    @PreDestroy
+    private void destroy() {
+        this.innerMqService.destroyClient(this.client);
     }
 
     private void subInnerMqMessage() throws Exception {
-        var client = this.innerMqService.createClient();
+        this.client = this.innerMqService.createClient();
         client.<String>sub(Topic.UPDATE_THEME_TEXT, (res) -> {
             themeNameLabel.setText("Theme: " + res);
         });

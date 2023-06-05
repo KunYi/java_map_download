@@ -33,11 +33,11 @@ public class ApplicationTheme {
 
     public void change(String name, Integer type, String clazz) {
         // 保存配置
-        var setting = ApplicationSetting.getSetting();
-        setting.setThemeName(name);
-        setting.setThemeType(type);
-        setting.setThemeClazz(clazz);
-        ApplicationSetting.save(setting);
+        ApplicationSetting.getSetting().setThemeName(name);
+        ApplicationSetting.getSetting().setThemeName(name);
+        ApplicationSetting.getSetting().setThemeType(type);
+        ApplicationSetting.getSetting().setThemeClazz(clazz);
+        ApplicationSetting.save();
         // 更新窗口
         if (currentThemeType.equals(type)) {
             SwingUtilities.invokeLater(() -> {

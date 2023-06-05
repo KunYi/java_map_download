@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.jmd.common.StaticVar;
 import com.jmd.entity.geo.Polygon;
 import com.jmd.entity.result.ImageMergeAsyncTaskResult;
-import com.jmd.taskfunc.TileMergeMatWrap;
+import com.jmd.task.TileMergeMatWrap;
 import com.jmd.util.GeoUtils;
 import com.jmd.util.TaskUtils;
 

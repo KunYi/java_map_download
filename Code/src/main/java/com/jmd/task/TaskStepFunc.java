@@ -1,4 +1,4 @@
-package com.jmd.taskfunc;
+package com.jmd.task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +49,6 @@ public class TaskStepFunc {
     private int blockDivide;
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
-
-    @Lazy
-    @Autowired
-    private TaskExecFunc taskExecFunc;
 
     @Autowired
     private HttpClient httpClient;
@@ -174,7 +170,7 @@ public class TaskStepFunc {
     ) {
         boolean isCanceled = false;
         for (var inst : taskAllInfo.getEachLayerTask().values()) {
-            if (isCanceled || taskExecFunc.isCancel()) {
+            if (isCanceled || TaskState.IS_CANCEL) {
                 break;
             }
             this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在下载第" + inst.getZ() + "级地图...");

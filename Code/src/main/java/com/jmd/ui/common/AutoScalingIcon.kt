@@ -9,8 +9,21 @@ import java.math.BigDecimal
 import java.util.*
 import javax.swing.Icon
 import javax.swing.ImageIcon
+import kotlin.math.ceil
 
 class AutoScalingIcon : Icon {
+
+    enum class XPosition {
+        LEFT,
+        CENTER,
+        RIGHT,
+    }
+
+    enum class YPosition {
+        TOP,
+        CENTER,
+        BOTTOM,
+    }
 
     private val autoSize: Boolean
     private val originIcon: ImageIcon
@@ -19,21 +32,49 @@ class AutoScalingIcon : Icon {
     private var height: Int
     private var lastScaleX = -999.0
     private var lastScaleY = -999.0
+    private val xPosition: XPosition
+    private val yPosition: YPosition
+    private var paddingLeft: Int = 0
+    private var paddingTop: Int = 0
 
-    constructor(path: String) {
+    // 使用容器尺寸
+    constructor(
+        path: String,
+        xPosition: XPosition,
+        yPosition: YPosition,
+        paddingLeft: Int,
+        paddingTop: Int
+    ) {
         this.autoSize = true
         this.width = 2
         this.height = 2
         this.originIcon = ImageIcon(Objects.requireNonNull(NoScalingIcon::class.java.getResource(path)))
         this.icon.image = this.originIcon.image.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
+        this.xPosition = xPosition
+        this.yPosition = yPosition
+        this.paddingLeft = paddingLeft
+        this.paddingTop = paddingTop
     }
 
-    constructor(width: Int, height: Int, path: String) {
+    // 使用自定义尺寸
+    constructor(
+        width: Int,
+        height: Int,
+        path: String,
+        xPosition: XPosition,
+        yPosition: YPosition,
+        paddingLeft: Int,
+        paddingTop: Int
+    ) {
         this.autoSize = false
         this.width = width
         this.height = height
         this.originIcon = ImageIcon(Objects.requireNonNull(NoScalingIcon::class.java.getResource(path)))
         this.icon.image = this.originIcon.image.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
+        this.xPosition = xPosition
+        this.yPosition = yPosition
+        this.paddingLeft = paddingLeft
+        this.paddingTop = paddingTop
     }
 
     override fun getIconWidth(): Int {
@@ -83,13 +124,17 @@ class AutoScalingIcon : Icon {
             this.lastScaleY = at.scaleY
         }
 
-        // 新的 X 位置
-        val locationX = x * at.scaleX
-        // 新的 Y 位置
-        // Y 位置需要修正
-        val originY = y * at.scaleY
-        val offsetY = this.height * at.scaleY * ((at.scaleY - 1) / 2)
-        val locationY = originY + offsetY
+        val locationX = when (xPosition) {
+            XPosition.LEFT -> 0.0
+            XPosition.CENTER -> (c.width - ceil(icon.iconWidth / at.scaleX)) / 2
+            XPosition.RIGHT -> c.width - ceil(icon.iconWidth / at.scaleX)
+        } + this.paddingLeft
+
+        val locationY = when (yPosition) {
+            YPosition.TOP -> 0.0
+            YPosition.CENTER -> (c.height - ceil(icon.iconHeight / at.scaleY)) / 2
+            YPosition.BOTTOM -> c.height - ceil(icon.iconHeight / at.scaleY)
+        } + this.paddingTop
 
         //  将缩放还原为 1.0
         val scaled = AffineTransform.getScaleInstance(1.0 / at.scaleX, 1.0 / at.scaleY)

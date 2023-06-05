@@ -6,10 +6,11 @@ import java.io.Serial;
 
 import javax.swing.*;
 
+import com.jmd.ApplicationSetting;
 import com.jmd.ApplicationStore;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.util.CommonUtils;
 import jakarta.annotation.PostConstruct;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
-import com.jmd.taskfunc.TaskExecFunc;
+import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.tab.a_map.MapViewPanel;
 import com.jmd.ui.tab.b_download.DownloadTaskPanel;
 import com.jmd.ui.tab.c_syslog.SystemLogPanel;
@@ -155,8 +156,10 @@ public class MainFrame extends JFrame {
         this.tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
         this.tabbedPane.addTab("系统日志", null, systemLogPanel, null);
 
-        /* 打开悬浮窗 */
-        this.floatingWindow.setVisible(true);
+        /* 悬浮窗 */
+        if (ApplicationSetting.getSetting().getFloatingWindowShow()) {
+            this.floatingWindow.setVisible(true);
+        }
 
         try {
             this.subInnerMqMessage();
@@ -178,6 +181,19 @@ public class MainFrame extends JFrame {
             SwingUtilities.invokeLater(() -> {
                 this.floatingWindow.setVisible(!this.floatingWindow.isVisible());
             });
+        });
+        client.sub(Topic.MAIN_FRAME_SHOW, (res) -> {
+            SwingUtilities.invokeLater(() -> {
+                this.setVisible(true);
+            });
+        });
+        client.sub(Topic.MAIN_FRAME_HIDE, (res) -> {
+            SwingUtilities.invokeLater(() -> {
+                this.setVisible(false);
+            });
+        });
+        client.sub(Topic.MAIN_FRAME_EXIT, (res) -> {
+            SwingUtilities.invokeLater(this::processExit);
         });
     }
 

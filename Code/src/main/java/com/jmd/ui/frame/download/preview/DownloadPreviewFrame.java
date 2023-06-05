@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 import com.jmd.common.StaticVar;
 import com.jmd.entity.geo.Polygon;
 import com.jmd.entity.task.TaskInstEntity;
-import com.jmd.taskfunc.TaskStepFunc;
+import com.jmd.task.TaskStepFunc;
 
 import lombok.extern.slf4j.Slf4j;
 

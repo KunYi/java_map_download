@@ -6,14 +6,13 @@ import com.jmd.entity.result.BlockAsyncTaskResult;
 import com.jmd.entity.result.DownloadResult;
 import com.jmd.entity.task.TaskExecEntity;
 import com.jmd.http.HttpDownload;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.util.CommonUtils;
 import com.jmd.util.GeoUtils;
 import com.jmd.util.TaskUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TileDownloadExecInst {
@@ -87,8 +86,8 @@ public class TileDownloadExecInst {
                     break;
                 }
                 // 任务暂停
-                if (TaskState.IS_TASK_PAUSING) {
-                    while (TaskState.IS_TASK_PAUSING) {
+                if (TaskState.IS_PAUSING) {
+                    while (TaskState.IS_PAUSING) {
                         this.taskWait();
                     }
                 }

@@ -67,9 +67,9 @@ public class Application {
             }).start();
         }));
         // 重定向至ConsoleTextArea
-        JTextAreaOutputStream out = new JTextAreaOutputStream(ApplicationStore.consoleTextArea);
-        System.setOut(new PrintStream(out)); // 设置输出重定向
-        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
+//        JTextAreaOutputStream out = new JTextAreaOutputStream(ApplicationStore.consoleTextArea);
+//        System.setOut(new PrintStream(out)); // 设置输出重定向
+//        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
         // 异步启动SpringBoot核心
         new SwingWorker<Void, Void>() {
             @Override

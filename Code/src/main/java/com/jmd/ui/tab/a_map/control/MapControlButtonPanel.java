@@ -3,14 +3,13 @@ package com.jmd.ui.tab.a_map.control;
 import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonDialog;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;

@@ -10,14 +10,15 @@ import lombok.Data;
 @Data
 public class Setting implements Serializable {
 
-	@Serial
-	private static final long serialVersionUID = 2828730448277028688L;
+    @Serial
+    private static final long serialVersionUID = 2828730448277028688L;
 
-	private Integer themeType;
-	private String themeName;
-	private String themeClazz;
-	private String lastDirPath;
+    private Integer themeType;
+    private String themeName;
+    private String themeClazz;
+    private Boolean floatingWindowShow;
+    private String lastDirPath;
 
-	private ArrayList<AddedLayerSetting> addedLayers;
+    private ArrayList<AddedLayerSetting> addedLayers;
 
 }

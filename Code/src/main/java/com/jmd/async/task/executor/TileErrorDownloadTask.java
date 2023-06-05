@@ -3,7 +3,7 @@ package com.jmd.async.task.executor;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -38,14 +38,14 @@ public class TileErrorDownloadTask {
                 break;
             }
             // 任务暂停
-            if (TaskState.IS_TASK_PAUSING) {
+            if (TaskState.IS_PAUSING) {
                 do {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
                         System.out.println("暂停中取消任务");
                     }
-                } while (TaskState.IS_TASK_PAUSING);
+                } while (TaskState.IS_PAUSING);
             }
             // 声明变量
             var z = errorTile.getTile().getZ();

@@ -6,7 +6,7 @@ import javax.swing.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 import com.jmd.common.StaticVar;
 import com.jmd.entity.geo.Polygon;
 import com.jmd.entity.task.TaskCreateEntity;
-import com.jmd.taskfunc.TaskExecFunc;
+import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.MainFrame;
 import com.jmd.util.TaskUtils;
 

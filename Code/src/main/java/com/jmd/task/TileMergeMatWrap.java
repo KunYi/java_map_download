@@ -1,4 +1,4 @@
-package com.jmd.taskfunc;
+package com.jmd.task;
 
 import org.apache.commons.io.FileUtils;
 import org.opencv.core.CvType;

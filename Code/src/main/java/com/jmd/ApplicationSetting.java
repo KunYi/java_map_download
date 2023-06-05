@@ -11,7 +11,7 @@ import lombok.Getter;
 public class ApplicationSetting {
 
     private static final File path = new File(System.getProperty("user.dir") + "/setting");
-    private static final File file = new File(System.getProperty("user.dir") + "/setting/setting");
+    private static final File file = new File(System.getProperty("user.dir") + "/setting/ApplicationSetting");
 
     @Getter
     private static Setting setting;
@@ -35,38 +35,39 @@ public class ApplicationSetting {
         }
     }
 
-    public static void save(Setting _setting) {
-        setting = _setting;
+    public static void save(Setting s) {
+        setting = s;
         try {
-            CommonUtils.saveObj2File(_setting, file.getAbsolutePath());
+            CommonUtils.saveObj2File(setting, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private static Setting createDefault() {
-        var _setting = new Setting();
-        _setting.setThemeType(3);
-        _setting.setThemeName("Flatlaf IntelliJ");
-        _setting.setThemeClazz("com.formdev.flatlaf.FlatIntelliJLaf");
-        _setting.setAddedLayers(new ArrayList<>());
+        var s = new Setting();
+        s.setThemeType(3);
+        s.setThemeName("Flatlaf IntelliJ");
+        s.setThemeClazz("com.formdev.flatlaf.FlatIntelliJLaf");
+        s.setFloatingWindowShow(true);
+        s.setAddedLayers(new ArrayList<>());
         try {
-            CommonUtils.saveObj2File(_setting, file.getAbsolutePath());
+            CommonUtils.saveObj2File(s, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return _setting;
+        return s;
     }
 
     private static Setting loadSettingFile() {
-        var _setting = new Setting();
+        var s = new Setting();
         try {
-            _setting = (Setting) CommonUtils.readFile2Obj(file);
+            s = (Setting) CommonUtils.readFile2Obj(file);
         } catch (Exception e) {
-            _setting = createDefault();
+            s = createDefault();
             e.printStackTrace();
         }
-        return _setting;
+        return s;
     }
 
 }

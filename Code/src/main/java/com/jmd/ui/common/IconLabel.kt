@@ -14,8 +14,8 @@ class IconLabel(path: String) : JLabel() {
     private val icon: AutoScalingIcon
 
     init {
-        this.icon = AutoScalingIcon(path)
-        setIcon(this.icon)
+        this.icon = AutoScalingIcon(path, AutoScalingIcon.XPosition.LEFT, AutoScalingIcon.YPosition.TOP, 0, 0);
+        this.setIcon(this.icon)
     }
 
     override fun getIcon(): Icon {

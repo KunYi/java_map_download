@@ -2,10 +2,11 @@ package com.jmd.ui.tab.b_download;
 
 import javax.swing.*;
 
+import com.jmd.entity.task.TaskStatusEnum;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.taskfunc.TaskState;
+import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.tab.b_download.log.TaskLogPanel;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
-import com.jmd.taskfunc.TaskExecFunc;
+import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.tab.b_download.merge.TileMergeProgressPanel;
 import com.jmd.ui.tab.b_download.task.TaskStatusPanel;
 import com.jmd.ui.tab.b_download.usage.ResourceUsagePanel;
@@ -152,7 +153,11 @@ public class DownloadTaskPanel extends JPanel {
                     if (!TaskState.IS_TASKING) {
                         return;
                     }
-                    taskExec.taskPause();
+                    if (TaskState.IS_PAUSING) {
+                        taskExec.taskContinue();
+                    } else {
+                        taskExec.taskPause();
+                    }
                 }
             }
         });
@@ -190,17 +195,36 @@ public class DownloadTaskPanel extends JPanel {
 
     private void subInnerMqMessage() throws Exception {
         this.client = this.innerMqService.createClient();
-        this.client.<String>sub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_TEXT, (res) -> {
-            SwingUtilities.invokeLater(() -> cancelButton.setText(res));
-        });
-        this.client.<Boolean>sub(Topic.DOWNLOAD_CONSOLE_CANCEL_BUTTON_STATE, (res) -> {
-            SwingUtilities.invokeLater(() -> cancelButton.setEnabled(res));
-        });
-        this.client.<String>sub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_TEXT, (res) -> {
-            SwingUtilities.invokeLater(() -> pauseButton.setText(res));
-        });
-        this.client.<Boolean>sub(Topic.DOWNLOAD_CONSOLE_PAUSE_BUTTON_STATE, (res) -> {
-            SwingUtilities.invokeLater(() -> pauseButton.setEnabled(res));
+        this.client.<TaskStatusEnum>sub(Topic.TASK_STATUS_ENUM, (res) -> {
+            SwingUtilities.invokeLater(() -> {
+                switch (res) {
+                    // 任务开始
+                    case START -> {
+                        this.pauseButton.setText("暂停任务");
+                        this.pauseButton.setEnabled(true);
+                        this.cancelButton.setEnabled(true);
+                    }
+                    // 任务继续
+                    case CONTINUE -> {
+                        this.pauseButton.setText("暂停任务");
+                    }
+                    // 任务暂停
+                    case PAUSE -> {
+                        this.pauseButton.setText("继续任务");
+                    }
+                    // 任务结束
+                    case FINISH -> {
+                        this.pauseButton.setText("暂停任务");
+                        this.pauseButton.setEnabled(false);
+                        this.cancelButton.setEnabled(false);
+                    }
+                    // 任务取消
+                    case CANCEL -> {
+                        this.pauseButton.setEnabled(false);
+                        this.cancelButton.setEnabled(false);
+                    }
+                }
+            });
         });
     }
 
