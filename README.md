@@ -37,15 +37,18 @@
 - 联通云盘：https://pan.wo.cn/s/8N3I3q863 密码:ZGkm
 
 #### 新版内容
+- 优化错误瓦片处理，可在下载之前选择遇到错误瓦片时跳过还是循环请求下载
 - 优化自定义图层功能，你甚至可以去找相关资源，下载游戏地图
+
+#### 功能预览
+- 下版本会有重磅更新：
+1. 在本软件中可以预览下载后的瓦片图
+2. 可以在本地开启一个瓦片图web服务，用于临时给你的openlayers或leaflet等地图项目显示下载完成的瓦片图，无需在下载完成后自己用nginx等工具部署本地瓦片
+3. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
 
 ![输入图片说明](Other/image/DHVB2QC4DA5SPKS880YLI4.png)
 ![输入图片说明](Other/image/D37FAQN9BVIXZIO5.png)
 ![输入图片说明](Other/image/AQGA19U6SF0O7TQJGZGR8Q.png)
-
-- 优化错误瓦片处理
-
-![输入图片说明](Other/image/JVZ6UWEMBVKHHH21_ZZBN.png)
 
 #### 更新历史
 - 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
