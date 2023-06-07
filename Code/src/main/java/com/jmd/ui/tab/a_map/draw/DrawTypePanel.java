@@ -1,14 +1,13 @@
 package com.jmd.ui.tab.a_map.draw;
 
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.io.Serial;
 
 @Component
@@ -18,7 +17,7 @@ public class DrawTypePanel extends JPanel {
     private static final long serialVersionUID = 68092099548468829L;
 
     @Autowired
-    private BrowserEngine browserEngine;
+    private MapViewBrowserPanel mapViewBrowserPanel;
 
     private final JRadioButton drawTypePolygonRadioButton;
     private final JRadioButton drawTypeCircleRadioButton;
@@ -66,12 +65,12 @@ public class DrawTypePanel extends JPanel {
     private void init() {
         this.drawTypePolygonRadioButton.addItemListener((e) -> {
             if (this.drawTypePolygonRadioButton == e.getSource() && this.drawTypePolygonRadioButton.isSelected()) {
-                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Polygon");
+                this.mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Polygon");
             }
         });
         this.drawTypeCircleRadioButton.addItemListener((e) -> {
             if (this.drawTypeCircleRadioButton == e.getSource() && this.drawTypeCircleRadioButton.isSelected()) {
-                this.browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Circle");
+                this.mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_DRAW_TYPE, "Circle");
             }
         });
     }

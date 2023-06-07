@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
 import com.jmd.ApplicationSetting;
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.WsSendTopic;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
@@ -21,7 +20,7 @@ import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
 import com.jmd.ui.frame.setting.ProxySettingFrame;
-import com.jmd.ui.tab.a_map.browser.BrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,11 +52,9 @@ public class MainMenuBar extends JMenuBar {
     @Autowired
     private TaskExecFunc taskExec;
     @Autowired
-    private BrowserPanel browserPanel;
+    private MapViewBrowserPanel mapViewBrowserPanel;
     @Autowired
     private BottomInfoPanel bottomInfoPanel;
-    @Autowired
-    private BrowserEngine browserEngine;
 
     private final Icon selectedIcon = new AutoScalingIcon(
             15, 15,
@@ -69,7 +66,6 @@ public class MainMenuBar extends JMenuBar {
     private final JMenu styleMenu;
     private final JMenuItem refreshMenuItem;
     private final JMenuItem revertMenuItem;
-    private final JMenuItem consoleMenuItem;
     private final JMenuItem loadTaskMenuItem;
     private final JMenuItem downloadAllWorldMenuItem;
     private final JMenuItem proxyMenuItem;
@@ -98,10 +94,6 @@ public class MainMenuBar extends JMenuBar {
         this.revertMenuItem = new JMenuItem("清除缓存");
         this.revertMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         browserMenu.add(this.revertMenuItem);
-
-        this.consoleMenuItem = new JMenuItem("开发者工具");
-        this.consoleMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        browserMenu.add(this.consoleMenuItem);
 
         var taskMenu = new JMenu("任务");
         taskMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
@@ -183,7 +175,7 @@ public class MainMenuBar extends JMenuBar {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
-                    browserEngine.reload();
+                    mapViewBrowserPanel.reload();
                 }
             }
         });
@@ -192,24 +184,10 @@ public class MainMenuBar extends JMenuBar {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
-                    browserEngine.clearLocalStorage();
+                    mapViewBrowserPanel.clearLocalStorage();
                     var f = CommonDialog.confirm("确认", "已清除缓存，是否刷新页面？");
                     if (f) {
-                        browserEngine.reload();
-                    }
-                }
-            }
-        });
-        // 浏览器 - 开发者工具
-        this.consoleMenuItem.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == 1) {
-                    browserPanel.toggleDevTools();
-                    if (browserPanel.isDevToolOpen()) {
-                        consoleMenuItem.setIcon(selectedIcon);
-                    } else {
-                        consoleMenuItem.setIcon(null);
+                        mapViewBrowserPanel.reload();
                     }
                 }
             }
@@ -245,7 +223,7 @@ public class MainMenuBar extends JMenuBar {
                         CommonDialog.alert(null, "当前正在进行下载任务");
                         return;
                     }
-                    browserEngine.sendMessageByWebsocket(WsSendTopic.SUBMIT_WORLD_DOWNLOAD, null);
+                    mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SUBMIT_WORLD_DOWNLOAD, null);
                 }
             }
         });

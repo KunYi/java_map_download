@@ -2,6 +2,8 @@ package com.jmd.rx
 
 enum class Topic {
 
+    APPLICATION_START_FINISH,
+
     CHANGE_THEME,
 
     UPDATE_THEME_TEXT,
@@ -52,5 +54,8 @@ enum class Topic {
 
     ADD_NEW_LAYER,
     REMOVE_ADDED_LAYER,
+
+    OPEN_BROWSER_DEV_TOOL,
+    BROWSER_FOCUS,
 
 }

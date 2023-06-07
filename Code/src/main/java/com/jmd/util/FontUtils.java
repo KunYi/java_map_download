@@ -6,7 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.jmd.ui.tab.c_syslog.SystemLogPanel;
+import com.jmd.ui.tab.d_syslog.SystemLogPanel;
 
 public class FontUtils {
 

@@ -6,7 +6,7 @@ import { InfoService } from '../../service/info.service';
 @Component({
 	selector: 'app-index',
 	templateUrl: './index.page.html',
-	styleUrls: ['./index.page.less'],
+	styleUrls: ['./index.page.scss'],
 	providers: [InfoService],
 })
 export class IndexPage implements OnInit, OnDestroy {

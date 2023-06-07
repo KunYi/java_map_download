@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
-import com.jmd.ui.tab.a_map.browser.BrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import com.jmd.ui.tab.a_map.control.MapControlButtonPanel;
 import com.jmd.ui.tab.a_map.district.DistrictSelectorPanel;
 import com.jmd.ui.tab.a_map.custom.CustomLayerButtonPanel;
@@ -21,7 +21,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 @Component
-public class MapViewPanel extends JPanel {
+public class MapControlPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 7958127591579659670L;
@@ -39,7 +39,7 @@ public class MapViewPanel extends JPanel {
     @Autowired
     private CustomLayerButtonPanel customLayerButtonPanel;
     @Autowired
-    private BrowserPanel browserInstPanel;
+    private MapViewBrowserPanel browserInstPanel;
     @Autowired
     private BottomInfoPanel bottomInfoPanel;
 
@@ -52,7 +52,7 @@ public class MapViewPanel extends JPanel {
     private final CommonContainerPanel bottomPanel;
     private final CommonContainerPanel browserPanel;
 
-    public MapViewPanel() {
+    public MapControlPanel() {
 
         this.controlPanel = new CommonContainerPanel("地图操作");
         this.districtPanel = new CommonContainerPanel("快速选择");

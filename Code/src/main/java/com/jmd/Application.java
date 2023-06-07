@@ -5,22 +5,21 @@ import java.io.PrintStream;
 import javax.swing.*;
 
 import com.jmd.common.StaticVar;
+import com.jmd.rx.Topic;
 import com.jmd.rx.callback.OnSubscribeCallback;
+import com.jmd.rx.service.InnerMqService;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import lombok.Setter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jmd.ui.StartupWindow;
 
-import lombok.Getter;
-
 @SpringBootApplication
 public class Application {
 
-    @Getter
-    private static boolean startFinish = false;
+    private static final InnerMqService innerMqService = InnerMqService.getInstance();
+
     private static final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     static {
@@ -63,7 +62,7 @@ public class Application {
                     e1.printStackTrace();
                 }
                 compositeDisposable.dispose();
-                startFinish = true;
+                innerMqService.pub(Topic.APPLICATION_START_FINISH, true);
             }).start();
         }));
         // 重定向至ConsoleTextArea

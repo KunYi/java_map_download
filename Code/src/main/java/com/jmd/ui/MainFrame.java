@@ -8,21 +8,24 @@ import javax.swing.*;
 
 import com.jmd.ApplicationSetting;
 import com.jmd.ApplicationStore;
+import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.rx.Topic;
+import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.task.TaskState;
 import com.jmd.ui.foating.FloatingWindow;
+import com.jmd.ui.tab.c_tile.TileViewPanel;
 import com.jmd.util.CommonUtils;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.task.TaskExecFunc;
-import com.jmd.ui.tab.a_map.MapViewPanel;
+import com.jmd.ui.tab.a_map.MapControlPanel;
 import com.jmd.ui.tab.b_download.DownloadTaskPanel;
-import com.jmd.ui.tab.c_syslog.SystemLogPanel;
+import com.jmd.ui.tab.d_syslog.SystemLogPanel;
 
 @Component
 public class MainFrame extends JFrame {
@@ -31,18 +34,19 @@ public class MainFrame extends JFrame {
     private static final long serialVersionUID = -628803972270259148L;
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
+    private InnerMqClient client;
 
     @Autowired
     private TaskExecFunc taskExec;
-    @Autowired
-    private BrowserEngine browserEngine;
 
     @Autowired
     private FloatingWindow floatingWindow;
     @Autowired
-    private MapViewPanel mapViewPanel;
+    private MapControlPanel mapControlPanel;
     @Autowired
     private DownloadTaskPanel downloadTaskPanel;
+    @Autowired
+    private TileViewPanel tileViewPanel;
     @Autowired
     private SystemLogPanel systemLogPanel;
     @Autowired
@@ -152,8 +156,9 @@ public class MainFrame extends JFrame {
         this.setJMenuBar(mainMenuBar);
 
         /* Tabbed主界面 */
-        this.tabbedPane.addTab("地图预览", null, mapViewPanel, null);
+        this.tabbedPane.addTab("地图操作", null, mapControlPanel, null);
         this.tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
+        this.tabbedPane.addTab("瓦片预览", null, tileViewPanel, null);
         this.tabbedPane.addTab("系统日志", null, systemLogPanel, null);
 
         /* 悬浮窗 */
@@ -169,8 +174,13 @@ public class MainFrame extends JFrame {
 
     }
 
+    @PreDestroy
+    protected void destroy() {
+        this.innerMqService.destroyClient(this.client);
+    }
+
     private void subInnerMqMessage() throws Exception {
-        var client = this.innerMqService.createClient();
+        this.client = this.innerMqService.createClient();
         client.sub(Topic.UPDATE_UI, (res) -> {
             SwingUtilities.invokeLater(() -> {
                 SwingUtilities.updateComponentTreeUI(this);
@@ -202,7 +212,7 @@ public class MainFrame extends JFrame {
         if (TaskState.IS_TASKING) {
             taskExec.taskCancel();
         }
-        browserEngine.dispose();
+        ChromiumEmbeddedCore.getInstance().dispose();
         System.exit(0);
     }
 

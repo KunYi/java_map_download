@@ -1,4 +1,4 @@
-package com.jmd.ui.tab.c_syslog;
+package com.jmd.ui.tab.d_syslog;
 
 import javax.swing.JPanel;
 
@@ -37,7 +37,6 @@ public class SystemLogPanel extends JPanel {
     private void init() {
         var textArea = ApplicationStore.consoleTextArea;
         textArea.setEditable(false);
-        textArea.setFocusable(false);
         textArea.setFont(StaticVar.FONT_YaHeiConsolas_13);
         this.scrollPane.setViewportView(textArea);
     }

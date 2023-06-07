@@ -2,7 +2,6 @@ package com.jmd.ui.tab.a_map.layer;
 
 import com.alibaba.fastjson2.JSON;
 import com.jmd.ApplicationSetting;
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
 import com.jmd.entity.setting.AddedLayerSetting;
@@ -10,13 +9,13 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
@@ -32,7 +31,7 @@ public class LayerSelectorPanel extends JPanel {
     private InnerMqClient client;
 
     @Autowired
-    private BrowserEngine browserEngine;
+    private MapViewBrowserPanel mapViewBrowserPanel;
 
     private static final String OSM_NAME = "OSM(wgs84)(可能需要代理)";
     private static final String TIAN_NAME = "天地图(wgs84)";
@@ -168,80 +167,81 @@ public class LayerSelectorPanel extends JPanel {
             case OSM_NAME:
                 switch (self) {
                     case "OpenStreetMap" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "OpenStreet");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "OpenStreet");
                 }
                 break;
             case TIAN_NAME:
                 switch (self) {
                     case "普通图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Normal-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Normal-None");
                     case "地形图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Terrain-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Terrain-None");
                     case "边界线-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Line");
-                    case "标注层" -> browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Tip");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Line");
+                    case "标注层" ->
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tianditu-Tip");
                 }
                 break;
             case GOOGLE_NAME:
                 switch (self) {
                     case "普通图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Normal");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Normal");
                     case "地形图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Terrain");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Terrain");
                     case "影像图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Satellite");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Satellite");
                     case "影像图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Satellite-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Satellite-None");
                     case "路网图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Street");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Google-Street");
                 }
                 break;
             case AMAP_NAME:
                 switch (self) {
                     case "普通图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Normal");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Normal");
                     case "普通图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Normal-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Normal-None");
                     case "影像图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Satellite-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Satellite-None");
                     case "路网图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Street");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Street");
                     case "路网图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Street-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "AMap-Street-None");
                 }
                 break;
             case TENCENT_NAME:
                 switch (self) {
                     case "普通图-带标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tencent-Normal");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Tencent-Normal");
                 }
                 break;
             case BING_NAME:
                 switch (self) {
                     case "普通图1-带标注-全球" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1");
                     case "普通图1-带标注-国内" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1-CN");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1-CN");
                     case "普通图1-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-1-None");
                     case "普通图2-带标注-全球" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2");
                     case "普通图2-带标注-国内" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2-CN");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2-CN");
                     case "普通图2-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Normal-2-None");
                 }
                 break;
             case BING_WGS84_NAME:
                 switch (self) {
                     case "影像图-无标注" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Satellite-None");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Bing-Satellite-None");
                 }
                 break;
             case BAIDU_NAME:
                 switch (self) {
                     case "百度瓦片图旧版" ->
-                            browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Baidu-Normal");
+                            mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_RESOURCE, "Baidu-Normal");
                 }
                 break;
             case ADDED_NAME:
@@ -249,7 +249,7 @@ public class LayerSelectorPanel extends JPanel {
                 for (var layer : addedLayers) {
                     if (self.equals(layer.getName())) {
                         var data = JSON.toJSONString(layer);
-                        browserEngine.sendMessageByWebsocket(WsSendTopic.SWITCH_ADDED_RESOURCE, data);
+                        mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SWITCH_ADDED_RESOURCE, data);
                         break;
                     }
                 }
@@ -281,7 +281,7 @@ public class LayerSelectorPanel extends JPanel {
                 // 保存配置文件
                 ApplicationSetting.save();
                 // 推送至前端删除图层
-                this.browserEngine.sendMessageByWebsocket(WsSendTopic.REMOVE_ADDED_RESOURCE, name);
+                this.mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.REMOVE_ADDED_RESOURCE, name);
                 // 删除树节点
                 int finalI = i;
                 SwingUtilities.invokeLater(() -> {

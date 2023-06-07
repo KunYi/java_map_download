@@ -11,7 +11,7 @@ import { MapSource } from "../../../map/map-source";
 @Component({
 	selector: 'app-map',
 	templateUrl: './map.page.html',
-	styleUrls: ['./map.page.less'],
+	styleUrls: ['./map.page.scss'],
 	providers: [SubmitService],
 })
 export class MapPage implements OnInit, OnDestroy {

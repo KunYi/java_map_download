@@ -1,27 +1,23 @@
 package com.jmd.ui.tab.a_map.district;
 
 import com.alibaba.fastjson2.JSON;
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
 import com.jmd.db.service.AllDistrictService;
-import com.jmd.entity.district.City;
-import com.jmd.entity.district.Province;
 import com.jmd.entity.geo.LngLatPoint;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import com.jmd.util.GeoUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Component
 public class DistrictSelectorPanel extends JPanel {
@@ -30,7 +26,7 @@ public class DistrictSelectorPanel extends JPanel {
     private static final long serialVersionUID = 5749571452900454848L;
 
     @Autowired
-    private BrowserEngine browserEngine;
+    private MapViewBrowserPanel browserPanel;
     @Autowired
     private AllDistrictService allDistrictService;
 
@@ -224,7 +220,7 @@ public class DistrictSelectorPanel extends JPanel {
                     blocks.add(points);
                 }
                 var json = JSON.toJSONString(blocks);
-                browserEngine.sendMessageByWebsocket(WsSendTopic.DRAW_POLYGON_AND_POSITING, json);
+                browserPanel.sendMessageByWebsocket(WsSendTopic.DRAW_POLYGON_AND_POSITING, json);
                 return null;
             }
         };

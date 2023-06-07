@@ -1,10 +1,10 @@
 package com.jmd.ui.tab.a_map.control;
 
-import com.jmd.browser.BrowserEngine;
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
 import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class MapControlButtonPanel extends JPanel {
     private static final long serialVersionUID = -7566297857880130132L;
 
     @Autowired
-    private BrowserEngine browserEngine;
+    private MapViewBrowserPanel mapViewBrowserPanel;
 
     private final JButton zoomInButton;
     private final JButton zoomOutButton;
@@ -126,19 +126,19 @@ public class MapControlButtonPanel extends JPanel {
         this.zoomInButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.ZOOM_IN, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.ZOOM_IN, null);
             }
         });
         this.zoomOutButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.ZOOM_OUT, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.ZOOM_OUT, null);
             }
         });
         this.gridButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.GRID_SWITCH, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.GRID_SWITCH, null);
             }
         });
         this.downloadButton.addMouseListener(new MouseAdapter() {
@@ -148,31 +148,31 @@ public class MapControlButtonPanel extends JPanel {
                     CommonDialog.alert(null, "当前正在进行下载任务");
                     return;
                 }
-                browserEngine.sendMessageByWebsocket(WsSendTopic.SUBMIT_BLOCK_DOWNLOAD, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SUBMIT_BLOCK_DOWNLOAD, null);
             }
         });
         this.panButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.PAN, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.PAN, null);
             }
         });
         this.drawButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.OPEN_DRAW, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.OPEN_DRAW, null);
             }
         });
         this.fitViewButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.FIT_VIEW, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.FIT_VIEW, null);
             }
         });
         this.removeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                browserEngine.sendMessageByWebsocket(WsSendTopic.REMOVE_SHAPE, null);
+                mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.REMOVE_SHAPE, null);
             }
         });
     }
