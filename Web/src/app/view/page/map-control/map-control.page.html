@@ -5,15 +5,15 @@
 <div class='right-top'>
 	<!-- 更改key -->
 	<div class='block' #changeKeyDiv>
-		<button (click)='openChangeKeyModal()'>更换Key</button>
+		<button mat-raised-button (click)='openChangeKeyModal()'>更换Key</button>
 	</div>
 	<!-- 刷新 -->
 	<div class='block'>
-		<button (click)='reload()'>刷新</button>
+		<button mat-raised-button (click)='reload()'>刷新</button>
 	</div>
 	<!-- 地图类型 -->
 	<div class='block'>
-		<button>
+		<button mat-raised-button>
 			{{ mapType }}
 		</button>
 	</div>
@@ -21,7 +21,7 @@
 <div class='right-bottom'>
 	<!-- 坐标类型 -->
 	<div class='block'>
-		<button>
+		<button mat-raised-button>
 			坐标类型：{{ coordinateType }}
 		</button>
 	</div>

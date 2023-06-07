@@ -2,7 +2,7 @@ package com.jmd.ui.tab.a_map.draw;
 
 import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
-import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class DrawTypePanel extends JPanel {
     private static final long serialVersionUID = 68092099548468829L;
 
     @Autowired
-    private MapViewBrowserPanel mapViewBrowserPanel;
+    private MapControlBrowserPanel mapViewBrowserPanel;
 
     private final JRadioButton drawTypePolygonRadioButton;
     private final JRadioButton drawTypeCircleRadioButton;

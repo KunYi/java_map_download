@@ -1,20 +1,21 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InnerMqService } from "src/app/rx/inner-mq/service/inner-mq.service";
 import { InnerMqClient } from "src/app/rx/inner-mq/client/inner-mq.client";
 import { MapBase } from 'src/app/map/map-base';
 import { SubmitService } from 'src/app/service/submit.service';
 import { CommonUtil } from 'src/app/util/common-util';
-import { MapMessageProcessor } from '../../../connection/onmassage/map-message.processor';
-import { MapSource } from "../../../map/map-source";
+import { MapMessageProcessor } from 'src/app/connection/onmassage/map-message.processor';
+import { MapSource } from "src/app/map/map-source";
+import { MatDialog } from "@angular/material/dialog";
+import { KeyInputDialogComponent } from "./dialog/key-input-dialog.component";
 
 @Component({
-	selector: 'app-map',
-	templateUrl: './map.page.html',
-	styleUrls: ['./map.page.scss'],
+	selector: 'app-map-control',
+	templateUrl: './map-control.page.html',
+	styleUrls: ['./map-control.page.scss'],
 	providers: [SubmitService],
 })
-export class MapPage implements OnInit, OnDestroy {
+export class MapControlPage implements OnInit, OnDestroy {
 
 	@ViewChild('map', { static: true }) mapEleRef!: ElementRef<HTMLDivElement>;
 	@ViewChild('mapTypeDiv', { static: true }) mapTypeDiv!: ElementRef<HTMLElement>;
@@ -24,7 +25,6 @@ export class MapPage implements OnInit, OnDestroy {
 	coordinateType: string = '';
 	zoom: number = 0;
 	keyType: string = '';
-	isChangeKeyModalVisible: boolean = false;
 
 	private client!: InnerMqClient;
 	private mapBase!: MapBase;
@@ -33,10 +33,8 @@ export class MapPage implements OnInit, OnDestroy {
 	public getMapBase = (): MapBase => this.mapBase;
 	public getSubmitService = (): SubmitService => this.submitService;
 
-	validateForm!: FormGroup;
-
 	constructor(
-		private fb: FormBuilder,
+		private dialog: MatDialog,
 		private innerMqService: InnerMqService,
 		private submitService: SubmitService,
 	) {
@@ -44,9 +42,6 @@ export class MapPage implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.client = this.innerMqService.createLoClient();
-		this.validateForm = this.fb.group({
-			key: [null, [Validators.required]],
-		});
 		new MapMessageProcessor(this);
 	}
 
@@ -83,32 +78,24 @@ export class MapPage implements OnInit, OnDestroy {
 
 	openChangeKeyModal(): void {
 		if (this.keyType == 'tian') {
-			this.validateForm.controls['key'].setValue(CommonUtil.getConfigCache().key[this.keyType])
-			this.isChangeKeyModalVisible = true;
+			this.dialog.open(KeyInputDialogComponent, {
+				width: '500px',
+				data: {
+					defaultKey: CommonUtil.getConfigCache().key[this.keyType],
+					callback: (key: string) => {
+						this.changeKey(key);
+					}
+				}
+			})
 		}
 	}
 
-	closeChangeKeyModal(): void {
-		this.isChangeKeyModalVisible = false;
-	}
-
-	keyFormValid(): boolean {
-		for (const i in this.validateForm.controls) {
-			this.validateForm.controls[i].markAsDirty();
-			this.validateForm.controls[i].updateValueAndValidity();
-		}
-		return this.validateForm.valid;
-	}
-
-	changeKey(): void {
+	changeKey(key: string): void {
 		if (this.keyType == 'tian') {
-			if (this.keyFormValid()) {
-				let key = this.validateForm.controls['key'].value;
-				let config = CommonUtil.getConfigCache();
-				config.key[this.keyType] = key;
-				CommonUtil.saveConfigCache(config);
-				this.reload();
-			}
+			let config = CommonUtil.getConfigCache();
+			config.key[this.keyType] = key;
+			CommonUtil.saveConfigCache(config);
+			this.reload();
 		}
 	}
 

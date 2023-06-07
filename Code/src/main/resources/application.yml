@@ -1,8 +1,19 @@
-logging:
-  level:
-    root: info
-  file:
-    path: ./log
+logging.level.root: info
+logging.file.name: ./log/application.log
+
+setting:
+  build:
+    date: 2023-06-07
+  version:
+    jdk: JetBrains Runtime 17
+    jcef: 104
+    openlayers: 7.3.0
+    angular: 16.0.4
+    opencv: 4.5.5
+  git:
+    address: https://gitee.com/CrimsonHu/java_map_download
+  web:
+    prod: false
 
 spring:
   datasource:

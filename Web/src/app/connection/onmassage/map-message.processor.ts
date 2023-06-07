@@ -1,6 +1,6 @@
 import { Topic } from "../../rx/inner-mq/topic";
 import { CommonUtil } from '../../util/common-util';
-import { MapPage } from '../../view/page/map/map.page';
+import { MapControlPage } from '../../view/page/map-control/map-control.page';
 import { MapDraw } from '../../map/draw/map-draw';
 import { MapWrap } from '../../map/draw/map-wrap';
 import { GeoUtil } from "../../map/geo-util";
@@ -12,7 +12,7 @@ import { DEFAULT_LAYER_NAME } from "../../common/common-var";
 export class MapMessageProcessor {
 
 	constructor(
-		private mapPage: MapPage,
+		private mapPage: MapControlPage,
 	) {
 		mapPage.getMqClient().sub<string>(Topic.INIT_MAP_CONFIG, (res) => {
 			// 来自服务端的配置文件

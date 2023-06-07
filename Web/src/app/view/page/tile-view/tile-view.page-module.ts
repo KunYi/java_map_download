@@ -1,23 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { provideRouter } from "@angular/router";
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MapPage } from './map.page';
+import { TileViewPage } from "./tile-view.page";
 
 @NgModule({
 	imports: [
 		CommonModule,
-		FormsModule,
-		ReactiveFormsModule,
 	],
 	declarations: [
-		MapPage,
+		TileViewPage,
 	],
 	providers: [
 		provideRouter([
-			{ path: '', component: MapPage },
+			{ path: '', component: TileViewPage },
 		]),
 	],
 })
-export class MapModule {
+export class TileViewPageModule {
 }

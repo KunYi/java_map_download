@@ -1,11 +1,11 @@
 package com.jmd.ui.frame.info;
 
-import java.awt.Dimension;
+import java.awt.*;
 import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
 
 import com.jmd.ui.common.*;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +26,30 @@ public class AboutFrame extends CommonSubFrame {
     @Serial
     private static final long serialVersionUID = -5612514860347124476L;
 
-    private final String git = "https://gitee.com/CrimsonHu/java_map_download";
+    @Value("${setting.version.jdk}")
+    private String jdkVersion;
+    @Value("${setting.version.jcef}")
+    private String jcefVersion;
+    @Value("${setting.version.openlayers}")
+    private String openlayersVersion;
+    @Value("${setting.version.angular}")
+    private String angularVersion;
+    @Value("${setting.version.opencv}")
+    private String opencvVersion;
+    @Value("${setting.build.date}")
+    private String buildDate;
+    @Value("${setting.git.address}")
+    private String gitAddress;
+
+    private final JLabel jdkTextLabel;
+    private final JLabel jcefTextLabel;
+    private final JLabel openlayersTextLabel;
+    private final JLabel angularTextLabel;
+    private final JLabel opencvTextLabel;
+    private final JLabel gitTextLabel;
+    private final JTextArea tipTextArea;
+    private final JButton gitCopyButton;
+    private final JButton gitOpenButton;
 
     public AboutFrame() {
 
@@ -51,96 +74,73 @@ public class AboutFrame extends CommonSubFrame {
         jdkIconLabel.setBounds(15, 10, 30, 30);
         panel.add(jdkIconLabel);
 
-        var jdkTextLabel = new JLabel("JetBrains Runtime 17");
-        jdkTextLabel.setBounds(55, 10, 166, 30);
-        jdkTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(jdkTextLabel);
+        this.jdkTextLabel = new JLabel();
+        this.jdkTextLabel.setBounds(55, 10, 166, 30);
+        this.jdkTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.jdkTextLabel);
 
         var jcefIconLabel = new IconLabel("/com/jmd/assets/icon/cef.png");
         jcefIconLabel.setBounds(238, 10, 40, 30);
         panel.add(jcefIconLabel);
 
-        var jcefTextLabel = new JLabel("JCEF 104");
-        jcefTextLabel.setBounds(288, 10, 156, 30);
-        jcefTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(jcefTextLabel);
+        this.jcefTextLabel = new JLabel();
+        this.jcefTextLabel.setBounds(288, 10, 156, 30);
+        this.jcefTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.jcefTextLabel);
 
         var openlayersIconLabel = new IconLabel("/com/jmd/assets/icon/openlayers.png");
         openlayersIconLabel.setBounds(15, 46, 30, 30);
         panel.add(openlayersIconLabel);
 
-        var openlayersTextLabel = new JLabel("OpenLayers 7.3.0");
-        openlayersTextLabel.setBounds(55, 46, 166, 30);
-        openlayersTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(openlayersTextLabel);
+        this.openlayersTextLabel = new JLabel();
+        this.openlayersTextLabel.setBounds(55, 46, 166, 30);
+        this.openlayersTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.openlayersTextLabel);
 
         var angularIconLabel = new IconLabel("/com/jmd/assets/icon/angular.png");
         angularIconLabel.setBounds(238, 46, 30, 30);
         panel.add(angularIconLabel);
 
-        var angularTextLabel = new JLabel("Angular 15.2.2");
-        angularTextLabel.setBounds(278, 46, 166, 30);
-        angularTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(angularTextLabel);
+        this.angularTextLabel = new JLabel();
+        this.angularTextLabel.setBounds(278, 46, 166, 30);
+        this.angularTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.angularTextLabel);
 
         var opencvIconLabel = new IconLabel("/com/jmd/assets/icon/opencv.png");
         opencvIconLabel.setBounds(15, 82, 30, 30);
         panel.add(opencvIconLabel);
 
-        var opencvTextLabel = new JLabel("OpenCV 4.5.5");
-        opencvTextLabel.setBounds(55, 82, 166, 30);
-        opencvTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(opencvTextLabel);
+        this.opencvTextLabel = new JLabel();
+        this.opencvTextLabel.setBounds(55, 82, 166, 30);
+        this.opencvTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.opencvTextLabel);
 
         var gitIconLabel = new IconLabel("/com/jmd/assets/icon/git.png");
         gitIconLabel.setBounds(15, 118, 30, 30);
         panel.add(gitIconLabel);
 
-        var gitTextLabel = new JLabel(git);
-        gitTextLabel.setBounds(55, 118, 389, 30);
-        gitTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        panel.add(gitTextLabel);
+        this.gitTextLabel = new JLabel();
+        this.gitTextLabel.setBounds(55, 118, 389, 30);
+        this.gitTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.gitTextLabel);
 
-        var gitCopyButton = new JButton("复制git地址");
-        gitCopyButton.setBounds(10, 158, 217, 29);
-        gitCopyButton.setFocusable(false);
-        gitCopyButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        gitCopyButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == 1) {
-                    CommonUtils.setClipboardText(git);
-                    CommonDialog.alert(null, "已复制到剪贴板");
-                }
-            }
-        });
-        panel.add(gitCopyButton);
+        this.gitCopyButton = new JButton("复制git地址");
+        this.gitCopyButton.setBounds(10, 158, 217, 29);
+        this.gitCopyButton.setFocusable(false);
+        this.gitCopyButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.gitCopyButton);
 
-        var gitOpenButton = new JButton("打开git");
-        gitOpenButton.setBounds(233, 158, 211, 29);
-        gitOpenButton.setFocusable(false);
-        gitOpenButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        gitOpenButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == 1) {
-                    try {
-                        Desktop desktop = Desktop.getDesktop();
-                        desktop.browse(new URI(git));
-                    } catch (IOException | URISyntaxException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        });
-        panel.add(gitOpenButton);
+        this.gitOpenButton = new JButton("打开git");
+        this.gitOpenButton.setBounds(233, 158, 211, 29);
+        this.gitOpenButton.setFocusable(false);
+        this.gitOpenButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        panel.add(this.gitOpenButton);
 
-        var tipTextArea = new JTextArea();
-        tipTextArea.setBounds(10, 193, 434, 78);
-        tipTextArea.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        tipTextArea.setLineWrap(true);
-        tipTextArea.setText("Build日期：2023-05-30");
-        tipTextArea.setEditable(false);
+        this.tipTextArea = new JTextArea();
+        this.tipTextArea.setBounds(10, 193, 434, 78);
+        this.tipTextArea.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        this.tipTextArea.setLineWrap(true);
+        this.tipTextArea.setEditable(false);
         panel.add(tipTextArea);
 
         this.setTitle("关于地图下载器");
@@ -148,6 +148,39 @@ public class AboutFrame extends CommonSubFrame {
         this.setVisible(false);
         this.setResizable(false);
 
+    }
+
+    @PostConstruct
+    private void init() {
+        this.jdkTextLabel.setText(this.jdkVersion);
+        this.jcefTextLabel.setText("JCEF " + this.jcefVersion);
+        this.openlayersTextLabel.setText("OpenLayers " + this.opencvVersion);
+        this.angularTextLabel.setText("Angular " + this.angularVersion);
+        this.opencvTextLabel.setText("OpenCV " + this.opencvVersion);
+        this.tipTextArea.setText("Build日期：" + this.buildDate);
+        this.gitTextLabel.setText(this.gitAddress);
+        this.gitCopyButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 1) {
+                    CommonUtils.setClipboardText(gitAddress);
+                    CommonDialog.alert(null, "已复制到剪贴板");
+                }
+            }
+        });
+        this.gitOpenButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 1) {
+                    try {
+                        Desktop desktop = Desktop.getDesktop();
+                        desktop.browse(new URI(gitAddress));
+                    } catch (IOException | URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }

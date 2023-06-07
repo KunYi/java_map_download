@@ -5,7 +5,7 @@ import com.jmd.common.StaticVar;
 import com.jmd.common.WsSendTopic;
 import com.jmd.db.service.AllDistrictService;
 import com.jmd.entity.geo.LngLatPoint;
-import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
 import com.jmd.util.GeoUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class DistrictSelectorPanel extends JPanel {
     private static final long serialVersionUID = 5749571452900454848L;
 
     @Autowired
-    private MapViewBrowserPanel browserPanel;
+    private MapControlBrowserPanel browserPanel;
     @Autowired
     private AllDistrictService allDistrictService;
 

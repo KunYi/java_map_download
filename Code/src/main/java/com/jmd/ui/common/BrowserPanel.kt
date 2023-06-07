@@ -16,8 +16,7 @@ import javax.swing.*
 
 abstract class BrowserPanel(
     private val compId: String,
-    private val path: String,
-    private val prod: Boolean
+    private val path: String
 ) : JPanel() {
 
     companion object {
@@ -33,6 +32,8 @@ abstract class BrowserPanel(
     private val framePanel: JPanel
     private val devToolPanel: JPanel
     private var devToolOpen = false
+
+    private var prod = true
 
     init {
 
@@ -84,7 +85,8 @@ abstract class BrowserPanel(
         this.framePanel.revalidate()
     }
 
-    protected fun baseInit() {
+    protected fun baseInit(prod: Boolean) {
+        this.prod = prod
         try {
             subInnerMqMessage()
         } catch (e: Exception) {

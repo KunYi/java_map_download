@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
-import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
 import com.jmd.ui.tab.a_map.control.MapControlButtonPanel;
 import com.jmd.ui.tab.a_map.district.DistrictSelectorPanel;
 import com.jmd.ui.tab.a_map.custom.CustomLayerButtonPanel;
@@ -39,7 +39,7 @@ public class MapControlPanel extends JPanel {
     @Autowired
     private CustomLayerButtonPanel customLayerButtonPanel;
     @Autowired
-    private MapViewBrowserPanel browserInstPanel;
+    private MapControlBrowserPanel browserInstPanel;
     @Autowired
     private BottomInfoPanel bottomInfoPanel;
 

@@ -20,7 +20,7 @@ import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
 import com.jmd.ui.frame.setting.ProxySettingFrame;
-import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class MainMenuBar extends JMenuBar {
     @Autowired
     private TaskExecFunc taskExec;
     @Autowired
-    private MapViewBrowserPanel mapViewBrowserPanel;
+    private MapControlBrowserPanel mapViewBrowserPanel;
     @Autowired
     private BottomInfoPanel bottomInfoPanel;
 

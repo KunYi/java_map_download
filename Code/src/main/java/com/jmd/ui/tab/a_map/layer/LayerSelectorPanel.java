@@ -9,7 +9,7 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;
-import com.jmd.ui.tab.a_map.browser.MapViewBrowserPanel;
+import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class LayerSelectorPanel extends JPanel {
     private InnerMqClient client;
 
     @Autowired
-    private MapViewBrowserPanel mapViewBrowserPanel;
+    private MapControlBrowserPanel mapViewBrowserPanel;
 
     private static final String OSM_NAME = "OSM(wgs84)(可能需要代理)";
     private static final String TIAN_NAME = "天地图(wgs84)";
