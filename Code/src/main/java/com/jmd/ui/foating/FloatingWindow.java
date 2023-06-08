@@ -1,6 +1,6 @@
 package com.jmd.ui.foating;
 
-import com.jmd.entity.task.TaskStatusEnum;
+import com.jmd.model.task.TaskStatusEnum;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;

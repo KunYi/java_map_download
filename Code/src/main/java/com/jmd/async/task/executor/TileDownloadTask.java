@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import com.jmd.entity.result.BlockAsyncTaskResult;
-import com.jmd.entity.task.TaskExecEntity;
+import com.jmd.model.result.BlockAsyncTaskResult;
+import com.jmd.model.task.TaskExecEntity;
 import com.jmd.http.HttpDownload;
 
 @Component

@@ -3,20 +3,16 @@ package com.jmd.ui.common
 import com.jmd.ApplicationConfig
 import com.jmd.browser.core.ChromiumEmbeddedCore
 import com.jmd.common.StaticVar
-import com.jmd.rx.Topic
-import com.jmd.rx.client.InnerMqClient
-import com.jmd.rx.service.InnerMqService
 import org.cef.CefClient
 import org.cef.browser.CefBrowser
 import java.awt.BorderLayout
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 import java.io.Serial
 import javax.swing.*
 
 abstract class BrowserPanel(
-    private val compId: String,
-    private val path: String
+    protected val compId: String,
+    private val path: String,
+    private val waitingText: String
 ) : JPanel() {
 
     companion object {
@@ -24,16 +20,12 @@ abstract class BrowserPanel(
         private val serialVersionUID = 296955159808720054L
     }
 
-    private val innerMqService = InnerMqService.getInstance()
-    private var mq: InnerMqClient? = null
     private var client: CefClient? = null
     private var browser: CefBrowser? = null
     private val splitPane: JSplitPane
     private val framePanel: JPanel
     private val devToolPanel: JPanel
     private var devToolOpen = false
-
-    private var prod = true
 
     init {
 
@@ -53,7 +45,7 @@ abstract class BrowserPanel(
         this.framePanel.layout = BorderLayout()
         this.splitPane.leftComponent = this.framePanel
 
-        val label = JLabel("WebView初始化")
+        val label = JLabel(this.waitingText)
         label.horizontalAlignment = SwingConstants.CENTER
         label.font = StaticVar.FONT_SourceHanSansCNNormal_13
         this.framePanel.add(label, BorderLayout.CENTER)
@@ -65,47 +57,22 @@ abstract class BrowserPanel(
 
     }
 
-    private fun showBrowser() {
-        val url = if (this.prod) {
+    protected fun showBrowser(prod: Boolean) {
+        val url = if (prod) {
             "http://localhost:${ApplicationConfig.startPort}/web/index.html/#${this.path}"
         } else {
             "http://localhost:4500/#${this.path}"
         }
         this.client = ChromiumEmbeddedCore.getInstance().createClient(this.compId)
         this.browser = ChromiumEmbeddedCore.getInstance().createBrowser(this.client, url)
-        this.browser!!.setFocus(true)
-        this.browser!!.uiComponent!!.addMouseListener(object : MouseAdapter() {
-            override fun mousePressed(e: MouseEvent) {
-                browser!!.setFocus(true)
-                innerMqService.pub(Topic.BROWSER_FOCUS, true)
-            }
-        })
         this.framePanel.removeAll()
-        this.browser!!.uiComponent!!.let { this.framePanel.add(it, BorderLayout.CENTER) }
+        this.browser!!.uiComponent!!.let {
+            this.framePanel.add(it, BorderLayout.CENTER);
+        }
         this.framePanel.revalidate()
     }
 
-    protected fun baseInit(prod: Boolean) {
-        this.prod = prod
-        try {
-            subInnerMqMessage()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    protected fun baseDestroy() {
-        this.innerMqService.destroyClient(this.mq)
-    }
-
-    @Throws(Exception::class)
-    private fun subInnerMqMessage() {
-        this.mq = innerMqService.createClient(this.compId)
-        this.mq!!.sub(Topic.APPLICATION_START_FINISH) { res: Any? -> SwingUtilities.invokeLater { showBrowser() } }
-        this.mq!!.sub(Topic.OPEN_BROWSER_DEV_TOOL) { res: Any? -> SwingUtilities.invokeLater { toggleDevTools() } }
-    }
-
-    private fun toggleDevTools() {
+    protected fun toggleDevTools() {
         this.devToolOpen = if (this.devToolOpen) {
             closeDevTools()
             false

@@ -1,12 +1,11 @@
 package com.jmd.http;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.jmd.entity.result.DownloadResult;
+import com.jmd.model.result.DownloadResult;
 import com.jmd.inst.DownloadAmountInstance;
 import com.jmd.util.CommonUtils;
 

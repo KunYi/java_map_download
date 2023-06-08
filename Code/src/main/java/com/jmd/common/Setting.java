@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.jmd.entity.setting.AddedLayerSetting;
+import com.jmd.model.setting.AddedLayerSetting;
 import lombok.Data;
 
 @Data

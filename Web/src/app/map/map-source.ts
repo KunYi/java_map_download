@@ -87,11 +87,11 @@ export class MapSource {
 										let z = String(tileCoord[0]);
 										let x = String(tileCoord[1]);
 										let y = String(tileCoord[2]);
-										let type = 'getTilePNG';
+										let type = 'proxyPNG';
 										if (addedLayers[i].proxy == 2) {
-											type = 'getTileJPEG';
+											type = 'proxyJPG';
 										}
-										let path = `/proxy/${type}?z=${z}&x=${x}&y=${y}&url=${encodeURI(addedLayers[i].url)}`;
+										let path = `/tile/${type}?z=${z}&x=${x}&y=${y}&url=${encodeURI(addedLayers[i].url)}`;
 										if (this.production) {
 											return `http://localhost:${window.location.port}${path}`;
 										} else {

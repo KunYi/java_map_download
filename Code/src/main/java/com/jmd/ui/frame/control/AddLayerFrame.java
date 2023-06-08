@@ -2,7 +2,7 @@ package com.jmd.ui.frame.control;
 
 import com.jmd.ApplicationSetting;
 import com.jmd.common.StaticVar;
-import com.jmd.entity.setting.AddedLayerSetting;
+import com.jmd.model.setting.AddedLayerSetting;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;

@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MapMessageConnection } from "src/app/connection/onmassage/map-message.connection";
 import { InnerMqService } from "src/app/rx/inner-mq/service/inner-mq.service";
 import { InnerMqClient } from "src/app/rx/inner-mq/client/inner-mq.client";
 import { MapBase } from 'src/app/map/map-base';
+import { InfoService } from "src/app/service/info.service";
 import { SubmitService } from 'src/app/service/submit.service';
 import { CommonUtil } from 'src/app/util/common-util';
 import { MapMessageProcessor } from 'src/app/connection/onmassage/map-message.processor';
@@ -13,13 +15,15 @@ import { KeyInputDialogComponent } from "./dialog/key-input-dialog.component";
 	selector: 'app-map-control',
 	templateUrl: './map-control.page.html',
 	styleUrls: ['./map-control.page.scss'],
-	providers: [SubmitService],
+	providers: [InfoService, SubmitService],
 })
 export class MapControlPage implements OnInit, OnDestroy {
 
 	@ViewChild('map', { static: true }) mapEleRef!: ElementRef<HTMLDivElement>;
 	@ViewChild('mapTypeDiv', { static: true }) mapTypeDiv!: ElementRef<HTMLElement>;
 	@ViewChild('changeKeyDiv', { static: true }) changeKeyDiv!: ElementRef<HTMLDivElement>;
+
+	private websocket!: MapMessageConnection;
 
 	mapType: string = '';
 	coordinateType: string = '';
@@ -36,16 +40,21 @@ export class MapControlPage implements OnInit, OnDestroy {
 	constructor(
 		private dialog: MatDialog,
 		private innerMqService: InnerMqService,
+		private infoService: InfoService,
 		private submitService: SubmitService,
 	) {
 	}
 
 	ngOnInit(): void {
 		this.client = this.innerMqService.createLoClient();
-		new MapMessageProcessor(this);
+		this.infoService.getWsPath().then((res) => {
+			this.websocket = new MapMessageConnection(res.data, this.innerMqService);
+			new MapMessageProcessor(this);
+		})
 	}
 
 	ngOnDestroy(): void {
+		this.websocket.disConnection();
 		this.innerMqService.destroyClient(this.client);
 		this.mapBase.destroyMap();
 	}

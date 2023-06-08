@@ -9,13 +9,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +27,32 @@ public class CommonUtils {
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable tText = new StringSelection(writeMe);
         clip.setContents(tText, null);
+    }
+
+    // 读取文件
+    public static byte[] readFile(String path) throws IOException {
+        var file = new File(path);
+        if (!file.exists() || file.isDirectory()) {
+            return new byte[0];
+        }
+        // 传统IO方式
+        //1、定义一个Byte字节数组输出流，设置大小为文件大小
+        //2、将打开的文件输入流转换为Buffer输入流，循环 读取buffer输入流到buffer[]缓冲，并将buffer缓冲数据输入到目标输出流。
+        //3、将目标输出流转换为字节数组。
+        var bos = new ByteArrayOutputStream((int) file.length());
+        BufferedInputStream bin = null;
+        try {
+            bin = new BufferedInputStream(new FileInputStream(file));
+            byte[] buffer = new byte[1024];
+            while (bin.read(buffer) > 0) {
+                bos.write(buffer);
+            }
+            return bos.toByteArray();
+        } finally {
+            assert bin != null;
+            bin.close();
+            bos.close();
+        }
     }
 
     // 对象转文件

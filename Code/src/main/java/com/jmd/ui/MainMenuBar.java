@@ -20,16 +20,16 @@ import com.jmd.ui.frame.info.AboutFrame;
 import com.jmd.ui.frame.info.DonateFrame;
 import com.jmd.ui.frame.info.LicenseFrame;
 import com.jmd.ui.frame.setting.ProxySettingFrame;
-import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
+import com.jmd.ui.tab.a_map.panel.MapControlBrowserPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
-import com.jmd.entity.theme.ThemeEntity;
+import com.jmd.model.theme.ThemeEntity;
 import com.jmd.task.TaskExecFunc;
-import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
+import com.jmd.ui.tab.a_map.panel.BottomInfoPanel;
 import com.jmd.util.TaskUtils;
 
 @Component

@@ -18,8 +18,8 @@ import com.jmd.ui.StartupWindow;
 @SpringBootApplication
 public class Application {
 
+    public static boolean isStartComplete = false;
     private static final InnerMqService innerMqService = InnerMqService.getInstance();
-
     private static final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     static {
@@ -62,6 +62,7 @@ public class Application {
                     e1.printStackTrace();
                 }
                 compositeDisposable.dispose();
+                isStartComplete = true;
                 innerMqService.pub(Topic.APPLICATION_START_FINISH, true);
             }).start();
         }));

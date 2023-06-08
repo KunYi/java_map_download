@@ -10,19 +10,19 @@ import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
-import com.jmd.ui.frame.download.config.panel.ErrorHandlerPanel;
+import com.jmd.ui.frame.download.config.panel.DownloadErrorHandlerPanel;
 import com.jmd.ui.frame.download.preview.DownloadPreviewFrame;
-import com.jmd.ui.frame.download.config.panel.OtherSettingPanel;
-import com.jmd.ui.frame.download.config.panel.PathSelectorPanel;
-import com.jmd.ui.frame.download.config.panel.ZoomSelectorPanel;
+import com.jmd.ui.frame.download.config.panel.DownloadOtherSettingPanel;
+import com.jmd.ui.frame.download.config.panel.DownloadPathSelectorPanel;
+import com.jmd.ui.frame.download.config.panel.DownloadZoomSelectorPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
-import com.jmd.entity.geo.Polygon;
-import com.jmd.entity.task.TaskCreateEntity;
+import com.jmd.model.geo.Polygon;
+import com.jmd.model.task.TaskCreateEntity;
 import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.MainFrame;
 import com.jmd.util.TaskUtils;
@@ -53,13 +53,13 @@ public class DownloadConfigFrame extends CommonSubFrame {
     private DownloadPreviewFrame downloadPreviewFrame;
 
     @Autowired
-    private ZoomSelectorPanel zoomSelectorPanel;
+    private DownloadZoomSelectorPanel zoomSelectorPanel;
     @Autowired
-    private OtherSettingPanel otherSettingPanel;
+    private DownloadOtherSettingPanel otherSettingPanel;
     @Autowired
-    private ErrorHandlerPanel errorHandlerPanel;
+    private DownloadErrorHandlerPanel errorHandlerPanel;
     @Autowired
-    private PathSelectorPanel pathSelectorPanel;
+    private DownloadPathSelectorPanel pathSelectorPanel;
 
     private String url;
     private List<Polygon> polygons;

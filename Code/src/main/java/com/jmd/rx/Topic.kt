@@ -55,7 +55,8 @@ enum class Topic {
     ADD_NEW_LAYER,
     REMOVE_ADDED_LAYER,
 
+    OPEN_TILE_VIEW,
+
     OPEN_BROWSER_DEV_TOOL,
-    BROWSER_FOCUS,
 
 }

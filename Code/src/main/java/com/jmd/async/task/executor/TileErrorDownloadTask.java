@@ -10,9 +10,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
-import com.jmd.entity.result.BlockAsyncTaskResult;
-import com.jmd.entity.task.ErrorTileEntity;
-import com.jmd.entity.task.TaskAllInfoEntity;
+import com.jmd.model.result.BlockAsyncTaskResult;
+import com.jmd.model.task.ErrorTileEntity;
+import com.jmd.model.task.TaskAllInfoEntity;
 import com.jmd.http.HttpDownload;
 import com.jmd.util.CommonUtils;
 import com.jmd.util.TaskUtils;

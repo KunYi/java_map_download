@@ -2,15 +2,15 @@ package com.jmd.ui.tab.b_download;
 
 import javax.swing.*;
 
-import com.jmd.entity.task.TaskStatusEnum;
+import com.jmd.model.task.TaskStatusEnum;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
-import com.jmd.ui.tab.b_download.log.TaskLogPanel;
-import com.jmd.ui.tab.b_download.progress.TaskProgressPanel;
+import com.jmd.ui.tab.b_download.panel.TaskLogPanel;
+import com.jmd.ui.tab.b_download.panel.TaskProgressPanel;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
 import com.jmd.task.TaskExecFunc;
-import com.jmd.ui.tab.b_download.merge.TileMergeProgressPanel;
-import com.jmd.ui.tab.b_download.task.TaskStatusPanel;
-import com.jmd.ui.tab.b_download.usage.ResourceUsagePanel;
+import com.jmd.ui.tab.b_download.panel.TileMergeProgressPanel;
+import com.jmd.ui.tab.b_download.panel.TaskStatusPanel;
+import com.jmd.ui.tab.b_download.panel.ResourceUsagePanel;
 
 import javax.swing.GroupLayout.Alignment;
 import java.io.Serial;

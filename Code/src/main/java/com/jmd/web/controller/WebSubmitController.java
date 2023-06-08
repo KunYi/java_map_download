@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.jmd.web.common.RESTfulResult;
-import com.jmd.entity.controller.WebDownloadSubmitVo;
+import com.jmd.model.controller.WebDownloadSubmitVo;
 import com.jmd.web.service.WebSubmitService;
 
 @CrossOrigin

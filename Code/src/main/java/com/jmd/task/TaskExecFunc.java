@@ -10,19 +10,18 @@ import java.util.Random;
 import javax.swing.SwingWorker;
 
 import com.jmd.async.pool.scheduler.IntervalConfig;
-import com.jmd.entity.task.*;
+import com.jmd.model.task.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.jmd.async.pool.executor.TileDownloadExecutorPool;
 import com.jmd.async.pool.executor.TileMergeExecutorPool;
 import com.jmd.async.task.scheduler.DownloadMonitoringInterval;
 import com.jmd.async.task.scheduler.TileMergeMonitoringInterval;
-import com.jmd.entity.geo.Tile;
+import com.jmd.model.geo.Tile;
 import com.jmd.inst.DownloadAmountInstance;
 import com.jmd.os.CPUMonitor;
 import com.jmd.os.RAMMonitor;

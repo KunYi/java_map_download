@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.jmd.entity.task.TaskAllInfoEntity;
-import com.jmd.entity.task.TaskBlockDivide;
+import com.jmd.model.task.TaskAllInfoEntity;
+import com.jmd.model.task.TaskBlockDivide;
 
 public class TaskUtils {
 

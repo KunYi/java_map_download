@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
-import com.jmd.entity.geo.Polygon;
-import com.jmd.entity.task.TaskInstEntity;
+import com.jmd.model.geo.Polygon;
+import com.jmd.model.task.TaskInstEntity;
 import com.jmd.task.TaskStepFunc;
 
 import lombok.extern.slf4j.Slf4j;

@@ -3,14 +3,14 @@ package com.jmd.ui.tab.a_map;
 import javax.swing.JPanel;
 
 import com.jmd.ui.common.CommonContainerPanel;
-import com.jmd.ui.tab.a_map.bottom.BottomInfoPanel;
-import com.jmd.ui.tab.a_map.browser.MapControlBrowserPanel;
-import com.jmd.ui.tab.a_map.control.MapControlButtonPanel;
-import com.jmd.ui.tab.a_map.district.DistrictSelectorPanel;
-import com.jmd.ui.tab.a_map.custom.CustomLayerButtonPanel;
-import com.jmd.ui.tab.a_map.draw.DrawTypePanel;
-import com.jmd.ui.tab.a_map.layer.LayerSelectorPanel;
-import com.jmd.ui.tab.a_map.status.StatusInfoPanel;
+import com.jmd.ui.tab.a_map.panel.BottomInfoPanel;
+import com.jmd.ui.tab.a_map.panel.MapControlBrowserPanel;
+import com.jmd.ui.tab.a_map.panel.MapControlButtonPanel;
+import com.jmd.ui.tab.a_map.panel.DistrictSelectorPanel;
+import com.jmd.ui.tab.a_map.panel.CustomLayerButtonPanel;
+import com.jmd.ui.tab.a_map.panel.DrawTypePanel;
+import com.jmd.ui.tab.a_map.panel.LayerSelectorPanel;
+import com.jmd.ui.tab.a_map.panel.StatusInfoPanel;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,7 +60,7 @@ public class MapControlPanel extends JPanel {
         this.drawPanel = new CommonContainerPanel("绘制类型");
         this.layerPanel = new CommonContainerPanel("图层选择");
         this.customPanel = new CommonContainerPanel("自定义");
-        this.browserPanel = new CommonContainerPanel("浏览器");
+        this.browserPanel = new CommonContainerPanel("地图预览");
         this.bottomPanel = new CommonContainerPanel(null);
 
         var groupLayout = new GroupLayout(this);

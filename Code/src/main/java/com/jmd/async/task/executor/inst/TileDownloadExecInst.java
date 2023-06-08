@@ -1,10 +1,10 @@
 package com.jmd.async.task.executor.inst;
 
 import com.jmd.callback.TileDownloadedCallback;
-import com.jmd.entity.geo.Polygon;
-import com.jmd.entity.result.BlockAsyncTaskResult;
-import com.jmd.entity.result.DownloadResult;
-import com.jmd.entity.task.TaskExecEntity;
+import com.jmd.model.geo.Polygon;
+import com.jmd.model.result.BlockAsyncTaskResult;
+import com.jmd.model.result.DownloadResult;
+import com.jmd.model.task.TaskExecEntity;
 import com.jmd.http.HttpDownload;
 import com.jmd.task.TaskState;
 import com.jmd.util.CommonUtils;
