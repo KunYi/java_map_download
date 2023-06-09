@@ -31,12 +31,11 @@ public class AddLayerFrame extends CommonSubFrame {
     private final JRadioButton typeWgs84RadioButton;
     private final JRadioButton typeGcj02RadioButton;
     private final JRadioButton proxyCloseRadioButton;
-    private final JRadioButton proxyOpen1RadioButton;
-    private final JRadioButton proxyOpen2RadioButton;
+    private final JRadioButton proxyOpenRadioButton;
     private final JTextArea urlInputTextArea;
     private final JButton okButton;
     private String type = "wgs84";
-    private int proxy = 0;
+    private boolean proxy = false;
 
     public AddLayerFrame() {
 
@@ -67,18 +66,13 @@ public class AddLayerFrame extends CommonSubFrame {
         this.proxyCloseRadioButton.setSelected(true);
         this.proxyCloseRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        this.proxyOpen1RadioButton = new JRadioButton("通过okhttp代理访问（PNG）");
-        this.proxyOpen1RadioButton.setSelected(false);
-        this.proxyOpen1RadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-
-        this.proxyOpen2RadioButton = new JRadioButton("通过okhttp代理访问（JPEG）");
-        this.proxyOpen2RadioButton.setSelected(false);
-        this.proxyOpen2RadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+        this.proxyOpenRadioButton = new JRadioButton("通过okhttp代理访问");
+        this.proxyOpenRadioButton.setSelected(false);
+        this.proxyOpenRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         var btnGroup2 = new ButtonGroup();
         btnGroup2.add(this.proxyCloseRadioButton);
-        btnGroup2.add(this.proxyOpen1RadioButton);
-        btnGroup2.add(this.proxyOpen2RadioButton);
+        btnGroup2.add(this.proxyOpenRadioButton);
 
         var urlInputLabel = new JLabel("地址：（请严格按照{x}{y}{z}的格式填写地址）");
         urlInputLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
@@ -109,8 +103,7 @@ public class AddLayerFrame extends CommonSubFrame {
                                                                 .addComponent(typeGcj02RadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
                                                         .addComponent(proxyLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                                         .addComponent(proxyCloseRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(proxyOpen1RadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(proxyOpen2RadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(proxyOpenRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                                         .addComponent(urlInputLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                                         .addComponent(urlInputScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                                         .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -134,9 +127,7 @@ public class AddLayerFrame extends CommonSubFrame {
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(proxyCloseRadioButton)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(proxyOpen1RadioButton)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(proxyOpen2RadioButton)
+                                .addComponent(proxyOpenRadioButton)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(urlInputLabel)
                                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -168,17 +159,12 @@ public class AddLayerFrame extends CommonSubFrame {
         });
         this.proxyCloseRadioButton.addItemListener((e) -> {
             if (this.proxyCloseRadioButton == e.getSource() && this.proxyCloseRadioButton.isSelected()) {
-                this.proxy = 0;
+                this.proxy = false;
             }
         });
-        this.proxyOpen1RadioButton.addItemListener((e) -> {
-            if (this.proxyOpen1RadioButton == e.getSource() && this.proxyOpen1RadioButton.isSelected()) {
-                this.proxy = 1;
-            }
-        });
-        this.proxyOpen2RadioButton.addItemListener((e) -> {
-            if (this.proxyOpen2RadioButton == e.getSource() && this.proxyOpen2RadioButton.isSelected()) {
-                this.proxy = 2;
+        this.proxyOpenRadioButton.addItemListener((e) -> {
+            if (this.proxyOpenRadioButton == e.getSource() && this.proxyOpenRadioButton.isSelected()) {
+                this.proxy = true;
             }
         });
         this.okButton.addMouseListener(new MouseAdapter() {

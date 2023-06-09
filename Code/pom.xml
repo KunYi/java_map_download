@@ -121,16 +121,6 @@
         </dependency>
         <!-- lombok -->
 
-        <!-- webp -->
-        <dependency>
-            <groupId>com.github.gotson</groupId>
-            <artifactId>webp-imageio</artifactId>
-            <version>0.2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/tools/webp-imageio-0.2.2.jar</systemPath>
-        </dependency>
-        <!-- opencv -->
-
         <!-- opencv -->
         <dependency>
             <groupId>org.openpnp</groupId>

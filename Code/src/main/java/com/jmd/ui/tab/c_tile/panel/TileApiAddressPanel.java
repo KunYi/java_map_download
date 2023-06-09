@@ -1,13 +1,22 @@
 package com.jmd.ui.tab.c_tile.panel;
 
+import com.jmd.ui.common.CommonDialog;
+import com.jmd.util.CommonUtils;
 import jakarta.annotation.PostConstruct;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import com.jmd.ApplicationConfig;
 import com.jmd.common.StaticVar;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.io.Serial;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -17,21 +26,27 @@ public class TileApiAddressPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 6755052092289839991L;
 
-    private final JButton copyBrowserViewAddressButton;
+    private final String browserViewAddress = "http://localhost:" + ApplicationConfig.startPort + "/web/index.html/#/tile-view";
+    private final String localApiAddress = "http://localhost:" + ApplicationConfig.startPort + "/tile/local?z={z}&x={x}&y={y}";
+
+    private final JButton openBrowserViewAddressButton;
     private final JButton copyLocalApiAddressButton;
+
+    @Setter
+    private boolean canView = false;
 
     public TileApiAddressPanel() {
 
-        this.copyBrowserViewAddressButton = new JButton("复制");
-        this.copyBrowserViewAddressButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.copyBrowserViewAddressButton.setFocusable(false);
+        this.openBrowserViewAddressButton = new JButton("打开");
+        this.openBrowserViewAddressButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.openBrowserViewAddressButton.setFocusable(false);
 
         this.copyLocalApiAddressButton = new JButton("复制");
         this.copyLocalApiAddressButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.copyLocalApiAddressButton.setFocusable(false);
 
-        JLabel browserViewAddressLabel = new JLabel("在浏览器中查看：" + "http://localhost:" + ApplicationConfig.startPort + "/web/index.html/tile-view");
-        JLabel localApiAddressLabel = new JLabel("在Web项目中使用：" + "http://localhost:" + ApplicationConfig.startPort + "/tile/view?z={z}&x={x}&y={y}");
+        var browserViewAddressLabel = new JLabel("在浏览器中查看：" + this.browserViewAddress);
+        var localApiAddressLabel = new JLabel("本地XYZ瓦片地址：" + this.localApiAddress);
 
         var groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
@@ -43,7 +58,7 @@ public class TileApiAddressPanel extends JPanel {
                                         .addComponent(browserViewAddressLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addComponent(this.copyBrowserViewAddressButton, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(this.openBrowserViewAddressButton, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(this.copyLocalApiAddressButton, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 97, GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
@@ -52,7 +67,7 @@ public class TileApiAddressPanel extends JPanel {
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(this.copyBrowserViewAddressButton)
+                                        .addComponent(this.openBrowserViewAddressButton)
                                         .addComponent(browserViewAddressLabel))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
@@ -66,6 +81,36 @@ public class TileApiAddressPanel extends JPanel {
 
     @PostConstruct
     private void init() {
-
+        this.openBrowserViewAddressButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 1) {
+                    if (!canView) {
+                        CommonDialog.alert(null, "请选择瓦片路径并加载");
+                        return;
+                    }
+                    try {
+                        var desktop = Desktop.getDesktop();
+                        desktop.browse(new URI(browserViewAddress));
+                    } catch (IOException | URISyntaxException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+        this.copyLocalApiAddressButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.getButton() == 1) {
+                    if (!canView) {
+                        CommonDialog.alert(null, "请选择瓦片路径并加载");
+                        return;
+                    }
+                    CommonUtils.setClipboardText(localApiAddress);
+                    CommonDialog.alert(null, "已复制到剪贴板");
+                }
+            }
+        });
     }
+
 }

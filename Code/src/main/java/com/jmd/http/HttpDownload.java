@@ -2,12 +2,13 @@ package com.jmd.http;
 
 import java.io.IOException;
 
+import com.jmd.util.FileUtils;
+import com.jmd.util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.jmd.model.result.DownloadResult;
 import com.jmd.inst.DownloadAmountInstance;
-import com.jmd.util.CommonUtils;
 
 @Component
 public class HttpDownload {
@@ -19,7 +20,7 @@ public class HttpDownload {
 
     // 通过URL下载文件
     public DownloadResult downloadTile(String url, int imgType, String pathAndName, int retry) {
-        pathAndName = CommonUtils.checkFilePathAndName(pathAndName);
+        pathAndName = FileUtils.checkFilePathAndName(pathAndName);
         var result = new DownloadResult();
         var success = false;
         var bytes = http.getFileBytes(url, HttpClient.HEADERS);
@@ -57,20 +58,17 @@ public class HttpDownload {
     // 转码并保存图片
     private long saveImage(int imgType, byte[] imgData, String pathAndName) throws IOException {
         switch (imgType) {
-            case 1 -> {
-                return CommonUtils.savePNG2WEBP(imgData, pathAndName);
-            }
             case 2, 3, 4 -> {
                 return switch (imgType) {
-                    case 2 -> CommonUtils.savePNG2JPG(imgData, 0.2f, pathAndName);
-                    case 4 -> CommonUtils.savePNG2JPG(imgData, 0.9f, pathAndName);
+                    case 2 -> ImageUtils.saveImageToJPG(imgData, 0.2f, pathAndName);
+                    case 4 -> ImageUtils.saveImageToJPG(imgData, 0.9f, pathAndName);
                     // 3
-                    default -> CommonUtils.savePNG2JPG(imgData, 0.6f, pathAndName);
+                    default -> ImageUtils.saveImageToJPG(imgData, 0.6f, pathAndName);
                 };
             }
             default -> {
-                // 0
-                return CommonUtils.savePNG(imgData, pathAndName);
+                // 0, 1
+                return ImageUtils.saveImageByOpenCV(imgData, pathAndName);
             }
         }
     }

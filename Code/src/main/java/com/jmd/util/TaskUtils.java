@@ -12,7 +12,7 @@ public class TaskUtils {
     public static TaskAllInfoEntity getExistTaskByPath(String path) {
         TaskAllInfoEntity taskAllInfo = null;
         try {
-            taskAllInfo = (TaskAllInfoEntity) CommonUtils.readFile2Obj(path + "/task_info.jmd");
+            taskAllInfo = (TaskAllInfoEntity) FileUtils.readFile2Obj(path + "/task_info.jmd");
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             return null;
@@ -23,7 +23,7 @@ public class TaskUtils {
     public static TaskAllInfoEntity getExistTaskByFile(File file) {
         TaskAllInfoEntity taskAllInfo = null;
         try {
-            taskAllInfo = (TaskAllInfoEntity) CommonUtils.readFile2Obj(file);
+            taskAllInfo = (TaskAllInfoEntity) FileUtils.readFile2Obj(file);
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
             return null;

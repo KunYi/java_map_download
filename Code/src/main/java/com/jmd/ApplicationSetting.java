@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.jmd.common.Setting;
-import com.jmd.util.CommonUtils;
 
+import com.jmd.util.FileUtils;
 import lombok.Getter;
 
 public class ApplicationSetting {
@@ -29,7 +29,7 @@ public class ApplicationSetting {
 
     public static void save() {
         try {
-            CommonUtils.saveObj2File(setting, file.getAbsolutePath());
+            FileUtils.saveObj2File(setting, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class ApplicationSetting {
     public static void save(Setting s) {
         setting = s;
         try {
-            CommonUtils.saveObj2File(setting, file.getAbsolutePath());
+            FileUtils.saveObj2File(setting, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,7 +52,7 @@ public class ApplicationSetting {
         s.setFloatingWindowShow(true);
         s.setAddedLayers(new ArrayList<>());
         try {
-            CommonUtils.saveObj2File(s, file.getAbsolutePath());
+            FileUtils.saveObj2File(s, file.getAbsolutePath());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ public class ApplicationSetting {
     private static Setting loadSettingFile() {
         var s = new Setting();
         try {
-            s = (Setting) CommonUtils.readFile2Obj(file);
+            s = (Setting) FileUtils.readFile2Obj(file);
         } catch (Exception e) {
             s = createDefault();
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.jmd.ui.tab.c_tile.panel;
 
+import com.jmd.model.tile.TileViewParam;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
@@ -45,8 +46,15 @@ public class TileViewBrowserPanel extends BrowserPanel {
 
     private void subInnerMqMessage() throws Exception {
         this.client = innerMqService.createClient(this.getCompId());
+        this.client.<TileViewParam>sub(Topic.OPEN_TILE_VIEW, (res) -> {
+            if (this.getBrowser() == null) {
+                this.showBrowser(this.prod);
+            } else {
+                this.getBrowser().reload();
+            }
+        });
         this.client.sub(Topic.OPEN_BROWSER_DEV_TOOL, (res) -> {
-            SwingUtilities.invokeLater(this::toggleDevTools);
+            this.toggleDevTools();
         });
     }
 

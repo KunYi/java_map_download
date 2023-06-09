@@ -78,26 +78,22 @@ export class MapSource {
 						type: 'XYZ_URL',
 						support: true,
 						source: new ol.source.XYZ(
-							addedLayers[i].proxy == 0 ?
-								{
-									url: addedLayers[i].url
-								} :
+							addedLayers[i].proxy ?
 								{
 									tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
 										let z = String(tileCoord[0]);
 										let x = String(tileCoord[1]);
 										let y = String(tileCoord[2]);
-										let type = 'proxyPNG';
-										if (addedLayers[i].proxy == 2) {
-											type = 'proxyJPG';
-										}
-										let path = `/tile/${type}?z=${z}&x=${x}&y=${y}&url=${encodeURI(addedLayers[i].url)}`;
+										let path = `/tile/proxy?z=${z}&x=${x}&y=${y}&url=${encodeURI(addedLayers[i].url)}`;
 										if (this.production) {
 											return `http://localhost:${window.location.port}${path}`;
 										} else {
 											return `http://localhost:26737${path}`;
 										}
 									}
+								} :
+								{
+									url: addedLayers[i].url
 								}
 						),
 						url: addedLayers[i].url,

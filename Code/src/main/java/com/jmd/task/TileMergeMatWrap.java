@@ -84,7 +84,7 @@ public class TileMergeMatWrap {
         }
         String out = path + name + "." + suffix;
         FileUtils.createParentDirectories(new File(out));
-        Imgcodecs.imwrite(out, des);
+        Imgcodecs.imwrite(out, this.des);
     }
 
     public void destroy() {

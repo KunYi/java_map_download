@@ -6,6 +6,8 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.util.CommonUtils;
+import com.jmd.util.FileUtils;
+import com.jmd.util.TaskUtils;
 import com.jmd.web.service.TileService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -44,16 +46,26 @@ public class TileServiceImpl implements TileService {
 
     @Override
     public byte[] getTileImageByteLocal(int z, int x, int y) {
-        if (this.tileViewParam == null) {
-            return new byte[0];
+        if (this.tileViewParam != null && this.tileViewParam.check()) {
+            var filePath = this.tileViewParam.getPath() +
+                    TaskUtils.getFilePathName(this.tileViewParam.getPathStyle(), this.tileViewParam.getType(), z, x, y);
+            try {
+                return FileUtils.readFile(filePath);
+            } catch (Exception e) {
+                return new byte[0];
+            }
         }
         return new byte[0];
     }
 
     @Override
     public byte[] getTileImageByteByProxy(int z, int x, int y, String url) {
-        String tileUrl = CommonUtils.getDialectUrl("", url, z, x, y);
-        return http.getFileBytes(tileUrl, HttpClient.HEADERS);
+        try {
+            var tileUrl = CommonUtils.getDialectUrl("", url, z, x, y);
+            return this.http.getFileBytes(tileUrl, HttpClient.HEADERS);
+        } catch (Exception e) {
+            return new byte[0];
+        }
     }
 
 }

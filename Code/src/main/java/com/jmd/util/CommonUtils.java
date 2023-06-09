@@ -1,24 +1,12 @@
 package com.jmd.util;
 
-import com.luciad.imageio.webp.WebPWriteParam;
-import org.apache.commons.io.FileUtils;
-
-import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.FileImageOutputStream;
 
 public class CommonUtils {
 
@@ -27,122 +15,6 @@ public class CommonUtils {
         Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable tText = new StringSelection(writeMe);
         clip.setContents(tText, null);
-    }
-
-    // 读取文件
-    public static byte[] readFile(String path) throws IOException {
-        var file = new File(path);
-        if (!file.exists() || file.isDirectory()) {
-            return new byte[0];
-        }
-        // 传统IO方式
-        //1、定义一个Byte字节数组输出流，设置大小为文件大小
-        //2、将打开的文件输入流转换为Buffer输入流，循环 读取buffer输入流到buffer[]缓冲，并将buffer缓冲数据输入到目标输出流。
-        //3、将目标输出流转换为字节数组。
-        var bos = new ByteArrayOutputStream((int) file.length());
-        BufferedInputStream bin = null;
-        try {
-            bin = new BufferedInputStream(new FileInputStream(file));
-            byte[] buffer = new byte[1024];
-            while (bin.read(buffer) > 0) {
-                bos.write(buffer);
-            }
-            return bos.toByteArray();
-        } finally {
-            assert bin != null;
-            bin.close();
-            bos.close();
-        }
-    }
-
-    // 对象转文件
-    public static void saveObj2File(Object obj, String filePath) throws IOException {
-        FileOutputStream fos = new FileOutputStream(filePath);
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fos);
-        objectOutputStream.writeObject(obj);
-        objectOutputStream.close();
-        fos.close();
-    }
-
-    // 文件转对象
-    public static Object readFile2Obj(String filePath) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(filePath);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Object obj = ois.readObject();
-        fis.close();
-        return obj;
-    }
-
-    // 文件转对象
-    public static Object readFile2Obj(File file) throws IOException, ClassNotFoundException {
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        Object obj = ois.readObject();
-        fis.close();
-        return obj;
-    }
-
-    // 检查并更正文件路径
-    public static String checkFilePathAndName(String pathAndName) {
-        return pathAndName.replace("\\", "/");
-    }
-
-    // 保存PNG
-    public static long savePNG(byte[] pngBytes, String pathAndName) throws IOException {
-        var file = new File(pathAndName);
-        FileUtils.writeByteArrayToFile(file, pngBytes);
-        if (file.exists() && file.isFile()) {
-            return file.length();
-        } else {
-            return -1;
-        }
-    }
-
-    // 保存PNG为WEBP
-    public static long savePNG2WEBP(byte[] pngBytes, String pathAndName) throws IOException {
-        // Obtain an image to encode from somewhere
-        var image = ImageIO.read(new ByteArrayInputStream(pngBytes));
-        // Obtain a WebP ImageWriter instance
-        var writer = ImageIO.getImageWritersByMIMEType("image/webp").next();
-        // Configure encoding parameters
-        var writeParam = new WebPWriteParam(writer.getLocale());
-        writeParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        writeParam.setCompressionType(writeParam.getCompressionTypes()[WebPWriteParam.LOSSLESS_COMPRESSION]);
-        // Configure the output on the ImageOutputStream
-        var file = new File(pathAndName);
-        FileUtils.createParentDirectories(file);
-        writer.setOutput(new FileImageOutputStream(file));
-        writer.write(null, new IIOImage(image, null, null), writeParam);
-        writer.dispose();
-        if (file.exists() && file.isFile()) {
-            return file.length();
-        } else {
-            return -1;
-        }
-    }
-
-    // 保存PNG为JPG
-    public static long savePNG2JPG(byte[] pngBytes, float quality, String pathAndName) throws IOException {
-        // 格式转换
-        BufferedImage oriImg = ImageIO.read(new ByteArrayInputStream(pngBytes));
-        BufferedImage newImg = new BufferedImage(oriImg.getWidth(), oriImg.getHeight(), BufferedImage.TYPE_INT_RGB);
-        newImg.createGraphics().drawImage(oriImg, 0, 0, Color.WHITE, null);
-        // 压缩图片
-        ImageWriter writer = ImageIO.getImageWritersByFormatName("jpeg").next();
-        ImageWriteParam iwp = writer.getDefaultWriteParam();
-        iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        iwp.setCompressionQuality(quality);
-        // 输出
-        var file = new File(pathAndName);
-        FileUtils.createParentDirectories(file);
-        writer.setOutput(new FileImageOutputStream(file));
-        writer.write(null, new IIOImage(newImg, null, null), iwp);
-        writer.dispose();
-        if (file.exists() && file.isFile()) {
-            return file.length();
-        } else {
-            return -1;
-        }
     }
 
     // 解析URL

@@ -173,7 +173,7 @@ public class AboutFrame extends CommonSubFrame {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     try {
-                        Desktop desktop = Desktop.getDesktop();
+                        var desktop = Desktop.getDesktop();
                         desktop.browse(new URI(gitAddress));
                     } catch (IOException | URISyntaxException e1) {
                         e1.printStackTrace();

@@ -19,7 +19,7 @@ public class TileImageTypePanel extends JPanel {
     private final JRadioButton jpgRadioButton;
     private final JRadioButton webpRadioButton;
 
-    private String type = "png";
+    private int type = 0;
 
     public TileImageTypePanel() {
 
@@ -71,10 +71,24 @@ public class TileImageTypePanel extends JPanel {
 
     @PostConstruct
     private void init() {
-
+        this.pngRadioButton.addItemListener((e) -> {
+            if (this.pngRadioButton == e.getSource() && this.pngRadioButton.isSelected()) {
+                this.type = 0;
+            }
+        });
+        this.webpRadioButton.addItemListener((e) -> {
+            if (this.webpRadioButton == e.getSource() && this.webpRadioButton.isSelected()) {
+                this.type = 1;
+            }
+        });
+        this.jpgRadioButton.addItemListener((e) -> {
+            if (this.jpgRadioButton == e.getSource() && this.jpgRadioButton.isSelected()) {
+                this.type = 2;
+            }
+        });
     }
 
-    public String getImageType() {
+    public int getImageType() {
         return this.type;
     }
 

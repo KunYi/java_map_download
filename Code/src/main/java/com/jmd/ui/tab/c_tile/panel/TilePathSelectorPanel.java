@@ -49,6 +49,7 @@ public class TilePathSelectorPanel extends JPanel {
         this.submitButton = new JButton("加载瓦片");
         this.submitButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.submitButton.setFocusable(false);
+        this.submitButton.setEnabled(false);
 
         this.pathStyleDefaultComboBox = new JComboBox<>();
         this.pathStyleDefaultComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
@@ -108,6 +109,7 @@ public class TilePathSelectorPanel extends JPanel {
                         selectedPath = file.getAbsolutePath();
                         lastDirPath = file.getAbsolutePath();
                         pathValueTextArea.setText(file.getAbsolutePath());
+                        submitButton.setEnabled(true);
                     }
                 }
             }
@@ -115,7 +117,7 @@ public class TilePathSelectorPanel extends JPanel {
         this.submitButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == 1 && callback != null && Application.isStartComplete) {
+                if (e.getButton() == 1 && submitButton.isEnabled() && callback != null && Application.isStartComplete) {
                     callback.execute();
                 }
             }

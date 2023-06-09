@@ -13,6 +13,7 @@ import com.jmd.async.pool.scheduler.IntervalConfig;
 import com.jmd.model.task.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
+import com.jmd.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,6 @@ import com.jmd.model.geo.Tile;
 import com.jmd.inst.DownloadAmountInstance;
 import com.jmd.os.CPUMonitor;
 import com.jmd.os.RAMMonitor;
-import com.jmd.util.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -350,7 +350,7 @@ public class TaskExecFunc {
     // 保存下载任务
     private void saveTaskFile(TaskAllInfoEntity taskAllInfo) {
         try {
-            CommonUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
+            FileUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
         } catch (IOException e) {
             log.error("Task File Save Error", e);
         }

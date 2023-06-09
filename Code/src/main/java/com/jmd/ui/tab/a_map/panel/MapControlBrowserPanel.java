@@ -53,10 +53,10 @@ public class MapControlBrowserPanel extends BrowserPanel {
     private void subInnerMqMessage() throws Exception {
         this.client = innerMqService.createClient(this.getCompId());
         this.client.sub(Topic.APPLICATION_START_FINISH, (res) -> {
-            SwingUtilities.invokeLater(() -> this.showBrowser(this.prod));
+            this.showBrowser(this.prod);
         });
         this.client.sub(Topic.OPEN_BROWSER_DEV_TOOL, (res) -> {
-            SwingUtilities.invokeLater(this::toggleDevTools);
+            this.toggleDevTools();
         });
     }
 

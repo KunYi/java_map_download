@@ -21,7 +21,7 @@ abstract class BrowserPanel(
     }
 
     private var client: CefClient? = null
-    private var browser: CefBrowser? = null
+    protected var browser: CefBrowser? = null
     private val splitPane: JSplitPane
     private val framePanel: JPanel
     private val devToolPanel: JPanel
@@ -65,19 +65,21 @@ abstract class BrowserPanel(
         }
         this.client = ChromiumEmbeddedCore.getInstance().createClient(this.compId)
         this.browser = ChromiumEmbeddedCore.getInstance().createBrowser(this.client, url)
-        this.framePanel.removeAll()
-        this.browser!!.uiComponent!!.let {
-            this.framePanel.add(it, BorderLayout.CENTER);
+        SwingUtilities.invokeLater {
+            this.framePanel.removeAll()
+            this.browser!!.uiComponent!!.let {
+                this.framePanel.add(it, BorderLayout.CENTER);
+            }
+            this.framePanel.revalidate()
         }
-        this.framePanel.revalidate()
     }
 
     protected fun toggleDevTools() {
         this.devToolOpen = if (this.devToolOpen) {
-            closeDevTools()
+            SwingUtilities.invokeLater { closeDevTools() }
             false
         } else {
-            openDevTools()
+            SwingUtilities.invokeLater { openDevTools() }
             true
         }
     }

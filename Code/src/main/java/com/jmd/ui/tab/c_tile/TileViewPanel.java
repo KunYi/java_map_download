@@ -109,12 +109,8 @@ public class TileViewPanel extends JPanel {
                 CommonDialog.alert(null, "未选择命名风格");
                 return;
             }
-            if (type == null) {
-                CommonDialog.alert(null, "未选择图片类型");
-                return;
-            }
             var param = new TileViewParam(path, pathStyle, type);
-            System.out.println(param);
+            this.apiAddressPanel.setCanView(true);
             this.innerMqService.pub(Topic.OPEN_TILE_VIEW, param);
         });
 
