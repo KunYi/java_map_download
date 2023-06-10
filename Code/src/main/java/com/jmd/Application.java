@@ -28,7 +28,7 @@ public class Application {
         } else if (StaticVar.IS_Mac) {
             System.setProperty("sun.java2d.metal", "true");
         }
-        System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
+        System.load(System.getProperty("user.dir") + "/native/opencv_java470.dll");
     }
 
     public static void main(String[] args) {

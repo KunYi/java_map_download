@@ -11,6 +11,7 @@ import com.jmd.callback.TileMergeFirstFinishBack;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -408,7 +409,7 @@ public class TaskStepFunc {
             finishBack.execute();
             this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在写入至硬盘...");
             // 文件类型
-            var outPath = taskAllInfo.getSavePath() + "/tile-merge" + "/";
+            var outPath = FileUtils.checkFilePathAndName(taskAllInfo.getSavePath() + "/tile-merge" + "/");
             var outName = "z=" + z;
             // opencv导出
             mat.output(outPath, outName, taskAllInfo.getMergeType());

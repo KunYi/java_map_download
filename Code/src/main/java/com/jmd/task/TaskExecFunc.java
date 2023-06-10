@@ -323,6 +323,7 @@ public class TaskExecFunc {
             }
             taskAllInfo.setAllRunCount(allRunCount);
             updateDownloadProcess(new TaskProgressEntity(0, taskAllInfo.getAllRunCount(), (double) taskAllInfo.getAllRunCount() / (double) taskAllInfo.getAllRealCount()));
+            innerMqService.pub(Topic.TASK_STATUS_PROGRESS, "100%");
             innerMqService.pub(Topic.TASK_STATUS_CURRENT, "下载完成");
             innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "下载完成");
             innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.FINISH);

@@ -9,6 +9,7 @@ import com.jmd.ui.tab.c_tile.panel.TileApiAddressPanel;
 import com.jmd.ui.tab.c_tile.panel.TileImageTypePanel;
 import com.jmd.ui.tab.c_tile.panel.TileViewBrowserPanel;
 import com.jmd.ui.tab.c_tile.panel.TilePathSelectorPanel;
+import com.jmd.util.FileUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -109,7 +110,7 @@ public class TileViewPanel extends JPanel {
                 CommonDialog.alert(null, "未选择命名风格");
                 return;
             }
-            var param = new TileViewParam(path, pathStyle, type);
+            var param = new TileViewParam(FileUtils.checkFilePathAndName(path), pathStyle, type);
             this.apiAddressPanel.setCanView(true);
             this.innerMqService.pub(Topic.OPEN_TILE_VIEW, param);
         });

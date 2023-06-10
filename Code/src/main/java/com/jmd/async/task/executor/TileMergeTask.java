@@ -3,6 +3,7 @@ package com.jmd.async.task.executor;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.jmd.util.FileUtils;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
@@ -54,7 +55,7 @@ public class TileMergeTask {
                         break;
                     }
                 }
-                mat.mergeToMat(filePathAndName, positionX, positionY, isInFlag);
+                mat.mergeToMat(FileUtils.checkFilePathAndName(filePathAndName), positionX, positionY, isInFlag);
             }
         }
         return new AsyncResult<>(result);
