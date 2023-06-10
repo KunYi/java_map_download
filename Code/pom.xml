@@ -22,12 +22,12 @@
 
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.8.20</kotlin.version>
-        <spring-boot.version>3.0.5</spring-boot.version>
-        <druid-spring.version>1.2.16</druid-spring.version>
-        <mybatis-spring.version>3.0.1</mybatis-spring.version>
-        <commons-io.version>2.11.0</commons-io.version>
-        <fastjson2.version>2.0.26</fastjson2.version>
+        <kotlin.version>1.8.21</kotlin.version>
+        <spring-boot.version>3.1.0</spring-boot.version>
+        <druid-spring.version>1.2.18</druid-spring.version>
+        <mybatis-spring.version>3.0.2</mybatis-spring.version>
+        <commons-io.version>2.12.0</commons-io.version>
+        <fastjson2.version>2.0.33</fastjson2.version>
     </properties>
 
     <dependencies>
@@ -180,6 +180,7 @@
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
+                        <plugin>lombok</plugin>
                     </compilerPlugins>
                 </configuration>
                 <dependencies>
@@ -188,12 +189,17 @@
                         <artifactId>kotlin-maven-allopen</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-lombok</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
                 </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -219,7 +225,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>copy</id>
@@ -236,7 +242,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -245,7 +251,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.1.0</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
