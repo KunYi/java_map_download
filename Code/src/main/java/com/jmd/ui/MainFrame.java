@@ -153,7 +153,7 @@ public class MainFrame extends JFrame {
     private void init() {
 
         /* Menu菜单 */
-        this.setJMenuBar(mainMenuBar);
+        this.setJMenuBar(this.mainMenuBar);
 
         /* Tabbed主界面 */
         this.tabbedPane.addTab("地图操作", null, mapControlPanel, null);

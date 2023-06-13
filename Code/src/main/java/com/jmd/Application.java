@@ -4,6 +4,7 @@ import java.io.PrintStream;
 
 import javax.swing.*;
 
+import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
 import com.jmd.rx.callback.OnSubscribeCallback;
@@ -66,6 +67,8 @@ public class Application {
                 innerMqService.pub(Topic.APPLICATION_START_FINISH, true);
             }).start();
         }));
+        // 实例化浏览器内核
+        ChromiumEmbeddedCore.getInstance();
         // 重定向至ConsoleTextArea
 //        JTextAreaOutputStream out = new JTextAreaOutputStream(ApplicationStore.consoleTextArea);
 //        System.setOut(new PrintStream(out)); // 设置输出重定向

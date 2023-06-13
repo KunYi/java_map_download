@@ -1,6 +1,6 @@
 package com.jmd.web.controller
 
-import com.jmd.ApplicationConfig
+import com.jmd.ApplicationPort
 import com.jmd.web.common.RESTfulResult
 import org.springframework.web.bind.annotation.*
 
@@ -16,7 +16,7 @@ class InfoController {
         result.code = 200
         result.message = "ok"
         result.success = true
-        result.data = "ws://localhost:${ApplicationConfig.startPort}/websocket/map"
+        result.data = "ws://localhost:${ApplicationPort.startPort}/websocket/map"
         return result
     }
 

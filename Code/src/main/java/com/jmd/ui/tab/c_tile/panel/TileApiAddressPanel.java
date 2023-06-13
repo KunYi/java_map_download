@@ -6,7 +6,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import com.jmd.ApplicationConfig;
+import com.jmd.ApplicationPort;
 import com.jmd.common.StaticVar;
 
 import javax.swing.*;
@@ -26,8 +26,8 @@ public class TileApiAddressPanel extends JPanel {
     @Serial
     private static final long serialVersionUID = 6755052092289839991L;
 
-    private final String browserViewAddress = "http://localhost:" + ApplicationConfig.startPort + "/web/index.html/#/tile-view";
-    private final String localApiAddress = "http://localhost:" + ApplicationConfig.startPort + "/tile/local?z={z}&x={x}&y={y}";
+    private final String browserViewAddress = "http://localhost:" + ApplicationPort.startPort + "/web/index.html/#/tile-view";
+    private final String localApiAddress = "http://localhost:" + ApplicationPort.startPort + "/tile/local?z={z}&x={x}&y={y}";
 
     private final JButton openBrowserViewAddressButton;
     private final JButton copyLocalApiAddressButton;

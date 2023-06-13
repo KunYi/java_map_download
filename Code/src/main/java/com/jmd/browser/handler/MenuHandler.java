@@ -1,7 +1,6 @@
 package com.jmd.browser.handler;
 
-import com.jmd.rx.Topic;
-import com.jmd.rx.service.InnerMqService;
+import com.jmd.browser.view.BrowserViewContainer;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
 import org.cef.callback.CefContextMenuParams;
@@ -11,12 +10,11 @@ import org.cef.handler.CefContextMenuHandlerAdapter;
 
 public class MenuHandler extends CefContextMenuHandlerAdapter {
 
-    private final InnerMqService innerMqService = InnerMqService.getInstance();
-    private final String browserId;
+    private final BrowserViewContainer container;
     private final static int MENU_ID_DEV_TOOL = 1000001;
 
-    public MenuHandler(String browserId) {
-        this.browserId = browserId;
+    public MenuHandler(BrowserViewContainer container) {
+        this.container = container;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class MenuHandler extends CefContextMenuHandlerAdapter {
                 return true;
             }
             case MENU_ID_DEV_TOOL -> {
-                this.innerMqService.pub("*" + this.browserId, Topic.OPEN_BROWSER_DEV_TOOL, true);
+                this.container.toggleDevTools();
                 return true;
             }
         }

@@ -5,7 +5,7 @@ import java.io.Serial;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.ui.common.BrowserPanel;
+import com.jmd.ui.common.BrowserViewPanel;
 import com.jmd.util.CommonUtils;
 import com.jmd.web.common.WsSendData;
 import com.jmd.web.websocket.handler.MapWebSocketHandler;
@@ -15,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-
 @Component
-public class MapControlBrowserPanel extends BrowserPanel {
+public class MapControlBrowserPanel extends BrowserViewPanel {
 
     @Serial
     private static final long serialVersionUID = 5503359353536143127L;
@@ -33,7 +31,7 @@ public class MapControlBrowserPanel extends BrowserPanel {
     private MapWebSocketHandler wsHandler;
 
     public MapControlBrowserPanel() {
-        super("BrowserPanel-MapView" + CommonUtils.generateCharMixed(32), "/map-control", "WebView初始化");
+        super("/map-control", "WebView初始化");
     }
 
     @PostConstruct
@@ -51,9 +49,13 @@ public class MapControlBrowserPanel extends BrowserPanel {
     }
 
     private void subInnerMqMessage() throws Exception {
-        this.client = innerMqService.createClient(this.getCompId());
+        this.client = innerMqService.createClient();
         this.client.sub(Topic.APPLICATION_START_FINISH, (res) -> {
-            this.showBrowser(this.prod);
+            if (this.isLoaded()) {
+                this.reload();
+            } else {
+                this.load(this.prod);
+            }
         });
         this.client.sub(Topic.OPEN_BROWSER_DEV_TOOL, (res) -> {
             this.toggleDevTools();

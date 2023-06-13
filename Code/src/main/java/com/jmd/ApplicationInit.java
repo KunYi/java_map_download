@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Component
 @Order(1)
-public class MainInit implements ApplicationRunner {
+public class ApplicationInit implements ApplicationRunner {
 
     @Autowired
     private MainFrame mainFrame;

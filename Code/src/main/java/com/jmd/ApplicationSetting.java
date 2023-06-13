@@ -45,12 +45,7 @@ public class ApplicationSetting {
     }
 
     private static Setting createDefault() {
-        var s = new Setting();
-        s.setThemeType(3);
-        s.setThemeName("Flatlaf IntelliJ");
-        s.setThemeClazz("com.formdev.flatlaf.FlatIntelliJLaf");
-        s.setFloatingWindowShow(true);
-        s.setAddedLayers(new ArrayList<>());
+        var s = new Setting("default");
         try {
             FileUtils.saveObj2File(s, file.getAbsolutePath());
         } catch (Exception e) {

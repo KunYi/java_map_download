@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApplicationConfig implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
+public class ApplicationPort implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
 	public static int startPort = 0;
 

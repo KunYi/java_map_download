@@ -1,7 +1,8 @@
 package com.jmd.ui.common
 
-import com.jmd.ApplicationConfig
+import com.jmd.ApplicationPort
 import com.jmd.browser.core.ChromiumEmbeddedCore
+import com.jmd.browser.view.BrowserViewContainer
 import com.jmd.common.StaticVar
 import org.cef.CefClient
 import org.cef.browser.CefBrowser
@@ -9,19 +10,20 @@ import java.awt.BorderLayout
 import java.io.Serial
 import javax.swing.*
 
-abstract class BrowserPanel(
-    protected val compId: String,
+abstract class BrowserViewPanel(
     private val path: String,
     private val waitingText: String
-) : JPanel() {
+) : JPanel(), BrowserViewContainer {
 
     companion object {
         @Serial
         private val serialVersionUID = 296955159808720054L
     }
 
+    var isLoaded: Boolean = false;
+    private var url: String? = null
     private var client: CefClient? = null
-    protected var browser: CefBrowser? = null
+    private var browser: CefBrowser? = null
     private val splitPane: JSplitPane
     private val framePanel: JPanel
     private val devToolPanel: JPanel
@@ -57,14 +59,25 @@ abstract class BrowserPanel(
 
     }
 
-    protected fun showBrowser(prod: Boolean) {
-        val url = if (prod) {
-            "http://localhost:${ApplicationConfig.startPort}/web/index.html/#${this.path}"
+    fun load(prod: Boolean) {
+        this.url = if (prod) {
+            "http://localhost:${ApplicationPort.startPort}/web/index.html/#${this.path}"
         } else {
             "http://localhost:4500/#${this.path}"
         }
-        this.client = ChromiumEmbeddedCore.getInstance().createClient(this.compId)
-        this.browser = ChromiumEmbeddedCore.getInstance().createBrowser(this.client, url)
+        if (this.browser == null) {
+            this.showBrowser();
+            this.isLoaded = true
+        }
+    }
+
+    fun reload() {
+        this.browser!!.reload()
+    }
+
+    protected fun showBrowser() {
+        this.client = ChromiumEmbeddedCore.getInstance().createClient(this)
+        this.browser = ChromiumEmbeddedCore.getInstance().createBrowser(this.client, this.url)
         SwingUtilities.invokeLater {
             this.framePanel.removeAll()
             this.browser!!.uiComponent!!.let {
@@ -74,7 +87,7 @@ abstract class BrowserPanel(
         }
     }
 
-    protected fun toggleDevTools() {
+    override fun toggleDevTools() {
         this.devToolOpen = if (this.devToolOpen) {
             SwingUtilities.invokeLater { closeDevTools() }
             false
@@ -103,10 +116,6 @@ abstract class BrowserPanel(
         this.splitPane.isContinuousLayout = false
         this.splitPane.dividerLocation = this.size.width
         this.splitPane.revalidate()
-    }
-
-    fun reload() {
-        this.browser!!.reload()
     }
 
     fun execJS(javaScript: String?) {
