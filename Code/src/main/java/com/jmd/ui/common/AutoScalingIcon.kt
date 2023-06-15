@@ -1,12 +1,12 @@
 package com.jmd.ui.common
 
+import com.jmd.util.MyFileUtils
 import java.awt.Component
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.Image
 import java.awt.geom.AffineTransform
 import java.math.BigDecimal
-import java.util.*
 import javax.swing.Icon
 import javax.swing.ImageIcon
 import kotlin.math.ceil
@@ -48,7 +48,7 @@ class AutoScalingIcon : Icon {
         this.autoSize = true
         this.width = 2
         this.height = 2
-        this.originIcon = ImageIcon(Objects.requireNonNull(NoScalingIcon::class.java.getResource(path)))
+        this.originIcon = ImageIcon(MyFileUtils.getResourceFileBytes(path))
         this.icon.image = this.originIcon.image.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
         this.xPosition = xPosition
         this.yPosition = yPosition
@@ -69,7 +69,7 @@ class AutoScalingIcon : Icon {
         this.autoSize = false
         this.width = width
         this.height = height
-        this.originIcon = ImageIcon(Objects.requireNonNull(NoScalingIcon::class.java.getResource(path)))
+        this.originIcon = ImageIcon(MyFileUtils.getResourceFileBytes(path))
         this.icon.image = this.originIcon.image.getScaledInstance(this.width, this.height, Image.SCALE_SMOOTH)
         this.xPosition = xPosition
         this.yPosition = yPosition

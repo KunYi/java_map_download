@@ -5,8 +5,7 @@ import com.jmd.rx.Topic
 import com.jmd.rx.callback.OnMessageCallback
 import com.jmd.rx.client.InnerMqClient
 import com.jmd.rx.service.InnerMqService
-import com.jmd.ui.frame.download.config.DownloadConfigFrame
-import java.awt.Toolkit
+import com.jmd.util.ImageUtils
 import java.io.Serial
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
@@ -22,8 +21,8 @@ abstract class CommonSubFrame : JFrame() {
     private var client: InnerMqClient? = null
 
     init {
-        this.iconImage = Toolkit.getDefaultToolkit()
-            .getImage(DownloadConfigFrame::class.java.getResource("/com/jmd/assets/icon/java.png"))
+        /* 任务栏图标 */
+        this.iconImage = ImageUtils.getResourceImage("assets/icon/map.png")
         this.defaultCloseOperation = DISPOSE_ON_CLOSE
         try {
             subInnerMqMessage()

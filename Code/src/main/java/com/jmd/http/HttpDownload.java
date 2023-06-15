@@ -2,7 +2,7 @@ package com.jmd.http;
 
 import java.io.IOException;
 
-import com.jmd.util.FileUtils;
+import com.jmd.util.MyFileUtils;
 import com.jmd.util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class HttpDownload {
 
     // 通过URL下载文件
     public DownloadResult downloadTile(String url, int imgType, String pathAndName, int retry) {
-        pathAndName = FileUtils.checkFilePathAndName(pathAndName);
+        pathAndName = MyFileUtils.checkFilePathAndName(pathAndName);
         var result = new DownloadResult();
         var success = false;
         var bytes = http.getFileBytes(url, HttpClient.HEADERS);

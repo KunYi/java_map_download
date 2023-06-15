@@ -4,18 +4,19 @@ import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.*;
 
 import com.jmd.ui.common.CommonSubFrame;
+import com.jmd.util.MyFileUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,7 @@ public class DownloadPreviewFrame extends CommonSubFrame {
     private final JLabel loadingTitleLabel;
     private final JLabel loadingGifIconLabel;
 
-    public DownloadPreviewFrame() {
+    public DownloadPreviewFrame() throws IOException {
 
         var scrollPane = new JScrollPane();
 
@@ -111,8 +112,7 @@ public class DownloadPreviewFrame extends CommonSubFrame {
         this.loadingTitleLabel.setVisible(false);
 
         this.loadingGifIconLabel = new JLabel();
-        this.loadingGifIconLabel
-                .setIcon(new ImageIcon(Objects.requireNonNull(DownloadPreviewFrame.class.getResource("/com/jmd/assets/icon/loading.gif"))));
+        this.loadingGifIconLabel.setIcon(new ImageIcon(MyFileUtils.getResourceFileBytes("assets/icon/loading.gif")));
         this.loadingGifIconLabel.setVisible(false);
 
         // Right panel layout

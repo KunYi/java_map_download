@@ -70,7 +70,7 @@ public class AboutFrame extends CommonSubFrame {
         panel.setLayout(null);
         this.getContentPane().add(panel, BorderLayout.CENTER);
 
-        var jdkIconLabel = new IconLabel("/com/jmd/assets/icon/jetbrains.png");
+        var jdkIconLabel = new IconLabel("assets/icon/jetbrains.png");
         jdkIconLabel.setBounds(15, 10, 30, 30);
         panel.add(jdkIconLabel);
 
@@ -79,7 +79,7 @@ public class AboutFrame extends CommonSubFrame {
         this.jdkTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(this.jdkTextLabel);
 
-        var jcefIconLabel = new IconLabel("/com/jmd/assets/icon/cef.png");
+        var jcefIconLabel = new IconLabel("assets/icon/cef.png");
         jcefIconLabel.setBounds(238, 10, 40, 30);
         panel.add(jcefIconLabel);
 
@@ -88,7 +88,7 @@ public class AboutFrame extends CommonSubFrame {
         this.jcefTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(this.jcefTextLabel);
 
-        var openlayersIconLabel = new IconLabel("/com/jmd/assets/icon/openlayers.png");
+        var openlayersIconLabel = new IconLabel("assets/icon/openlayers.png");
         openlayersIconLabel.setBounds(15, 46, 30, 30);
         panel.add(openlayersIconLabel);
 
@@ -97,7 +97,7 @@ public class AboutFrame extends CommonSubFrame {
         this.openlayersTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(this.openlayersTextLabel);
 
-        var angularIconLabel = new IconLabel("/com/jmd/assets/icon/angular.png");
+        var angularIconLabel = new IconLabel("assets/icon/angular.png");
         angularIconLabel.setBounds(238, 46, 30, 30);
         panel.add(angularIconLabel);
 
@@ -106,7 +106,7 @@ public class AboutFrame extends CommonSubFrame {
         this.angularTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(this.angularTextLabel);
 
-        var opencvIconLabel = new IconLabel("/com/jmd/assets/icon/opencv.png");
+        var opencvIconLabel = new IconLabel("assets/icon/opencv.png");
         opencvIconLabel.setBounds(15, 82, 30, 30);
         panel.add(opencvIconLabel);
 
@@ -115,7 +115,7 @@ public class AboutFrame extends CommonSubFrame {
         this.opencvTextLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         panel.add(this.opencvTextLabel);
 
-        var gitIconLabel = new IconLabel("/com/jmd/assets/icon/git.png");
+        var gitIconLabel = new IconLabel("assets/icon/git.png");
         gitIconLabel.setBounds(15, 118, 30, 30);
         panel.add(gitIconLabel);
 

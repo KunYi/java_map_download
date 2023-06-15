@@ -1,11 +1,11 @@
 package com.jmd.ui.common
 
+import com.jmd.util.MyFileUtils
 import java.awt.Component
 import java.awt.Graphics
 import java.awt.Graphics2D
 import java.awt.Image
 import java.awt.geom.AffineTransform
-import java.util.*
 import javax.swing.Icon
 import javax.swing.ImageIcon
 
@@ -14,7 +14,7 @@ class NoScalingIcon(width: Int, height: Int, path: String) : Icon {
     private val icon = ImageIcon()
 
     init {
-        val originIcon = ImageIcon(Objects.requireNonNull(NoScalingIcon::class.java.getResource(path)))
+        val originIcon = ImageIcon(MyFileUtils.getResourceFileBytes(path))
         this.icon.image = originIcon.image.getScaledInstance(width, height, Image.SCALE_SMOOTH)
     }
 

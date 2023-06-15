@@ -6,10 +6,10 @@ setting:
     date: 2023-06-07
   version:
     jdk: JetBrains Runtime 17
-    jcef: 104
+    jcef: 111
     openlayers: 7.3.0
     angular: 16.0.4
-    opencv: 4.5.5
+    opencv: 4.7.0
   git:
     address: https://gitee.com/CrimsonHu/java_map_download
   web:

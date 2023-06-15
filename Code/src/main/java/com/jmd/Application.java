@@ -1,13 +1,10 @@
 package com.jmd;
 
-import java.io.PrintStream;
-
 import javax.swing.*;
 
 import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
-import com.jmd.rx.callback.OnSubscribeCallback;
 import com.jmd.rx.service.InnerMqService;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +12,8 @@ import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jmd.ui.StartupWindow;
+
+import java.io.PrintStream;
 
 @SpringBootApplication
 public class Application {
@@ -70,7 +69,7 @@ public class Application {
         // 实例化浏览器内核
         ChromiumEmbeddedCore.getInstance();
         // 重定向至ConsoleTextArea
-//        JTextAreaOutputStream out = new JTextAreaOutputStream(ApplicationStore.consoleTextArea);
+//        var out = new ApplicationOutputStream(ApplicationStore.consoleTextArea);
 //        System.setOut(new PrintStream(out)); // 设置输出重定向
 //        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
         // 异步启动SpringBoot核心

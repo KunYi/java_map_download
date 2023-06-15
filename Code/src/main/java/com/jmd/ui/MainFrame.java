@@ -2,6 +2,8 @@ package com.jmd.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serial;
 
 import javax.swing.*;
@@ -16,6 +18,7 @@ import com.jmd.task.TaskState;
 import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.ui.tab.c_tile.TileViewPanel;
 import com.jmd.util.CommonUtils;
+import com.jmd.util.ImageUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +57,7 @@ public class MainFrame extends JFrame {
 
     private final JTabbedPane tabbedPane;
 
-    public MainFrame() {
+    public MainFrame() throws IOException {
 
         ApplicationStore.commonParentFrame = this;
 
@@ -68,8 +71,7 @@ public class MainFrame extends JFrame {
         this.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
 
         /* 任务栏图标 */
-        var defaultToolkit = Toolkit.getDefaultToolkit();
-        var image = defaultToolkit.getImage(MainFrame.class.getResource("/com/jmd/assets/icon/map.png"));
+        var image = ImageUtils.getResourceImage("assets/icon/map.png");
         if (CommonUtils.isMac()) {
             var taskbar = Taskbar.getTaskbar();
             try {

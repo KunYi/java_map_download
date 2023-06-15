@@ -58,7 +58,7 @@ public class MainMenuBar extends JMenuBar {
 
     private final Icon selectedIcon = new AutoScalingIcon(
             15, 15,
-            "/com/jmd/assets/icon/selected.png",
+            "assets/icon/selected.png",
             AutoScalingIcon.XPosition.LEFT, AutoScalingIcon.YPosition.CENTER,
             6, 2
     );

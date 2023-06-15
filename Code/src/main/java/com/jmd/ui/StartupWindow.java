@@ -61,7 +61,7 @@ public class StartupWindow extends JWindow {
         this.progressLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         backgroundPanel.add(this.progressLabel);
 
-        var backgroundLabel = new IconLabel("/com/jmd/assets/img/load-background-hi.png");
+        var backgroundLabel = new IconLabel("assets/img/load-background-hi.png");
         backgroundLabel.setBounds(1, 1, 398, 298);
         backgroundPanel.add(backgroundLabel);
 

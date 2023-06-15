@@ -24,7 +24,7 @@ public class FloatingContentPanel extends JPanel {
 
         this.setBackground(new Color(0, 0, 0, 0));
 
-        var logoIconLabel = new IconLabel("/com/jmd/assets/icon/map.png");
+        var logoIconLabel = new IconLabel("assets/icon/map.png");
 
         this.progressValueLabel = new JLabel("0%");
         this.progressValueLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);

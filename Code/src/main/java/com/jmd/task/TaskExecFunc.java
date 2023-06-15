@@ -13,7 +13,7 @@ import com.jmd.async.pool.scheduler.IntervalConfig;
 import com.jmd.model.task.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.util.FileUtils;
+import com.jmd.util.MyFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -351,7 +351,7 @@ public class TaskExecFunc {
     // 保存下载任务
     private void saveTaskFile(TaskAllInfoEntity taskAllInfo) {
         try {
-            FileUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
+            MyFileUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
         } catch (IOException e) {
             log.error("Task File Save Error", e);
         }

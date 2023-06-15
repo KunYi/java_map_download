@@ -6,7 +6,7 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.util.CommonUtils;
-import com.jmd.util.FileUtils;
+import com.jmd.util.MyFileUtils;
 import com.jmd.util.TaskUtils;
 import com.jmd.web.service.TileService;
 import jakarta.annotation.PostConstruct;
@@ -50,7 +50,7 @@ public class TileServiceImpl implements TileService {
             var filePath = this.tileViewParam.getPath() +
                     TaskUtils.getFilePathName(this.tileViewParam.getPathStyle(), this.tileViewParam.getType(), z, x, y);
             try {
-                return FileUtils.readFile(filePath);
+                return MyFileUtils.getFileBytes(filePath);
             } catch (Exception e) {
                 return new byte[0];
             }

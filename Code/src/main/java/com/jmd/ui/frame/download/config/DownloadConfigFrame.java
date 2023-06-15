@@ -15,7 +15,7 @@ import com.jmd.ui.frame.download.preview.DownloadPreviewFrame;
 import com.jmd.ui.frame.download.config.panel.DownloadOtherSettingPanel;
 import com.jmd.ui.frame.download.config.panel.DownloadPathSelectorPanel;
 import com.jmd.ui.frame.download.config.panel.DownloadZoomSelectorPanel;
-import com.jmd.util.FileUtils;
+import com.jmd.util.MyFileUtils;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -183,7 +183,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
                         return;
                     }
                     boolean isCreate = true;
-                    var path = FileUtils.checkFilePathAndName(pathSelectorPanel.getSelectedDirPath().getAbsolutePath());
+                    var path = MyFileUtils.checkFilePathAndName(pathSelectorPanel.getSelectedDirPath().getAbsolutePath());
                     if (isTaskExist(path)) {
                         String[] options = {"导入任务", "创建新任务"};
                         var n = CommonDialog.option("选择", "该目录下已存在下载任务，请选择导入任务或新建任务", options);

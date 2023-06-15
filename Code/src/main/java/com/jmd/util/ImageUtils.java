@@ -109,4 +109,11 @@ public class ImageUtils {
         }
     }
 
+
+    public static Image getResourceImage(String path) throws IOException {
+        var bytes = MyFileUtils.getResourceFileBytes(path);
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        return ImageIO.read(bais);
+    }
+
 }
