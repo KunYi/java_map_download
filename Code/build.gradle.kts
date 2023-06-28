@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "com.jmd"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 description = "地图下载器"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
@@ -30,7 +30,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-tomcat")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.squareup.okhttp3:okhttp")
     implementation("io.reactivex.rxjava3:rxjava")
     implementation("org.xerial:sqlite-jdbc")

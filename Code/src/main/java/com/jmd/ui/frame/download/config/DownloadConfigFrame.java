@@ -4,7 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.jmd.rx.Topic;
-import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
@@ -44,7 +43,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
     private static final long serialVersionUID = 394597878094632313L;
 
     private final InnerMqService innerMqService = InnerMqService.getInstance();
-    private InnerMqClient client;
+    private final DownloadConfigFrame that = this;
 
     @Autowired
     private TaskExecFunc taskExec;
@@ -84,36 +83,36 @@ public class DownloadConfigFrame extends CommonSubFrame {
 
         this.previewButton = new JButton("预估下载量");
         this.previewButton.setFocusable(false);
-        this.previewButton.setEnabled(false);
         this.previewButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         this.downloadButton = new JButton("下载");
         this.downloadButton.setFocusable(false);
-        this.downloadButton.setEnabled(false);
         this.downloadButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         this.cancelButton = new JButton("取消");
         this.cancelButton.setFocusable(false);
         this.cancelButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        var groupLayout = new GroupLayout(getContentPane());
+        var groupLayout = new GroupLayout(this.getContentPane());
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(zoomPanel, 100, 120, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(this.zoomPanel, 120, 120, 120)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(otherPanel, GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE))
-                                        .addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
-                                        .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(previewButton, 100, 100, 100)
+                                                .addComponent(this.otherPanel, 305, 305, 305)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(downloadButton, 100, 100, 100)
+                                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+                                                        .addComponent(this.errorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(this.pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)))
+                                        .addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+                                                .addComponent(this.previewButton, 100, 100, 100)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                                .addComponent(cancelButton, 100, 100, 100)))
+                                                .addComponent(this.downloadButton, 100, 100, 100)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(this.cancelButton, 100, 100, 100)))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -121,25 +120,25 @@ public class DownloadConfigFrame extends CommonSubFrame {
                         .addGroup(groupLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(zoomPanel, 365, 365, 365)
-                                        .addComponent(otherPanel, 365, 365, 365))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(errorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.zoomPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.otherPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.errorPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(ComponentPlacement.RELATED)
+                                                .addComponent(this.pathPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(cancelButton)
-                                        .addComponent(downloadButton)
-                                        .addComponent(previewButton))
+                                        .addComponent(this.cancelButton)
+                                        .addComponent(this.downloadButton)
+                                        .addComponent(this.previewButton))
                                 .addContainerGap())
         );
         this.getContentPane().setLayout(groupLayout);
 
         this.setTitle("下载设置");
-        this.setSize(new Dimension(480, 780));
-        this.setVisible(false);
+        this.setSize(new Dimension(850, 480));
         this.setResizable(false);
+        this.setVisible(false);
 
     }
 
@@ -179,7 +178,15 @@ public class DownloadConfigFrame extends CommonSubFrame {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1 && downloadButton.isEnabled()) {
                     if (TaskState.IS_TASKING) {
-                        CommonDialog.alert(null, "当前正在进行下载任务");
+                        CommonDialog.alert(that, null, "当前正在进行下载任务");
+                        return;
+                    }
+                    if (zoomSelectorPanel.getSelectedZooms().size() == 0) {
+                        CommonDialog.alert(that, null, "请选择下载层级");
+                        return;
+                    }
+                    if (pathSelectorPanel.getSelectedDirPath() == null) {
+                        CommonDialog.alert(that, null, "请选择保存路径");
                         return;
                     }
                     boolean isCreate = true;
@@ -224,34 +231,11 @@ public class DownloadConfigFrame extends CommonSubFrame {
         });
         /* 取消 */
 
-        try {
-            this.subInnerMqMessage();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @PreDestroy
     protected void destroy() {
         super.destroy();
-        this.innerMqService.destroyClient(this.client);
-    }
-
-    private void subInnerMqMessage() throws Exception {
-        this.client = this.innerMqService.createClient();
-        this.client.<Boolean>sub(Topic.DOWNLOAD_CONFIG_FRAME_ZOOM_SELECTED, (res) -> {
-            SwingUtilities.invokeLater(() -> {
-                this.previewButton.setEnabled(res && this.pathSelectorPanel.isHasSelected());
-                this.downloadButton.setEnabled(res && this.pathSelectorPanel.isHasSelected());
-            });
-        });
-        this.client.<Boolean>sub(Topic.DOWNLOAD_CONFIG_FRAME_PATH_SELECTED, (res) -> {
-            SwingUtilities.invokeLater(() -> {
-                this.previewButton.setEnabled(res && this.pathSelectorPanel.isHasSelected());
-                this.downloadButton.setEnabled(res && this.pathSelectorPanel.isHasSelected());
-            });
-        });
     }
 
     // 创建任务，打开面板
@@ -261,8 +245,6 @@ public class DownloadConfigFrame extends CommonSubFrame {
             this.setVisible(true);
         });
         this.zoomSelectorPanel.removeAllSelectedZooms();
-        this.previewButton.setEnabled(false);
-        this.downloadButton.setEnabled(false);
         this.url = url;
         this.polygons = polygons;
         this.tileName = tileName;

@@ -15,6 +15,7 @@ import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.ui.tab.c_tile.TileViewPanel;
+import com.jmd.ui.tab.d_merge.TileMergePanel;
 import com.jmd.util.CommonUtils;
 import com.jmd.util.ImageUtils;
 import jakarta.annotation.PostConstruct;
@@ -26,7 +27,7 @@ import com.jmd.common.StaticVar;
 import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.tab.a_map.MapControlPanel;
 import com.jmd.ui.tab.b_download.DownloadTaskPanel;
-import com.jmd.ui.tab.d_syslog.SystemLogPanel;
+import com.jmd.ui.tab.e_syslog.SystemLogPanel;
 
 @Component
 public class MainFrame extends JFrame {
@@ -48,6 +49,8 @@ public class MainFrame extends JFrame {
     private DownloadTaskPanel downloadTaskPanel;
     @Autowired
     private TileViewPanel tileViewPanel;
+    @Autowired
+    private TileMergePanel tileMergePanel;
     @Autowired
     private SystemLogPanel systemLogPanel;
     @Autowired
@@ -82,7 +85,6 @@ public class MainFrame extends JFrame {
         } else {
             this.setIconImage(image);
         }
-
 
         this.setTitle("地图下载器");
         this.setSize(new Dimension(1280, 720));
@@ -127,6 +129,7 @@ public class MainFrame extends JFrame {
         this.tabbedPane.addTab("地图操作", null, mapControlPanel, null);
         this.tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
         this.tabbedPane.addTab("瓦片预览", null, tileViewPanel, null);
+        this.tabbedPane.addTab("瓦片合并", null, tileMergePanel, null);
         this.tabbedPane.addTab("系统日志", null, systemLogPanel, null);
 
         /* 悬浮窗 */

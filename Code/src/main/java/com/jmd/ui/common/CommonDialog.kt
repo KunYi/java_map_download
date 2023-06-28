@@ -2,6 +2,7 @@ package com.jmd.ui.common
 
 import com.jmd.ApplicationStore
 import java.util.*
+import javax.swing.JFrame
 import javax.swing.JOptionPane
 import javax.swing.UIManager
 
@@ -9,14 +10,24 @@ object CommonDialog {
 
     @JvmStatic
     fun alert(title: String?, message: String?) {
+        this.alert(null, title, message)
+    }
+
+    @JvmStatic
+    fun alert(frame: JFrame?, title: String?, message: String?) {
         var titleValue = title
         val pane = JOptionPane()
         pane.messageType = JOptionPane.INFORMATION_MESSAGE
         pane.message = message
         if (titleValue == null) {
-            titleValue = UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
+            titleValue =
+                UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
         }
-        val dialog = pane.createDialog(ApplicationStore.commonParentFrame, titleValue)
+        val dialog = if (frame == null) {
+            pane.createDialog(ApplicationStore.commonParentFrame, titleValue)
+        } else {
+            pane.createDialog(frame, titleValue)
+        }
         val lx = ApplicationStore.MAIN_FRAME_LOCATION_X
         val ly = ApplicationStore.MAIN_FRAME_LOCATION_Y
         val mw = ApplicationStore.MAIN_FRAME_WIDTH
@@ -36,7 +47,8 @@ object CommonDialog {
         pane.message = message
         pane.optionType = JOptionPane.YES_NO_OPTION
         if (titleValue == null) {
-            titleValue = UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
+            titleValue =
+                UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
         }
         val dialog = pane.createDialog(ApplicationStore.commonParentFrame, titleValue)
         pane.selectInitialValue()
@@ -63,7 +75,8 @@ object CommonDialog {
         pane.message = message
         pane.options = Arrays.copyOf(options, options.size)
         if (titleValue == null) {
-            titleValue = UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
+            titleValue =
+                UIManager.getString("OptionPane.messageDialogTitle", ApplicationStore.commonParentFrame?.locale)
         }
         val dialog = pane.createDialog(ApplicationStore.commonParentFrame, titleValue)
         pane.selectInitialValue()

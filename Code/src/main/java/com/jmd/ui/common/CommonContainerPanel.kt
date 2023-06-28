@@ -22,7 +22,6 @@ class CommonContainerPanel(title: String?) : JPanel() {
         this.layout = BorderLayout()
     }
 
-    // 预留此方法的目的为适配 eclipse 的 window build 正确识别
     fun addContent(comp: Component) {
         super.add(comp, BorderLayout.CENTER)
     }

@@ -1,4 +1,4 @@
-package com.jmd.ui.tab.d_syslog;
+package com.jmd.ui.tab.e_syslog;
 
 import javax.swing.JPanel;
 

@@ -2,8 +2,6 @@ package com.jmd.ui.frame.download.config.panel;
 
 import com.jmd.ApplicationSetting;
 import com.jmd.common.StaticVar;
-import com.jmd.rx.Topic;
-import com.jmd.rx.service.InnerMqService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -21,8 +19,6 @@ public class DownloadPathSelectorPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 5002417246102831170L;
-
-    private final InnerMqService innerMqService = InnerMqService.getInstance();
 
     private final JTextArea textArea;
     private final JButton pathSelectorButton;
@@ -113,7 +109,6 @@ public class DownloadPathSelectorPanel extends JPanel {
                         setting.setLastDirPath(lastDirPath);
                         ApplicationSetting.save(setting);
                     }
-                    innerMqService.pub(Topic.DOWNLOAD_CONFIG_FRAME_PATH_SELECTED, hasSelected);
                 }
             }
         });

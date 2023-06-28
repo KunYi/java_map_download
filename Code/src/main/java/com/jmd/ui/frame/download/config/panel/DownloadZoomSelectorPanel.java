@@ -1,8 +1,6 @@
 package com.jmd.ui.frame.download.config.panel;
 
 import com.jmd.common.StaticVar;
-import com.jmd.rx.Topic;
-import com.jmd.rx.service.InnerMqService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
@@ -18,8 +16,6 @@ public class DownloadZoomSelectorPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = -8981815091348698167L;
-
-    private final InnerMqService innerMqService = InnerMqService.getInstance();
 
     private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
     private final JCheckBox selectAllCheckBox;
@@ -79,7 +75,6 @@ public class DownloadZoomSelectorPanel extends JPanel {
                     jCheckBox.setSelected(false);
                 }
             }
-            this.innerMqService.pub(Topic.DOWNLOAD_CONFIG_FRAME_ZOOM_SELECTED, this.hasSelected);
         });
         for (var i = 0; i <= 21; i++) {
             var zoomEachCheckBox = new JCheckBox("");
@@ -102,7 +97,6 @@ public class DownloadZoomSelectorPanel extends JPanel {
                 if (isCheckBoxNoneSelected()) {
                     this.hasSelected = false;
                 }
-                this.innerMqService.pub(Topic.DOWNLOAD_CONFIG_FRAME_ZOOM_SELECTED, this.hasSelected);
             });
             JLabel layerEachLabel = new JLabel(String.valueOf(i));
             layerEachLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);

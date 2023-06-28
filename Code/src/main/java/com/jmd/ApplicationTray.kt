@@ -20,7 +20,6 @@ object ApplicationTray {
     fun addSystemTray() {
         try {
             val image = ImageUtils.getResourceImage("assets/icon/map.png")
-            println(image)
             if (SystemTray.isSupported()) {
                 val tray = SystemTray.getSystemTray()
                 val popupMenu = PopupMenu()
