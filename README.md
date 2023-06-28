@@ -36,49 +36,6 @@
 - 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码:5bgb
 - 联通云盘：https://pan.wo.cn/s/8N3I3q863 密码:ZGkm
 
-#### 新版内容
-- 可以添加自定义图层，你甚至可以去找相关资源，下载游戏地图
-- 本地瓦片预览，以及本地瓦片图web服务
-
-![输入图片说明](Other/image/frame/add-tile-setting.png)
-![输入图片说明](Other/image/frame/add-tile-frame.png)
-![输入图片说明](Other/image/tile/AQGA19U6SF0O7TQJGZGR8Q.png)
-![输入图片说明](Other/image/frame/tile-view-frame-1.png)
-![输入图片说明](Other/image/frame/tile-view-browser.png)
-![输入图片说明](Other/image/frame/tile-view-setting.png)
-
-#### 更新历史
-- 2023-06-28：添加本地瓦片预览功能，添加本地瓦片图web服务功能；优化代码，更换为gradle构建项目，部分代码使用kotlin重构
-- 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
-- 2023-04-09：优化大量代码，添加[自定义图层功能](https://gitee.com/CrimsonHu/java_map_download/issues/I6KPWN)，添加webp支持，优化拼接大图导出格式
-- 2022-11-26：JRE换为JetBrains Runtime 17，更新至SpringBoot 3.0.0，删除JxBrowser与JavaFX WebView，优化大量代码，更新谷歌地图域名
-- 2022-03-25：更新至Java17 LTS，SpringBoot 2.6.4，JCEF更新至Chromium95内核；优化代码
-- 2021-04-09：优化依赖结构，减少打包体积（注意：不要进行无意义的超巨大尺寸合并，那样OpenCV会内存溢出）
-- 2021-03-24：添加腾讯地图地图，添加坐标类型显示，修复部分问题
-- 2021-03-22：添加天地图key更换功能、添加必应地图，添加并更换默认WebView为Chromium Embedded Framework（JCEF）
-- 2021-03-01：优化界面显示，修复部分问题
-- 2021-02-18：默认地图设为高德地图；添加http代理支持，用于下载谷歌地图
-- 2020-11-28：优化错误瓦片图自动重新下载功能
-- 2020-11-27：初步添加错误瓦片图自动重新下载功能，解决无法下载天地图的问题
-
-#### 下版本功能预览
-1. 瓦片合并将做成一个独立功能（开发中，未来两个版本内更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
-2. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
-
-#### JetBrains Runtime下载地址
-- https://github.com/JetBrains/JetBrainsRuntime/tree/jbr17
-- 在Binaries for developers这一栏中下载“JBR with JCEF”，文件名以“jbrsdk_jcef”开头的
-
-#### 代码运行说明
-1. 开发环境：JetBrains Runtime 17，Angular 15
-2. IDE需要安装lombok插件
-3. 在lib目录下opencv(原版备份).jar文件中，提取出其中的native文件，在Code目录下创建名为native的文件夹，将其放入
-![输入图片说明](Other/image/other/opencv.png)
-4. 在SpringBoot项目中，解压db.7z，将db.sqlite3放入至resource目录下
-![输入图片说明](Other/image/other/sqlite.png)
-5. 编译Angular项目，将dist目录下的web文件夹放入SpringBoot项目的resource目录下
-![输入图片说明](Other/image/other/web.png)
-
 #### 软件说明
 1. 使用SpringBoot+Swing+Angular开发的桌面程序
 2. 内置若干Swing主题皮肤
@@ -88,7 +45,21 @@
 6. 多线程瓦片图下载，最大限度地使用网络资源，拒绝付费限速
 7. 瓦片图下载使用okhttp3实现
 8. 使用OpenCV进行瓦片图合并，支持大尺寸png合成图
-9. 下述图片为各历史版本图片，新版与旧版整体上大致相同，不影响主要功能介绍
+
+#### 新版内容
+- 可以添加自定义图层，你甚至可以去找相关资源，下载游戏地图
+- 本地瓦片预览，以及本地瓦片图web服务
+
+![输入图片说明](Other/image/frame/add-tile-setting.png)
+![输入图片说明](Other/image/frame/add-tile-frame.png)
+![输入图片说明](Other/image/tile/AQGA19U6SF0O7TQJGZGR8Q.png)
+![输入图片说明](Other/image/frame/tile-view-setting.png)
+![输入图片说明](Other/image/frame/tile-view-frame-1.png)
+![输入图片说明](Other/image/frame/tile-view-browser.png)
+
+#### 下版本功能预览
+1. 瓦片合并将做成一个独立功能（开发中，未来两个版本内更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
+2. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
 
 #### 主要功能
 XYZ瓦片图下载与拼接
@@ -109,9 +80,9 @@ XYZ瓦片图下载与拼接
 ![输入图片说明](Other/image/frame/main-frame-3.png)
 ![输入图片说明](Other/image/frame/download-frame-1.png)
 ![输入图片说明](Other/image/frame/download-frame-2.png)
+![输入图片说明](Other/image/frame/tile-view-setting.png)
 ![输入图片说明](Other/image/frame/tile-view-frame-1.png)
 ![输入图片说明](Other/image/frame/tile-view-browser.png)
-![输入图片说明](Other/image/frame/tile-view-setting.png)
 ![输入图片说明](Other/image/frame/add-tile-setting.png)
 ![输入图片说明](Other/image/frame/add-tile-frame.png)
 
@@ -135,5 +106,32 @@ XYZ瓦片图下载与拼接
 ![输入图片说明](Other/image/frame/theme-6.png)
 ![输入图片说明](Other/image/frame/theme-7.png)
 
+#### 更新历史
+- 2023-06-28：添加本地瓦片预览功能，添加本地瓦片图web服务功能；优化代码，更换为gradle构建项目，部分代码使用kotlin重构
+- 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
+- 2023-04-09：优化大量代码，添加[自定义图层功能](https://gitee.com/CrimsonHu/java_map_download/issues/I6KPWN)，添加webp支持，优化拼接大图导出格式
+- 2022-11-26：JRE换为JetBrains Runtime 17，更新至SpringBoot 3.0.0，删除JxBrowser与JavaFX WebView，优化大量代码，更新谷歌地图域名
+- 2022-03-25：更新至Java17 LTS，SpringBoot 2.6.4，JCEF更新至Chromium95内核；优化代码
+- 2021-04-09：优化依赖结构，减少打包体积（注意：不要进行无意义的超巨大尺寸合并，那样OpenCV会内存溢出）
+- 2021-03-24：添加腾讯地图地图，添加坐标类型显示，修复部分问题
+- 2021-03-22：添加天地图key更换功能、添加必应地图，添加并更换默认WebView为Chromium Embedded Framework（JCEF）
+- 2021-03-01：优化界面显示，修复部分问题
+- 2021-02-18：默认地图设为高德地图；添加http代理支持，用于下载谷歌地图
+- 2020-11-28：优化错误瓦片图自动重新下载功能
+- 2020-11-27：初步添加错误瓦片图自动重新下载功能，解决无法下载天地图的问题
+
+#### 代码运行说明
+1. 开发环境：JetBrains Runtime 17，Angular 15
+2. IDE需要安装lombok插件
+3. 在lib目录下opencv(原版备份).jar文件中，提取出其中的native文件，在Code目录下创建名为native的文件夹，将其放入
+![输入图片说明](Other/image/other/opencv.png)
+4. 在SpringBoot项目中，解压db.7z，将db.sqlite3放入至resource目录下
+![输入图片说明](Other/image/other/sqlite.png)
+5. 编译Angular项目，将dist目录下的web文件夹放入SpringBoot项目的resource目录下
+![输入图片说明](Other/image/other/web.png)
+
+#### JetBrains Runtime下载地址
+- https://github.com/JetBrains/JetBrainsRuntime/tree/jbr17
+- 在Binaries for developers这一栏中下载“JBR with JCEF”，文件名以“jbrsdk_jcef”开头的
 
 
