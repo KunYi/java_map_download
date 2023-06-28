@@ -31,20 +31,19 @@
 - 更新日期：2023-06-28（下载最新版注意该更新时间）
 - 重要提示：下载谷歌地图需正确使用代理，不能下载就是代理没设置好
 - 若无法打开，请将文件夹改为英文，并注意文件夹所在详细路径是否为全英文
-- 使用多网盘发布，防止链接失效
+- 使用多网盘发布，防止链接失效（阿里云盘不允许分享压缩包，故不使用）
 - 百度网盘：https://pan.baidu.com/s/1CA7sdH6zL4OjJxVydKwrWQ  密码：mdve 
-- 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码:5bgb
-- 联通云盘：https://pan.wo.cn/s/8N3I3q863 密码:ZGkm
+- 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码: 5bgb
+- 联通云盘：https://pan.wo.cn/s/2N1u0E1184 密码: uqVN
 
 #### 软件说明
 1. 使用SpringBoot+Swing+Angular开发的桌面程序
 2. 内置若干Swing主题皮肤
 3. Webview使用JetBrains Runtime自带的Chromium Embedded Framework
-4. 支持Windows与macOS
-5. 支持png与jpg格式存储瓦片图，并支持瓦片图合并
-6. 多线程瓦片图下载，最大限度地使用网络资源，拒绝付费限速
-7. 瓦片图下载使用okhttp3实现
-8. 使用OpenCV进行瓦片图合并，支持大尺寸png合成图
+4. 支持Windows与macOS（macOS上需要自行运行代码编译）
+5. 支持png、jpg、webp格式存储瓦片图，并支持瓦片图合并
+6. 多线程+okhttp3瓦片图下载，最大限度地使用网络资源，拒绝付费限速
+7. 使用OpenCV进行瓦片图合并，支持大尺寸png合成图
 
 #### 新版内容
 - 可以添加自定义图层，你甚至可以去找相关资源，下载游戏地图
