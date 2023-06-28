@@ -55,7 +55,7 @@ public class TileMergeTask {
                         break;
                     }
                 }
-                mat.mergeToMat(MyFileUtils.checkFilePathAndName(filePathAndName), positionX, positionY, isInFlag);
+                mat.mergeToMat(MyFileUtils.checkFilePath(filePathAndName), positionX, positionY, isInFlag);
             }
         }
         return new AsyncResult<>(result);

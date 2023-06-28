@@ -409,7 +409,7 @@ public class TaskStepFunc {
             finishBack.execute();
             this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在写入至硬盘...");
             // 文件类型
-            var outPath = MyFileUtils.checkFilePathAndName(taskAllInfo.getSavePath() + "/tile-merge" + "/");
+            var outPath = MyFileUtils.checkFilePath(taskAllInfo.getSavePath() + "/tile-merge" + "/");
             var outName = "z=" + z;
             // opencv导出
             mat.output(outPath, outName, taskAllInfo.getMergeType());

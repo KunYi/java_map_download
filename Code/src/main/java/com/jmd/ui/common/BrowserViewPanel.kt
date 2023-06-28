@@ -20,14 +20,18 @@ abstract class BrowserViewPanel(
         private val serialVersionUID = 296955159808720054L
     }
 
-    var isLoaded: Boolean = false;
+    private var loaded: Boolean = false
     private var url: String? = null
-    private var client: CefClient? = null
-    private var browser: CefBrowser? = null
+    private lateinit var client: CefClient
+    private lateinit var browser: CefBrowser
     private val splitPane: JSplitPane
     private val framePanel: JPanel
     private val devToolPanel: JPanel
     private var devToolOpen = false
+
+    fun isLoaded(): Boolean {
+        return this.loaded;
+    }
 
     init {
 
@@ -65,22 +69,22 @@ abstract class BrowserViewPanel(
         } else {
             "http://localhost:4500/#${this.path}"
         }
-        if (this.browser == null) {
+        if (!this.loaded) {
             this.showBrowser();
-            this.isLoaded = true
+            this.loaded = true
         }
     }
 
     fun reload() {
-        this.browser!!.reload()
+        this.browser.reload()
     }
 
-    protected fun showBrowser() {
-        this.client = ChromiumEmbeddedCore.getInstance().createClient(this)
-        this.browser = ChromiumEmbeddedCore.getInstance().createBrowser(this.client, this.url)
+    private fun showBrowser() {
+        this.client = ChromiumEmbeddedCore.instance.createClient(this)
+        this.browser = ChromiumEmbeddedCore.instance.createBrowser(this.client, this.url)
         SwingUtilities.invokeLater {
             this.framePanel.removeAll()
-            this.browser!!.uiComponent!!.let {
+            this.browser.uiComponent!!.let {
                 this.framePanel.add(it, BorderLayout.CENTER);
             }
             this.framePanel.revalidate()
@@ -102,7 +106,7 @@ abstract class BrowserViewPanel(
         this.splitPane.rightComponent = this.devToolPanel
         this.splitPane.isContinuousLayout = true
         this.splitPane.dividerLocation = this.size.width - 500
-        this.devToolPanel.add(this.browser!!.devTools.uiComponent, BorderLayout.CENTER)
+        this.devToolPanel.add(this.browser.devTools.uiComponent, BorderLayout.CENTER)
         this.devToolPanel.revalidate()
         this.splitPane.revalidate()
     }
@@ -119,7 +123,7 @@ abstract class BrowserViewPanel(
     }
 
     fun execJS(javaScript: String?) {
-        this.browser!!.executeJavaScript(javaScript, null, 0)
+        this.browser.executeJavaScript(javaScript, null, 0)
     }
 
 }

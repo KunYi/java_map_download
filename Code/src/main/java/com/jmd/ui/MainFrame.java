@@ -2,19 +2,17 @@ package com.jmd.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serial;
 
 import javax.swing.*;
 
+import com.jmd.Application;
 import com.jmd.ApplicationSetting;
 import com.jmd.ApplicationStore;
-import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.rx.Topic;
 import com.jmd.rx.client.InnerMqClient;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.task.TaskState;
 import com.jmd.ui.foating.FloatingWindow;
 import com.jmd.ui.tab.c_tile.TileViewPanel;
 import com.jmd.util.CommonUtils;
@@ -85,38 +83,6 @@ public class MainFrame extends JFrame {
             this.setIconImage(image);
         }
 
-        /* 任务栏图标菜单 */
-        if (SystemTray.isSupported()) {
-            var tray = SystemTray.getSystemTray();
-            java.awt.PopupMenu popupMenu = new java.awt.PopupMenu();
-            java.awt.MenuItem openItem = new java.awt.MenuItem("show");
-            openItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-            openItem.addActionListener((e) -> {
-                this.setVisible(true);
-            });
-            java.awt.MenuItem exitItem = new java.awt.MenuItem("exit");
-            exitItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-            exitItem.addActionListener((e) -> {
-                processExit();
-            });
-            popupMenu.add(openItem);
-            popupMenu.add(exitItem);
-            var trayIcon = new TrayIcon(image, "地图下载器", popupMenu);
-            trayIcon.setImageAutoSize(true);
-            trayIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (e.getClickCount() == 2) {
-                        setVisible(true);
-                    }
-                }
-            });
-            try {
-                tray.add(trayIcon);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         this.setTitle("地图下载器");
         this.setSize(new Dimension(1280, 720));
@@ -144,7 +110,7 @@ public class MainFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (!SystemTray.isSupported()) {
-                    processExit();
+                    Application.exit();
                 }
             }
         });
@@ -204,18 +170,6 @@ public class MainFrame extends JFrame {
                 this.setVisible(false);
             });
         });
-        client.sub(Topic.MAIN_FRAME_EXIT, (res) -> {
-            SwingUtilities.invokeLater(this::processExit);
-        });
-    }
-
-    private void processExit() {
-        this.setVisible(false);
-        if (TaskState.IS_TASKING) {
-            taskExec.taskCancel();
-        }
-        ChromiumEmbeddedCore.getInstance().dispose();
-        System.exit(0);
     }
 
 }

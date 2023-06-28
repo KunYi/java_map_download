@@ -12,6 +12,7 @@ import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jmd.ui.StartupWindow;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.PrintStream;
 
@@ -19,6 +20,7 @@ import java.io.PrintStream;
 public class Application {
 
     public static boolean isStartComplete = false;
+    private static ConfigurableApplicationContext context;
     private static final InnerMqService innerMqService = InnerMqService.getInstance();
     private static final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -33,8 +35,6 @@ public class Application {
 
     public static void main(String[] args) {
 
-        // Print
-        Application.print();
         // 加载界面主题
         try {
             UIManager.setLookAndFeel(ApplicationSetting.getSetting().getThemeClazz());
@@ -42,7 +42,10 @@ public class Application {
             e.printStackTrace();
         }
         // 加载启动界面
-        SwingUtilities.invokeLater(() -> StartupWindow.getInstance().setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            ApplicationTray.addSystemTray();
+            StartupWindow.getInstance().setVisible(true);
+        });
         compositeDisposable.add(ProgressBeanPostProcessor.observe().subscribe((result) -> {
             // 监听SpringBoot启动进度
             SwingUtilities.invokeLater(() -> {
@@ -66,17 +69,20 @@ public class Application {
                 innerMqService.pub(Topic.APPLICATION_START_FINISH, true);
             }).start();
         }));
-        // 实例化浏览器内核
-        ChromiumEmbeddedCore.getInstance();
         // 重定向至ConsoleTextArea
-//        var out = new ApplicationOutputStream(ApplicationStore.consoleTextArea);
-//        System.setOut(new PrintStream(out)); // 设置输出重定向
-//        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
-        // 异步启动SpringBoot核心
+        var out = new ApplicationOutputStream(ApplicationStore.consoleTextArea);
+        System.setOut(new PrintStream(out)); // 设置输出重定向
+        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
+        // Print
+        Application.print();
+        // 异步
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                SpringApplication.run(Application.class, args);
+                // 实例化浏览器内核
+                ChromiumEmbeddedCore.Companion.getInstance();
+                // 启动SpringBoot核心
+                context = SpringApplication.run(Application.class, args);
                 return null;
             }
         }.execute();
@@ -88,6 +94,16 @@ public class Application {
         System.out.println("User OS: " + System.getProperty("os.name"));
         System.out.println("Java Name: " + System.getProperty("java.vm.name"));
         System.out.println("Java Version: " + System.getProperty("java.vm.version"));
+    }
+
+    public static void exit() {
+        ChromiumEmbeddedCore.Companion.getInstance().dispose();
+        if (context != null) {
+            var exitCode = SpringApplication.exit(context, () -> 0);
+            System.exit(exitCode);
+        } else {
+            System.exit(0);
+        }
     }
 
 }

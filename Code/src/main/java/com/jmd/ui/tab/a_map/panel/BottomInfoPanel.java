@@ -24,7 +24,7 @@ public class BottomInfoPanel extends JPanel {
                 ", " +
                 "Chromium Embedded Framework (CEF), " +
                 "ChromeVersion: " +
-                ChromiumEmbeddedCore.getInstance().getVersion();
+                ChromiumEmbeddedCore.Companion.getInstance().getVersion();
 
         this.setLayout(new BorderLayout(0, 0));
         JLabel leftLabel = new JLabel(version);

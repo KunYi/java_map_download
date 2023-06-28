@@ -183,7 +183,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
                         return;
                     }
                     boolean isCreate = true;
-                    var path = MyFileUtils.checkFilePathAndName(pathSelectorPanel.getSelectedDirPath().getAbsolutePath());
+                    var path = MyFileUtils.checkFilePath(pathSelectorPanel.getSelectedDirPath().getAbsolutePath());
                     if (isTaskExist(path)) {
                         String[] options = {"导入任务", "创建新任务"};
                         var n = CommonDialog.option("选择", "该目录下已存在下载任务，请选择导入任务或新建任务", options);

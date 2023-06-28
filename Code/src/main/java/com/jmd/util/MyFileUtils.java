@@ -77,8 +77,12 @@ public class MyFileUtils {
     }
 
     // 检查并更正文件路径
-    public static String checkFilePathAndName(String pathAndName) {
-        return pathAndName.replace("\\", "/");
+    public static String checkFilePath(String path) {
+        if (CommonUtils.isWindows()) {
+            return path.replace("/", "\\");
+        } else {
+            return path.replace("\\", "/");
+        }
     }
 
 }

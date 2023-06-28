@@ -5,13 +5,21 @@ version = "1.0-SNAPSHOT"
 description = "地图下载器"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
+repositories {
+    mavenLocal()
+    maven {
+        url = uri("https://maven.aliyun.com/nexus/content/groups/public/")
+    }
+    mavenCentral()
+}
+
 plugins {
     java
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
     kotlin("plugin.lombok") version "1.8.22"
     id("io.freefair.lombok") version "8.0.1"
-    id("org.springframework.boot") version "3.1.0"
+    id("org.springframework.boot") version "3.1.1"
     id("io.spring.dependency-management") version "1.1.0"
 }
 
@@ -21,10 +29,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-tomcat")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.squareup.okhttp3:okhttp")
     implementation("io.reactivex.rxjava3:rxjava")
-    implementation("com.alibaba:druid-spring-boot-starter:1.2.18")
     implementation("org.xerial:sqlite-jdbc")
     implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
     implementation("commons-io:commons-io:2.13.0")
@@ -35,12 +43,12 @@ dependencies {
     implementation(files("lib/opencv/opencv-4.7.0-0.jar"))
 }
 
-repositories {
-    mavenLocal()
-    maven {
-        url = uri("https://maven.aliyun.com/nexus/content/groups/public/")
+sourceSets {
+    main {
+        resources {
+            srcDirs("src/main/java", "src/main/resources")
+        }
     }
-    mavenCentral()
 }
 
 tasks.jar {

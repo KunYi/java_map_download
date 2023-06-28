@@ -20,7 +20,7 @@ public class HttpDownload {
 
     // 通过URL下载文件
     public DownloadResult downloadTile(String url, int imgType, String pathAndName, int retry) {
-        pathAndName = MyFileUtils.checkFilePathAndName(pathAndName);
+        pathAndName = MyFileUtils.checkFilePath(pathAndName);
         var result = new DownloadResult();
         var success = false;
         var bytes = http.getFileBytes(url, HttpClient.HEADERS);

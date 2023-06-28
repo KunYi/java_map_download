@@ -110,7 +110,7 @@ public class TileViewPanel extends JPanel {
                 CommonDialog.alert(null, "未选择命名风格");
                 return;
             }
-            var param = new TileViewParam(MyFileUtils.checkFilePathAndName(path), pathStyle, type);
+            var param = new TileViewParam(MyFileUtils.checkFilePath(path), pathStyle, type);
             this.apiAddressPanel.setCanView(true);
             this.innerMqService.pub(Topic.OPEN_TILE_VIEW, param);
         });

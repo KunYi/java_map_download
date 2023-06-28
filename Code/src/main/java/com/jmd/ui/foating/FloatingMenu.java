@@ -1,5 +1,6 @@
 package com.jmd.ui.foating;
 
+import com.jmd.Application;
 import com.jmd.common.StaticVar;
 import com.jmd.model.task.TaskStatusEnum;
 import com.jmd.rx.Topic;
@@ -109,7 +110,7 @@ public class FloatingMenu extends JPopupMenu {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
-                    innerMqService.pub(Topic.MAIN_FRAME_EXIT, true);
+                    Application.exit();
                 }
             }
         });
