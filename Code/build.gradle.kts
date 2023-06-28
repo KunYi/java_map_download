@@ -46,7 +46,7 @@ dependencies {
 sourceSets {
     main {
         resources {
-            srcDirs("src/main/java", "src/main/resources")
+            srcDirs("src/main/java")
         }
     }
 }

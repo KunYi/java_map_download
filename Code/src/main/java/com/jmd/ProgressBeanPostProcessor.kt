@@ -24,7 +24,7 @@ class ProgressBeanPostProcessor : BeanPostProcessor, ApplicationListener<Context
         result.perc = count.get() * 100 / total
         result.beanName = bean.javaClass.packageName + "." + bean.javaClass.simpleName
         beans.onNext(result)
-        // println(count.get());
+        // println(count.get())
         return bean
     }
 

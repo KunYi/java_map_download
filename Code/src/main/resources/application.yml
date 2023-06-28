@@ -3,7 +3,7 @@ logging.file.name: ./log/application.log
 
 setting:
   build:
-    date: 2023-06-07
+    date: 2023-06-28
   version:
     jdk: JetBrains Runtime 17
     jcef: 111
