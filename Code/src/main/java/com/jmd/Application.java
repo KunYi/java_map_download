@@ -6,6 +6,7 @@ import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
+import com.jmd.util.CommonUtils;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
@@ -30,7 +31,12 @@ public class Application {
         } else if (StaticVar.IS_Mac) {
             System.setProperty("sun.java2d.metal", "true");
         }
-        System.load(System.getProperty("user.dir") + "/native/opencv_java470.dll");
+        if (CommonUtils.isWindows()) {
+            System.load(System.getProperty("user.dir") + "/native/opencv_java470.dll");
+        }
+        if (CommonUtils.isLinux()) {
+            System.load(System.getProperty("user.dir") + "/native/libopencv_java470.so");
+        }
     }
 
     public static void main(String[] args) {

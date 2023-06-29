@@ -106,6 +106,10 @@ public class CommonUtils {
         return System.getProperties().getProperty("os.name").toUpperCase().contains("MAC OS");
     }
 
+    public static boolean isLinux() {
+        return System.getProperties().getProperty("os.name").toUpperCase().contains("LINUX");
+    }
+
     public static boolean isWindows() {
         return System.getProperties().getProperty("os.name").toUpperCase().contains("WINDOWS");
     }
