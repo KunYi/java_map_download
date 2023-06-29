@@ -36,12 +36,15 @@ out/
 ### VS Code ###
 .vscode/
 
+### Mac OS ###
 *.DS_Store
-context/
-log/
-setting/
-native/
 
-assets/
-src/main/resources/web
-src/main/resources/db.sqlite3
+### 缓存文件 ###
+/log
+/assets
+/context
+/setting
+/native
+
+/src/main/resources/web
+/src/main/resources/db.sqlite3
