@@ -3,7 +3,7 @@
 #### 本处为主仓库，github为备份仓库（github只在新版本发布时同步最新代码）
 #### github仓库地址：https://github.com/kurimuson/java_map_download
 
-#### 使用JetBrains Runtime 17，SpringBoot 3.0，JCEF版本为Chromium 104
+#### 使用JetBrains Runtime 17，SpringBoot 3.1，JCEF版本为Chromium 111
 
 #### 介绍
 使用Java开发的地图瓦片图下载工具，支持以下XYZ瓦片图下载与合并。多线程瓦片图下载，最大限度地使用本机网络资源。
@@ -120,8 +120,8 @@ XYZ瓦片图下载与拼接
 - 2020-11-27：初步添加错误瓦片图自动重新下载功能，解决无法下载天地图的问题
 
 #### 代码运行说明
-1. 开发环境：JetBrains Runtime 17，Angular 15
-2. IDE需要安装lombok插件
+1. 开发环境：JetBrains Runtime 17，Angular 16
+2. 项目运行需指定JBRSDK17，因为使用gradle.kts构建项目，故只能在IDEA中运行，并注意gradle也需要指定该JDK
 3. 在lib目录下opencv(原版备份).jar文件中，提取出其中的native文件，在Code目录下创建名为native的文件夹，将其放入
 ![输入图片说明](Other/image/other/opencv.png)
 4. 在SpringBoot项目中，解压db.7z，将db.sqlite3放入至resource目录下
