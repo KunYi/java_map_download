@@ -9,6 +9,10 @@ import com.jmd.model.district.Province;
 @Mapper
 public interface ProvinceDao {
 
+	int insert(Province province);
+
+	int isExist(String adcode);
+
 	List<Province> queryAll();
 
 }

@@ -108,6 +108,7 @@ abstract class BrowserViewPanel(
         this.splitPane.dividerLocation = this.size.width - 500
         this.devToolPanel.add(this.browser.devTools.uiComponent, BorderLayout.CENTER)
         this.devToolPanel.revalidate()
+        this.framePanel.revalidate()
         this.splitPane.revalidate()
     }
 
@@ -120,6 +121,7 @@ abstract class BrowserViewPanel(
         this.splitPane.isContinuousLayout = false
         this.splitPane.dividerLocation = this.size.width
         this.splitPane.revalidate()
+        this.framePanel.revalidate()
     }
 
     fun execJS(javaScript: String?) {

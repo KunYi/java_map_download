@@ -11,6 +11,8 @@ public interface DistrictDao {
 
 	int insert(District district);
 
+	int isExist(String adcode);
+
 	List<District> queryAll();
 
 	District queryByAdcode(String adcode);

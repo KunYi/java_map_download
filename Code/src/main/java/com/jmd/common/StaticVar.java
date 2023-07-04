@@ -15,6 +15,7 @@ import javax.swing.*;
 public class StaticVar {
 
     public static final boolean IS_Mac = CommonUtils.isMac();
+    public static final boolean IS_LINUX = CommonUtils.isLinux();
     public static final boolean IS_Windows = CommonUtils.isWindows();
     public static final boolean IS_Windows_10 = CommonUtils.isWindows10();
     public static final boolean IS_Windows_11 = CommonUtils.isWindows11();

@@ -9,19 +9,15 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.jmd.model.district.Area">
-        INSERT INTO
-        tb_area(adcode, polyline)
-        VALUES (#{adcode}, #{polyline})
+        INSERT INTO tb_area(adcode, polyline) VALUES (#{adcode}, #{polyline})
     </insert>
 
     <select id="isExist" resultType="java.lang.Integer">
-        SELECT count() FROM tb_area
-        WHERE adcode=#{adcode}
+        SELECT count() FROM tb_area WHERE adcode=#{adcode}
     </select>
 
     <select id="getByAdcode" resultMap="areaResultMap">
-        SELECT * FROM tb_area
-        WHERE adcode=#{adcode}
+        SELECT * FROM tb_area WHERE adcode=#{adcode}
     </select>
 
 </mapper>

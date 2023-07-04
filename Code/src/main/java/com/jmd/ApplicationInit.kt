@@ -27,7 +27,7 @@ class ApplicationInit : ApplicationRunner {
             mainFrame.isVisible = true
             StartupWindow.getInstance().close()
         }
-        // new Thread(() -> test.run()).start();
+        // Thread(test::run).start()
     }
 
 }

@@ -11,6 +11,15 @@
         <result property="padcode" column="padcode"/>
     </resultMap>
 
+    <insert id="insert" parameterType="com.jmd.model.district.City">
+        INSERT INTO tb_city(name, center, citycode, adcode, padcode)
+        VALUES (#{name}, #{center}, #{citycode}, #{adcode}, #{padcode})
+    </insert>
+
+    <select id="isExist" resultType="java.lang.Integer">
+        SELECT count() FROM tb_city WHERE adcode=#{adcode}
+    </select>
+
     <select id="queryAll" resultMap="cityResultMap">
         SELECT * FROM tb_city
     </select>

@@ -12,10 +12,13 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.jmd.model.district.District">
-        INSERT INTO
-        tb_district(name, center, citycode, adcode, padcode)
+        INSERT INTO tb_district(name, center, citycode, adcode, padcode)
         VALUES (#{name}, #{center}, #{citycode}, #{adcode}, #{padcode})
     </insert>
+
+    <select id="isExist" resultType="java.lang.Integer">
+        SELECT count() FROM tb_district WHERE adcode=#{adcode}
+    </select>
 
     <select id="queryAll" resultMap="districtResultMap">
         SELECT * FROM tb_district

@@ -8,6 +8,14 @@
         <result property="adcode" column="adcode"/>
     </resultMap>
 
+    <insert id="insert" parameterType="com.jmd.model.district.Province">
+        INSERT INTO tb_province(province, adcode) VALUES (#{province}, #{adcode})
+    </insert>
+
+    <select id="isExist" resultType="java.lang.Integer">
+        SELECT count() FROM tb_province WHERE adcode=#{adcode}
+    </select>
+
     <select id="queryAll" resultMap="provinceResultMap">
         SELECT * FROM tb_province
     </select>
