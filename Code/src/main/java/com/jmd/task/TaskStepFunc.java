@@ -84,6 +84,7 @@ public class TaskStepFunc {
         long end = System.currentTimeMillis();
         taskAllInfo.setTileUrl(taskCreate.getTileUrl());
         taskAllInfo.setImgType(taskCreate.getImgType());
+        taskAllInfo.setOriImgType(taskCreate.getOriImgType());
         taskAllInfo.setTileName(taskCreate.getTileName());
         taskAllInfo.setMapType(taskCreate.getMapType());
         taskAllInfo.setSavePath(taskCreate.getSavePath());
@@ -219,6 +220,7 @@ public class TaskStepFunc {
                     execParam.setTileName(taskAllInfo.getTileName());
                     execParam.setDownloadUrl(taskAllInfo.getTileUrl());
                     execParam.setImgType(taskAllInfo.getImgType());
+                    execParam.setOriImgType(taskAllInfo.getOriImgType());
                     execParam.setSavePath(taskAllInfo.getSavePath());
                     execParam.setPathStyle(taskAllInfo.getPathStyle());
                     execParam.setIsCoverExists(taskAllInfo.getIsCoverExists());
@@ -394,7 +396,8 @@ public class TaskStepFunc {
                 for (var j = 0; j < divideY.size(); j++) {
                     var future = tileMergeTask.exec(mat, z, xStart, yStart,
                             xStart + divideX.get(i)[0], xStart + divideX.get(i)[1], yStart + divideY.get(j)[0],
-                            yStart + divideY.get(j)[1], taskInst.getPolygons(), taskAllInfo.getImgType(),
+                            yStart + divideY.get(j)[1], taskInst.getPolygons(),
+                            taskAllInfo.getImgType(), taskAllInfo.getOriImgType(),
                             taskAllInfo.getSavePath(), taskAllInfo.getPathStyle(), i, j);
                     futures.add(future);
                 }

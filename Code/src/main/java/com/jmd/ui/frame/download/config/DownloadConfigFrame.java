@@ -65,6 +65,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
     private List<Polygon> polygons;
     private String tileName;
     private String mapType;
+    private String oriImgType;
 
     private final CommonContainerPanel zoomPanel;
     private final CommonContainerPanel otherPanel;
@@ -239,7 +240,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
     }
 
     // 创建任务，打开面板
-    public void createNewTask(String url, List<Polygon> polygons, String tileName, String mapType)
+    public void createNewTask(String url, List<Polygon> polygons, String tileName, String mapType, String oriImgType)
             throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> {
             this.setVisible(true);
@@ -249,6 +250,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
         this.polygons = polygons;
         this.tileName = tileName;
         this.mapType = mapType;
+        this.oriImgType = oriImgType;
     }
 
     // 创建任务实例类
@@ -259,9 +261,10 @@ public class DownloadConfigFrame extends CommonSubFrame {
         taskCreate.setMapType(this.mapType);
         taskCreate.setSavePath(this.pathSelectorPanel.getSelectedDirPath().getAbsolutePath());
         taskCreate.setZoomList(this.zoomSelectorPanel.getSelectedZooms());
-        taskCreate.setPolygons(polygons);
+        taskCreate.setPolygons(this.polygons);
         taskCreate.setPathStyle(this.otherSettingPanel.getPathStyle());
         taskCreate.setImgType(this.otherSettingPanel.getImgType());
+        taskCreate.setOriImgType(this.oriImgType);
         taskCreate.setIsCoverExists(this.otherSettingPanel.isCoverExist());
         taskCreate.setIsMergeTile(this.otherSettingPanel.isMergeTile());
         taskCreate.setMergeType(this.otherSettingPanel.getMergeType());

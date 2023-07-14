@@ -26,7 +26,7 @@ public class TileMergeTask {
             long xStart, long xEnd,
             long yStart, long yEnd,
             List<Polygon> polygons,
-            int imgType, String savePath, String pathStyle,
+            int imgType, String oriImgType, String savePath, String pathStyle,
             int divideXIndex, int divideYIndex
     ) {
         var result = new ImageMergeAsyncTaskResult();
@@ -47,7 +47,9 @@ public class TileMergeTask {
                 var tile = GeoUtils.getTile(z, x, y);
                 var positionX = StaticVar.TILE_WIDTH * (x - topLeftX);
                 var positionY = StaticVar.TILE_HEIGHT * (y - topLeftY);
-                var filePathAndName = savePath + TaskUtils.getFilePathName(pathStyle, imgType, z, x, y);
+                var filePathAndName = savePath +
+                        TaskUtils.getFilePathNameNoSuffix(pathStyle, z, x, y) + "." +
+                        TaskUtils.getImageFileSuffix(imgType, oriImgType);
                 var isInFlag = false;
                 for (var polygon : polygons) {
                     isInFlag = GeoUtils.isTileInPolygon(tile, polygon) || GeoUtils.isPolygonInTile(tile, polygon);

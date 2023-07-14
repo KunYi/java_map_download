@@ -18,7 +18,7 @@ export class BaiduSource {
 		this.BaiduNormal_Name = 'Baidu-Normal';
 		this.BaiduNormal_Source = [
 			{
-				name: 'Normal', type: 'TILE_FUNC', support: false,
+				name: 'Normal', type: 'TILE_FUNC', support: false, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileGrid: bdTilegrid,

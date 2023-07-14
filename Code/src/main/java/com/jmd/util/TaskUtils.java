@@ -31,23 +31,23 @@ public class TaskUtils {
         return taskAllInfo;
     }
 
-    public static String getSuffix(int imgType) {
-        String suffix = "";
-        switch (imgType) {
-            case 0 -> suffix = "png";
-            case 1 -> suffix = "webp";
-            case 2, 3, 4 -> suffix = "jpg";
-            default -> {
-            }
-        }
+    public static String getImageFileSuffix(int imgType, String oriImgType) {
+        String suffix = switch (imgType) {
+            case 0 -> oriImgType.toLowerCase();
+            case 1 -> "png";
+            case 2 -> "webp";
+            case 3 -> "tiff";
+            case 4, 5, 6 -> "jpg";
+            default -> "png";
+        };
         return suffix;
     }
 
-    public static String getFilePathName(String pathStyle, int imgType, int z, long x, long y) {
+    public static String getFilePathNameNoSuffix(String pathStyle, int z, long x, long y) {
         pathStyle = pathStyle.replaceAll("\\{x\\}", String.valueOf(x));
         pathStyle = pathStyle.replaceAll("\\{y\\}", String.valueOf(y));
         pathStyle = pathStyle.replaceAll("\\{z\\}", String.valueOf(z));
-        pathStyle = pathStyle.replaceAll("\\[image\\]", getSuffix(imgType));
+        pathStyle = pathStyle.replaceAll(".\\[image\\]", "");
         return pathStyle;
     }
 

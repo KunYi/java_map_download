@@ -77,6 +77,7 @@ export class MapSource {
 						name: addedLayers[i].name,
 						type: 'XYZ_URL',
 						support: true,
+						oriImgType: addedLayers[i].oriImgType,
 						source: new ol.source.XYZ(
 							addedLayers[i].proxy ?
 								{
@@ -84,7 +85,7 @@ export class MapSource {
 										let z = String(tileCoord[0]);
 										let x = String(tileCoord[1]);
 										let y = String(tileCoord[2]);
-										let path = `/tile/proxy?z=${z}&x=${x}&y=${y}&url=${encodeURI(addedLayers[i].url)}`;
+										let path = `/tile/proxy?z=${z}&x=${x}&y=${y}&type=${addedLayers[i].oriImgType}&url=${encodeURI(addedLayers[i].url)}`;
 										if (this.production) {
 											return `http://localhost:${window.location.port}${path}`;
 										} else {

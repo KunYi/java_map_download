@@ -14,6 +14,7 @@ public class AddedLayerSetting implements Serializable {
     private String name;
     private String url;
     private String type;
+    private String oriImgType;
     private Boolean proxy;
 
 }

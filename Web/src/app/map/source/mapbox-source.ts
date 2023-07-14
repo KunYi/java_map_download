@@ -31,7 +31,7 @@ export class MapBoxSource {
 		this.MapBoxPDF_Name = 'MapBox-PDF';
 		this.MapBoxPDF_Source = [
 			{
-				name: 'MapBox', type: 'PDF', support: true,
+				name: 'MapBox', type: 'PDF', support: true, oriImgType: 'PDF',
 				source: new ol.source.VectorTile({
 					attributions:
 						'© <a href="https://www.mapbox.com/map-feedback/">Mapbox</a> ' +

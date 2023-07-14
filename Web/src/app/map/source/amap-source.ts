@@ -24,7 +24,7 @@ export class AmapSource {
 		this.AMapNormal_Name = 'AMap-Normal';
 		this.AMapNormal_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: AMapNormal_URL }),
 				url: AMapNormal_URL,
 				coordinateType: 'gcj02',
@@ -35,7 +35,7 @@ export class AmapSource {
 		this.AMapNormalNone_Name = 'AMap-Normal-None';
 		this.AMapNormalNone_Source = [
 			{
-				name: 'Normal-None', type: 'XYZ_URL', support: true,
+				name: 'Normal-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: AMapNormalNone_URL }),
 				url: AMapNormalNone_URL,
 				coordinateType: 'gcj02',
@@ -46,7 +46,7 @@ export class AmapSource {
 		this.AMapSatelliteNone_Name = 'AMap-Satellite-None';
 		this.AMapSatelliteNone_Source = [
 			{
-				name: 'Satellite-None', type: 'XYZ_URL', support: true,
+				name: 'Satellite-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: AMapSatelliteNone_URL }),
 				url: AMapSatelliteNone_URL,
 				coordinateType: 'gcj02',
@@ -57,7 +57,7 @@ export class AmapSource {
 		this.AMapStreet_Name = 'AMap-Street';
 		this.AMapStreet_Source = [
 			{
-				name: 'Street', type: 'XYZ_URL', support: true,
+				name: 'Street', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: AMapStreet_URL }),
 				url: AMapStreet_URL,
 				coordinateType: 'gcj02',
@@ -68,7 +68,7 @@ export class AmapSource {
 		this.AMapStreetNone_Name = 'AMap-Street-None';
 		this.AMapStreetNone_Source = [
 			{
-				name: 'Street-None', type: 'XYZ_URL', support: true,
+				name: 'Street-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: AMapStreetNone_URL }),
 				url: AMapStreetNone_URL,
 				coordinateType: 'gcj02',

@@ -9,6 +9,7 @@ import com.jmd.http.HttpDownload;
 import com.jmd.task.TaskState;
 import com.jmd.util.CommonUtils;
 import com.jmd.util.GeoUtils;
+import com.jmd.util.MyFileUtils;
 import com.jmd.util.TaskUtils;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public class TileDownloadExecInst {
     private final String savePath;
     private final Boolean isCoverExists;
     private final Integer imgType;
+    private final String oriImgType;
     private final TileDownloadedCallback callback;
     private final ArrayList<String> urls;
 
@@ -42,6 +44,7 @@ public class TileDownloadExecInst {
         this.savePath = this.execParam.getSavePath();
         this.isCoverExists = this.execParam.getIsCoverExists();
         this.imgType = this.execParam.getImgType();
+        this.oriImgType = this.execParam.getOriImgType();
         this.callback = this.execParam.getTileCB();
         this.urls = CommonUtils.expandUrl(this.execParam.getDownloadUrl());
     }
@@ -126,7 +129,7 @@ public class TileDownloadExecInst {
         var isInFlag = this.isInCheck(z, x, y);
         var url = this.urls.get(urlIndex);
         if (isInFlag) {
-            var pathAndName = this.savePath + TaskUtils.getFilePathName(this.pathStyle, this.imgType, z, x, y);
+            var pathAndName = this.savePath + TaskUtils.getFilePathNameNoSuffix(this.pathStyle, z, x, y);
             if (this.isCoverExists) {
                 // 覆盖：是
                 var downloadResult = downloadTile(url, pathAndName, z, x, y);
@@ -166,7 +169,8 @@ public class TileDownloadExecInst {
             int z, long x, long y
     ) {
         var url = CommonUtils.getDialectUrl(this.tileName, downloadUrl, z, x, y);
-        return this.download.downloadTile(url, this.imgType, pathAndName, this.retry);
+        pathAndName = MyFileUtils.checkFilePath(pathAndName);
+        return this.download.downloadTile(url, this.imgType, this.oriImgType, pathAndName, this.retry);
     }
 
     private static class Result {

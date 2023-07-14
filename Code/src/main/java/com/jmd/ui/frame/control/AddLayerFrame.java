@@ -30,11 +30,16 @@ public class AddLayerFrame extends CommonSubFrame {
     private final JTextField nameInputTextField;
     private final JRadioButton typeWgs84RadioButton;
     private final JRadioButton typeGcj02RadioButton;
+    private final JRadioButton pngRadioButton;
+    private final JRadioButton webpRadioButton;
+    private final JRadioButton tiffRadioButton;
+    private final JRadioButton jpgRadioButton;
     private final JRadioButton proxyCloseRadioButton;
     private final JRadioButton proxyOpenRadioButton;
     private final JTextArea urlInputTextArea;
     private final JButton okButton;
     private String type = "wgs84";
+    private String oriImgType = "PNG";
     private boolean proxy = false;
 
     public AddLayerFrame() {
@@ -59,20 +64,44 @@ public class AddLayerFrame extends CommonSubFrame {
         btnGroup1.add(this.typeWgs84RadioButton);
         btnGroup1.add(this.typeGcj02RadioButton);
 
+        var oriImgTypeSelectLabel = new JLabel("图片类型：");
+
+        this.pngRadioButton = new JRadioButton("png");
+        this.pngRadioButton.setSelected(true);
+        this.pngRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
+        this.webpRadioButton = new JRadioButton("webp");
+        this.webpRadioButton.setSelected(false);
+        this.webpRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
+        this.tiffRadioButton = new JRadioButton("tiff");
+        this.tiffRadioButton.setSelected(false);
+        this.tiffRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
+        this.jpgRadioButton = new JRadioButton("jpg");
+        this.jpgRadioButton.setSelected(false);
+        this.jpgRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
+        var btnGroup2 = new ButtonGroup();
+        btnGroup2.add(this.pngRadioButton);
+        btnGroup2.add(this.webpRadioButton);
+        btnGroup2.add(this.tiffRadioButton);
+        btnGroup2.add(this.jpgRadioButton);
+
         var proxyLabel = new JLabel("瓦片资源访问方式：");
         proxyLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        this.proxyCloseRadioButton = new JRadioButton("浏览器页面直接访问");
+        this.proxyCloseRadioButton = new JRadioButton("内嵌浏览器页面直接访问");
         this.proxyCloseRadioButton.setSelected(true);
         this.proxyCloseRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        this.proxyOpenRadioButton = new JRadioButton("通过okhttp代理访问");
+        this.proxyOpenRadioButton = new JRadioButton("通过本程序okhttp代理访问（解决瓦片跨域问题）");
         this.proxyOpenRadioButton.setSelected(false);
         this.proxyOpenRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        var btnGroup2 = new ButtonGroup();
-        btnGroup2.add(this.proxyCloseRadioButton);
-        btnGroup2.add(this.proxyOpenRadioButton);
+        var btnGroup3 = new ButtonGroup();
+        btnGroup3.add(this.proxyCloseRadioButton);
+        btnGroup3.add(this.proxyOpenRadioButton);
 
         var urlInputLabel = new JLabel("地址：（请严格按照{x}{y}{z}的格式填写地址）");
         urlInputLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
@@ -87,59 +116,78 @@ public class AddLayerFrame extends CommonSubFrame {
         this.okButton.setFocusable(false);
 
         var groupLayout = new GroupLayout(this.getContentPane());
-        groupLayout.setHorizontalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
+        groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+                .createSequentialGroup().addContainerGap()
+                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                         .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-                                        .addGroup(groupLayout.createSequentialGroup()
-                                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-                                                        .addComponent(nameInputLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(nameInputTextField, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(typeSelectLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-                                                                .addComponent(typeWgs84RadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(ComponentPlacement.UNRELATED)
-                                                                .addComponent(typeGcj02RadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                        .addComponent(proxyLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(proxyCloseRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(proxyOpenRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(urlInputLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(urlInputScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                .addContainerGap())))
-        );
-        groupLayout.setVerticalGroup(
-                groupLayout.createParallelGroup(Alignment.LEADING)
-                        .addGroup(groupLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(nameInputLabel)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(nameInputTextField, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(typeSelectLabel)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(typeWgs84RadioButton)
-                                        .addComponent(typeGcj02RadioButton))
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(proxyLabel)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(proxyCloseRadioButton)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(proxyOpenRadioButton)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(urlInputLabel)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(urlInputScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(okButton)
-                                .addContainerGap())
-        );
+                                .addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+                                        .addComponent(nameInputLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(nameInputTextField, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(typeSelectLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addGroup(Alignment.LEADING,
+                                                groupLayout.createSequentialGroup()
+                                                        .addComponent(typeWgs84RadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                        .addComponent(typeGcj02RadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(oriImgTypeSelectLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addGroup(Alignment.LEADING,
+                                                groupLayout.createSequentialGroup()
+                                                        .addComponent(pngRadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                        .addComponent(webpRadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                        .addComponent(tiffRadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(ComponentPlacement.UNRELATED)
+                                                        .addComponent(jpgRadioButton, GroupLayout.PREFERRED_SIZE,
+                                                                GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(proxyLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(proxyCloseRadioButton, Alignment.LEADING,
+                                                GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(proxyOpenRadioButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(urlInputLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(urlInputScrollPane, GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(okButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap()))));
+        groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+                .createSequentialGroup()
+                .addContainerGap()
+                .addComponent(nameInputLabel).addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(nameInputTextField, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(typeSelectLabel)
+                .addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(typeWgs84RadioButton)
+                        .addComponent(typeGcj02RadioButton))
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(oriImgTypeSelectLabel)
+                .addPreferredGap(ComponentPlacement.RELATED).addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                        .addComponent(pngRadioButton)
+                        .addComponent(webpRadioButton)
+                        .addComponent(tiffRadioButton)
+                        .addComponent(jpgRadioButton))
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(proxyLabel)
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(proxyCloseRadioButton)
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(proxyOpenRadioButton)
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(urlInputLabel)
+                .addPreferredGap(ComponentPlacement.RELATED)
+                .addComponent(urlInputScrollPane, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(ComponentPlacement.RELATED).addComponent(okButton).addContainerGap()));
         this.getContentPane().setLayout(groupLayout);
 
         this.setTitle("添加自定义图层");
-        this.setSize(new Dimension(400, 400));
+        this.setSize(new Dimension(400, 435));
         this.setVisible(false);
         this.setResizable(false);
 
@@ -155,6 +203,26 @@ public class AddLayerFrame extends CommonSubFrame {
         this.typeGcj02RadioButton.addItemListener((e) -> {
             if (this.typeGcj02RadioButton == e.getSource() && this.typeGcj02RadioButton.isSelected()) {
                 this.type = "gcj02";
+            }
+        });
+        this.pngRadioButton.addItemListener((e) -> {
+            if (this.pngRadioButton == e.getSource() && this.pngRadioButton.isSelected()) {
+                this.oriImgType = "PNG";
+            }
+        });
+        this.webpRadioButton.addItemListener((e) -> {
+            if (this.webpRadioButton == e.getSource() && this.webpRadioButton.isSelected()) {
+                this.oriImgType = "WEBP";
+            }
+        });
+        this.tiffRadioButton.addItemListener((e) -> {
+            if (this.tiffRadioButton == e.getSource() && this.tiffRadioButton.isSelected()) {
+                this.oriImgType = "TIFF";
+            }
+        });
+        this.jpgRadioButton.addItemListener((e) -> {
+            if (this.jpgRadioButton == e.getSource() && this.jpgRadioButton.isSelected()) {
+                this.oriImgType = "JPG";
             }
         });
         this.proxyCloseRadioButton.addItemListener((e) -> {
@@ -211,6 +279,7 @@ public class AddLayerFrame extends CommonSubFrame {
         result.setName(name);
         result.setUrl(url);
         result.setType(this.type);
+        result.setOriImgType(this.oriImgType);
         result.setProxy(this.proxy);
         // 保存设置
         ApplicationSetting.getSetting().getAddedLayers().add(result);

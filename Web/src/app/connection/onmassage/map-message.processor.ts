@@ -146,6 +146,7 @@ export class MapMessageProcessor {
 				mapType: CommonUtil.getMapType(this.mapPage.getMapBase()?.getCurrentXyzName()),
 				tileUrl: this.mapPage.getMapBase()?.getCurrentXyzUrlResources(),
 				points: this.mapPage.getMapBase()?.getDrawedPoints(),
+				oriImgType: this.mapPage.getMapBase()?.getCurrentXyzOriImgType(),
 			};
 			mapPage.getSubmitService().blockDownload(data).then((r) => {
 			});
@@ -155,7 +156,8 @@ export class MapMessageProcessor {
 			let data = {
 				tileName: this.mapPage.getMapBase()?.getCurrentXyzName(),
 				mapType: CommonUtil.getMapType(this.mapPage.getMapBase()?.getCurrentXyzName()),
-				tileUrl: this.mapPage.getMapBase()?.getCurrentXyzUrlResources()
+				tileUrl: this.mapPage.getMapBase()?.getCurrentXyzUrlResources(),
+				oriImgType: this.mapPage.getMapBase()?.getCurrentXyzOriImgType(),
 			};
 			mapPage.getSubmitService().worldDownload(data).then((r) => {
 			});

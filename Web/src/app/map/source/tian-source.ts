@@ -22,7 +22,7 @@ export class TianSource {
 		this.TiandituNormalNone_Name = 'Tianditu-Normal-None';
 		this.TiandituNormalNone_Source = [
 			{
-				name: "Normal-None", type: "XYZ_URL", support: true,
+				name: "Normal-None", type: "XYZ_URL", support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: TiandituNormalNone_URL.replace("&&&&&&&key&&&&&&&", CommonUtil.getConfigCache().key.tian) }),
 				url: TiandituNormalNone_URL,
 				coordinateType: "wgs84"

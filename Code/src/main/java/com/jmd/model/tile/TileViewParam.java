@@ -7,13 +7,13 @@ public class TileViewParam {
 
     private String path;
     private String pathStyle;
-    private Integer type;
+    private String type;
 
     public TileViewParam() {
 
     }
 
-    public TileViewParam(String path, String pathStyle, Integer type) {
+    public TileViewParam(String path, String pathStyle, String type) {
         this.path = path;
         this.pathStyle = pathStyle;
         this.type = type;

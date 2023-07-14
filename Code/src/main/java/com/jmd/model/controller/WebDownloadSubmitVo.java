@@ -11,5 +11,6 @@ public class WebDownloadSubmitVo {
 	private String mapType;
 	private List<String> tileUrl;
 	private List<List<double[]>> points;
+	private String oriImgType;
 
 }

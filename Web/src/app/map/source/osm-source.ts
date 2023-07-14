@@ -11,7 +11,7 @@ export class OsmSource {
 		this.OpenStreetMap_Name = 'OpenStreet';
 		this.OpenStreetMap_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: OpenStreetMap_URL }),
 				url: OpenStreetMap_URL,
 				coordinateType: 'wgs84',

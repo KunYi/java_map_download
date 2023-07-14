@@ -18,7 +18,7 @@ class WebSubmitController {
     @ResponseBody
     fun blockDownload(@RequestBody vo: WebDownloadSubmitVo?): RESTfulResult<*> {
         val result: RESTfulResult<*> = RESTfulResult<Any>()
-        webSubmitService!!.blockDownload(vo)
+        this.webSubmitService!!.blockDownload(vo)
         result.code = 200
         result.message = "ok"
         result.success = true
@@ -29,7 +29,7 @@ class WebSubmitController {
     @ResponseBody
     fun worldDownload(@RequestBody vo: WebDownloadSubmitVo?): RESTfulResult<*> {
         val result: RESTfulResult<*> = RESTfulResult<Any>()
-        webSubmitService!!.worldDownload(vo)
+        this.webSubmitService!!.worldDownload(vo)
         result.code = 200
         result.message = "ok"
         result.success = true

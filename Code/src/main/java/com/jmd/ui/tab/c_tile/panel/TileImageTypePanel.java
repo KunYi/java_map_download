@@ -16,10 +16,11 @@ public class TileImageTypePanel extends JPanel {
     private static final long serialVersionUID = -3412842231250390141L;
 
     private final JRadioButton pngRadioButton;
-    private final JRadioButton jpgRadioButton;
     private final JRadioButton webpRadioButton;
+    private final JRadioButton tiffRadioButton;
+    private final JRadioButton jpgRadioButton;
 
-    private int type = 0;
+    private String type = "png";
 
     public TileImageTypePanel() {
 
@@ -28,18 +29,23 @@ public class TileImageTypePanel extends JPanel {
         this.pngRadioButton.setFocusable(false);
         this.pngRadioButton.setSelected(true);
 
-        this.jpgRadioButton = new JRadioButton("JPG");
-        this.jpgRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.jpgRadioButton.setFocusable(false);
-
         this.webpRadioButton = new JRadioButton("WEBP");
         this.webpRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.webpRadioButton.setFocusable(false);
 
+        this.tiffRadioButton = new JRadioButton("TIFF");
+        this.tiffRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.tiffRadioButton.setFocusable(false);
+
+        this.jpgRadioButton = new JRadioButton("JPG");
+        this.jpgRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.jpgRadioButton.setFocusable(false);
+
         var btnGroup = new ButtonGroup();
         btnGroup.add(this.pngRadioButton);
-        btnGroup.add(this.jpgRadioButton);
         btnGroup.add(this.webpRadioButton);
+        btnGroup.add(this.tiffRadioButton);
+        btnGroup.add(this.jpgRadioButton);
 
         GroupLayout groupLayout = new GroupLayout(this);
         groupLayout.setHorizontalGroup(
@@ -51,7 +57,8 @@ public class TileImageTypePanel extends JPanel {
                                                 .addComponent(this.pngRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(ComponentPlacement.RELATED)
                                                 .addComponent(this.webpRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(this.jpgRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(groupLayout.createSequentialGroup()
+                                                .addComponent(this.jpgRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)))
                                 .addContainerGap())
         );
         groupLayout.setVerticalGroup(
@@ -62,7 +69,8 @@ public class TileImageTypePanel extends JPanel {
                                         .addComponent(this.pngRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
                                         .addComponent(this.webpRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(this.jpgRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+                                        .addComponent(this.jpgRadioButton, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
         );
         setLayout(groupLayout);
@@ -73,22 +81,27 @@ public class TileImageTypePanel extends JPanel {
     private void init() {
         this.pngRadioButton.addItemListener((e) -> {
             if (this.pngRadioButton == e.getSource() && this.pngRadioButton.isSelected()) {
-                this.type = 0;
+                this.type = "PNG";
             }
         });
         this.webpRadioButton.addItemListener((e) -> {
             if (this.webpRadioButton == e.getSource() && this.webpRadioButton.isSelected()) {
-                this.type = 1;
+                this.type = "WEBP";
+            }
+        });
+        this.tiffRadioButton.addItemListener((e) -> {
+            if (this.tiffRadioButton == e.getSource() && this.tiffRadioButton.isSelected()) {
+                this.type = "TIFF";
             }
         });
         this.jpgRadioButton.addItemListener((e) -> {
             if (this.jpgRadioButton == e.getSource() && this.jpgRadioButton.isSelected()) {
-                this.type = 2;
+                this.type = "JPG";
             }
         });
     }
 
-    public int getImageType() {
+    public String getImageType() {
         return this.type;
     }
 

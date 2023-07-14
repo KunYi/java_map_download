@@ -209,11 +209,11 @@ public class HttpClient {
         try {
             response = okHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
-                assert response.body() != null;
-                buf = response.body().bytes();
+                if (response.body() != null) {
+                    buf = response.body().bytes();
+                }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         } finally {
             if (response != null) {
                 response.close();

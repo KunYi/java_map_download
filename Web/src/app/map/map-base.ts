@@ -27,6 +27,7 @@ export class MapBase {
 
 	// 当前XYZ图层
 	private currentXyzName = '';
+	private currentXyzOriImgType = 'PNG';
 	private currentXyzLayers: Array<any> = [];
 	// 图层名字
 	public readonly drawLayerName: string = 'vector-draw';
@@ -70,6 +71,8 @@ export class MapBase {
 			this.currentXyzLayers.push(tileLayer);
 		}
 		this.currentXyzName = this.mapConfig.layer;
+		this.currentXyzOriImgType = this.mapSource.layers.get(this.mapConfig.layer)[0].oriImgType;
+		console.log(this.currentXyzOriImgType)
 		// 网格
 		let gridLayer = new ol.layer.Tile({
 			source: new ol.source.TileDebug(),
@@ -229,6 +232,11 @@ export class MapBase {
 	/** 获取当前图层NAME */
 	getCurrentXyzName(): string {
 		return this.currentXyzName;
+	}
+
+	/** 获取当前图层图片类型 */
+	getCurrentXyzOriImgType(): string {
+		return this.currentXyzOriImgType;
 	}
 
 	/** 根据name获取图层 */

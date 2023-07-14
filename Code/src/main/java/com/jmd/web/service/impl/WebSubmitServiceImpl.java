@@ -44,7 +44,7 @@ public class WebSubmitServiceImpl implements WebSubmitService {
                     }
                     polygons.add(new Polygon(path));
                 }
-                downloadConfigFrame.createNewTask(vo.getTileUrl().get(0), polygons, vo.getTileName(), vo.getMapType());
+                downloadConfigFrame.createNewTask(vo.getTileUrl().get(0), polygons, vo.getTileName(), vo.getMapType(), vo.getOriImgType());
                 return null;
             }
         }.execute();
@@ -73,7 +73,7 @@ public class WebSubmitServiceImpl implements WebSubmitService {
                 }
                 List<Polygon> polygons = new ArrayList<>();
                 polygons.add(new Polygon(mercatorPoints));
-                downloadConfigFrame.createNewTask(vo.getTileUrl().get(0), polygons, vo.getTileName(), vo.getMapType());
+                downloadConfigFrame.createNewTask(vo.getTileUrl().get(0), polygons, vo.getTileName(), vo.getMapType(), vo.getOriImgType());
                 return null;
             }
         }.execute();

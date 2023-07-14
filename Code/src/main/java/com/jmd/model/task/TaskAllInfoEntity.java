@@ -16,6 +16,7 @@ public class TaskAllInfoEntity implements Serializable {
 	private String tileName;
 	private String mapType;
 	private Integer imgType;
+	private String oriImgType;
 	private String savePath;
 	private String pathStyle;
 	private Boolean isCoverExists;

@@ -45,17 +45,20 @@ public class TileServiceImpl implements TileService {
     }
 
     @Override
-    public byte[] getTileImageByteLocal(int z, int x, int y) {
+    public TileImageResult getTileImageByteLocal(int z, int x, int y) {
+        var result = new TileImageResult();
         if (this.tileViewParam != null && this.tileViewParam.check()) {
             var filePath = this.tileViewParam.getPath() +
-                    TaskUtils.getFilePathName(this.tileViewParam.getPathStyle(), this.tileViewParam.getType(), z, x, y);
+                    TaskUtils.getFilePathNameNoSuffix(this.tileViewParam.getPathStyle(), z, x, y) +
+                    "." + tileViewParam.getType().toLowerCase();
+            filePath = MyFileUtils.checkFilePath(filePath);
+            result.setType(tileViewParam.getType());
             try {
-                return MyFileUtils.getFileBytes(filePath);
-            } catch (Exception e) {
-                return new byte[0];
+                result.setData(MyFileUtils.getFileBytes(filePath));
+            } catch (Exception ignored) {
             }
         }
-        return new byte[0];
+        return result;
     }
 
     @Override

@@ -23,7 +23,7 @@ export class GoogleSource {
 		this.GoogleNormal_Name = 'Google-Normal';
 		this.GoogleNormal_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleNormal_URL }),
 				url: GoogleNormal_URL,
 				coordinateType: 'gcj02',
@@ -34,7 +34,7 @@ export class GoogleSource {
 		this.GoogleTerrain_Name = 'Google-Terrain';
 		this.GoogleTerrain_Source = [
 			{
-				name: 'Terrain', type: 'XYZ_URL', support: true,
+				name: 'Terrain', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleTerrain_URL }),
 				url: GoogleTerrain_URL,
 				coordinateType: 'gcj02',
@@ -45,7 +45,7 @@ export class GoogleSource {
 		this.GoogleSatellite_Name = 'Google-Satellite';
 		this.GoogleSatellite_Source = [
 			{
-				name: 'Satellite', type: 'XYZ_URL', support: true,
+				name: 'Satellite', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleSatellite_URL }),
 				url: GoogleSatellite_URL,
 				coordinateType: 'gcj02',
@@ -56,7 +56,7 @@ export class GoogleSource {
 		this.GoogleSatelliteNone_Name = 'Google-Satellite-None';
 		this.GoogleSatelliteNone_Source = [
 			{
-				name: 'Satellite-None', type: 'XYZ_URL', support: true,
+				name: 'Satellite-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleSatelliteNone_URL }),
 				url: GoogleSatelliteNone_URL,
 				coordinateType: 'gcj02',
@@ -67,7 +67,7 @@ export class GoogleSource {
 		this.GoogleStreet_Name = 'Google-Street';
 		this.GoogleStreet_Source = [
 			{
-				name: 'Street', type: 'XYZ_URL', support: true,
+				name: 'Street', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleStreet_URL }),
 				url: GoogleStreet_URL,
 				coordinateType: 'gcj02',

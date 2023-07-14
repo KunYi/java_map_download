@@ -61,7 +61,7 @@ export class BingSource {
 		this.BingMapNormal1_Name = 'Bing-Normal-1';
 		this.BingMapNormal1_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -77,7 +77,7 @@ export class BingSource {
 		this.BingMapNormal1CN_Name = 'Bing-Normal-1-CN';
 		this.BingMapNormal1CN_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -93,7 +93,7 @@ export class BingSource {
 		this.BingMapNormal1None_Name = 'Bing-Normal-1-None';
 		this.BingMapNormal1None_Source = [
 			{
-				name: 'Normal-None', type: 'XYZ_URL', support: true,
+				name: 'Normal-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -109,7 +109,7 @@ export class BingSource {
 		this.BingMapNormal2_Name = 'Bing-Normal-2';
 		this.BingMapNormal2_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -125,7 +125,7 @@ export class BingSource {
 		this.BingMapNormal2CN_Name = 'Bing-Normal-2-CN';
 		this.BingMapNormal2CN_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -141,7 +141,7 @@ export class BingSource {
 		this.BingMapNormal2None_Name = 'Bing-Normal-2-None';
 		this.BingMapNormal2None_Source = [
 			{
-				name: 'Normal-None', type: 'XYZ_URL', support: true,
+				name: 'Normal-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {
@@ -157,7 +157,7 @@ export class BingSource {
 		this.BingMapSatelliteNone_Name = 'Bing-Satellite-None';
 		this.BingMapSatelliteNone_Source = [
 			{
-				name: 'Satellite-None', type: 'XYZ_URL', support: true,
+				name: 'Satellite-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.TileImage({
 					projection: 'EPSG:3857',
 					tileUrlFunction: (tileCoord: any, pixelRatio: any, proj: any) => {

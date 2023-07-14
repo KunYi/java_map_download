@@ -16,6 +16,7 @@ public class TaskCreateEntity {
 	private String tileName;
 	private String mapType;
 	private Integer imgType;
+	private String oriImgType;
 	private String pathStyle;
 	private Boolean isCoverExists;
 	private Boolean isMergeTile;

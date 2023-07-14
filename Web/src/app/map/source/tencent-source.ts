@@ -11,7 +11,7 @@ export class TencentSource {
 		this.TencentNormal_Name = 'Tencent-Normal';
 		this.TencentNormal_Source = [
 			{
-				name: 'Normal', type: 'XYZ_URL', support: true,
+				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: TencentNormal_URL }),
 				url: TencentNormal_URL,
 				coordinateType: 'gcj02',

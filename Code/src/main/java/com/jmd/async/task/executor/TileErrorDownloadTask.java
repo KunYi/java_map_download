@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import com.jmd.task.TaskState;
+import com.jmd.util.MyFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -51,7 +52,8 @@ public class TileErrorDownloadTask {
             var z = errorTile.getTile().getZ();
             var x = errorTile.getTile().getX();
             var y = errorTile.getTile().getY();
-            var pathAndName = taskAllInfo.getSavePath() + TaskUtils.getFilePathName(taskAllInfo.getPathStyle(), taskAllInfo.getImgType(), z, x, y);
+            var pathAndName = taskAllInfo.getSavePath() + TaskUtils.getFilePathNameNoSuffix(taskAllInfo.getPathStyle(), z, x, y);
+            pathAndName = MyFileUtils.checkFilePath(pathAndName);
             var url = urls.get(urlIndex)
                     .replace("{z}", String.valueOf(z))
                     .replace("{x}", String.valueOf(x))
@@ -60,6 +62,7 @@ public class TileErrorDownloadTask {
             var downloadResult = download.downloadTile(
                     url,
                     taskAllInfo.getImgType(),
+                    taskAllInfo.getOriImgType(),
                     pathAndName,
                     retry
             );

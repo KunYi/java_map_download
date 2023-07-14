@@ -32,7 +32,7 @@ public class DownloadOtherSettingPanel extends JPanel {
         this.imgTypeComboBox = new JComboBox<>();
         this.imgTypeComboBox.setFocusable(false);
         this.imgTypeComboBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
-        this.imgTypeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"PNG", "WEBP", "JPG-低", "JPG-中", "JPG-高"}));
+        this.imgTypeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"同瓦片源", "PNG", "WEBP", "TIFF", "JPG-低", "JPG-中", "JPG-高"}));
         this.imgTypeComboBox.setSelectedIndex(0);
 
         var pathStyleLabel = new JLabel("命名风格：");

@@ -13,7 +13,7 @@ setting:
   git:
     address: https://gitee.com/CrimsonHu/java_map_download
   web:
-    prod: true
+    prod: false
 
 spring:
   datasource:

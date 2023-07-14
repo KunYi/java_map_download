@@ -22,6 +22,7 @@ public class TaskExecEntity {
 	private List<Polygon> polygons;
 	private String downloadUrl;
 	private Integer imgType;
+	private String oriImgType;
 	private String pathStyle;
 	private String savePath;
 	private Boolean isCoverExists;

@@ -73,11 +73,13 @@ public class TaskExecFunc {
                     innerMqService.pub(Topic.TASK_STATUS_IS_COVER_EXIST, "否");
                 }
                 switch (taskCreate.getImgType()) {
-                    case 0 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "PNG");
-                    case 1 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "WEBP");
-                    case 2 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 低质量");
-                    case 3 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 中等质量");
-                    case 4 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 高质量");
+                    case 0 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "同瓦片源");
+                    case 1 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "PNG");
+                    case 2 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "WEBP");
+                    case 3 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "TIFF");
+                    case 4 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 低质量");
+                    case 5 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 中等质量");
+                    case 6 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 高质量");
                     default -> {
                     }
                 }
