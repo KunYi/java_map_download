@@ -57,8 +57,10 @@
 ![输入图片说明](Other/image/frame/tile-view-browser.png)
 
 #### 下版本功能预览
-1. 瓦片合并将做成一个独立功能（开发中，未来两个版本内更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
-2. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
+1. 更新全国行政区信息（已完成，等待新版本发布）
+2. 添加保存瓦片为tiff格式（已完成，等待新版本发布）
+3. 瓦片合并将做成一个独立功能（开发中，将在下一版本中更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
+4. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
 
 #### 主要功能
 XYZ瓦片图下载与拼接
