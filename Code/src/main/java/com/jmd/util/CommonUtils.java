@@ -53,16 +53,17 @@ public class CommonUtils {
         String url = null;
         if (tileName.indexOf("Bing") == 0) {
             url = oriUrl.replaceAll("\\{&&&&&\\}", GeoUtils.xyz2Bing(z, x, y));
-        } else if (tileName.indexOf("Tencent") == 0) {
-            var y_all = Math.pow(2, z) - 1;
-            var new_y = y_all - y;
-            url = oriUrl
-                    .replace("{z}", String.valueOf(z))
-                    .replace("{x}", String.valueOf(x))
-                    .replace("{-y}", String.valueOf(new_y));
         } else {
-            url = oriUrl.replace("{z}", String.valueOf(z)).replace("{x}", String.valueOf(x)).replace("{y}",
-                    String.valueOf(y));
+            String replace = oriUrl
+                    .replace("{z}", String.valueOf(z))
+                    .replace("{x}", String.valueOf(x));
+            if (tileName.indexOf("Tencent") == 0) {
+                var y_all = Math.pow(2, z) - 1;
+                var new_y = (int) (y_all - y);
+                url = replace.replace("{-y}", String.valueOf(new_y));
+            } else {
+                url = replace.replace("{y}", String.valueOf(y));
+            }
         }
         return url;
     }

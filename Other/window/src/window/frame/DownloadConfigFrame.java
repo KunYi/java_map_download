@@ -1,4 +1,4 @@
-package window;
+package window.frame;
 
 import java.awt.Dimension;
 

@@ -157,7 +157,7 @@ public class DownloadOtherSettingPanel extends JPanel {
     }
 
     public String getPathStyle() {
-        return (String) pathStyleDefaultComboBox.getSelectedItem();
+        return (String) this.pathStyleDefaultComboBox.getSelectedItem();
     }
 
     public int getImgType() {
@@ -165,11 +165,15 @@ public class DownloadOtherSettingPanel extends JPanel {
     }
 
     public boolean isCoverExist() {
-        return isCoverCheckBox.isSelected();
+        return this.isCoverCheckBox.isSelected();
+    }
+
+    public boolean isMergeFileSave() {
+        return this.mergeFileSaveCheckBox.isSelected();
     }
 
     public boolean isMergeTile() {
-        return mergeTileCheckBox.isSelected();
+        return this.mergeTileCheckBox.isSelected();
     }
 
     public int getMergeType() {

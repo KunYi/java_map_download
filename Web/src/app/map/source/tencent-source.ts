@@ -7,7 +7,7 @@ export class TencentSource {
 
 	constructor() {
 		// 腾讯地图-普通图-带标注
-		const TencentNormal_URL = 'http://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0';
+		const TencentNormal_URL = 'https://rt0.map.gtimg.com/realtimerender?z={z}&x={x}&y={-y}&type=vector&style=0';
 		this.TencentNormal_Name = 'Tencent-Normal';
 		this.TencentNormal_Source = [
 			{

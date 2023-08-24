@@ -72,7 +72,6 @@ export class MapBase {
 		}
 		this.currentXyzName = this.mapConfig.layer;
 		this.currentXyzOriImgType = this.mapSource.layers.get(this.mapConfig.layer)[0].oriImgType;
-		console.log(this.currentXyzOriImgType)
 		// 网格
 		let gridLayer = new ol.layer.Tile({
 			source: new ol.source.TileDebug(),

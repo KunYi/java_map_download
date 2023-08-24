@@ -3,6 +3,7 @@ package com.jmd.ui.frame.download.config;
 import java.awt.*;
 import javax.swing.*;
 
+import com.jmd.model.task.MergeInfoEntity;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.task.TaskState;
@@ -30,6 +31,7 @@ import com.jmd.util.TaskUtils;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serial;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -200,7 +202,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
                     if (isCreate) {
                         // 创建新任务
                         innerMqService.pub(Topic.MAIN_FRAME_SELECTED_INDEX, 1);
-                        taskExec.createTask(getTaskCreate());
+                        startNewTask();
                     } else {
                         // 导入现有任务
                         var taskAllInfo = TaskUtils.getExistTaskByPath(path);
@@ -211,7 +213,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
                             var f = CommonDialog.confirm("选择", "读取现有任务失败，这将创建新的下载任务");
                             if (f) {
                                 innerMqService.pub(Topic.MAIN_FRAME_SELECTED_INDEX, 1);
-                                taskExec.createTask(getTaskCreate());
+                                startNewTask();
                             } else {
                                 CommonDialog.alert(null, "用户取消创建下载任务");
                                 return;
@@ -272,8 +274,26 @@ public class DownloadConfigFrame extends CommonSubFrame {
         return taskCreate;
     }
 
+    // 开始
+    private void startNewTask() {
+        var taskCreate = this.getTaskCreate();
+        this.taskExec.createTask(taskCreate);
+        if (this.otherSettingPanel.isMergeFileSave()) {
+            var mergeInfo = new MergeInfoEntity();
+            mergeInfo.setImgType(taskCreate.getImgType());
+            mergeInfo.setOriImgType(taskCreate.getOriImgType());
+            mergeInfo.setSavePath(taskCreate.getSavePath());
+            mergeInfo.setPathStyle(taskCreate.getPathStyle());
+            try {
+                MyFileUtils.saveObj2File(mergeInfo, taskCreate.getSavePath() + "/merge_info.jmdmergefile");
+            } catch (IOException e) {
+                CommonDialog.alert(null, "保存瓦片合并配置失败");
+            }
+        }
+    }
+
     private boolean isTaskExist(String path) {
-        File file = new File(path + "/task_info.jmd");
+        var file = new File(path + "/task_info.jmd");
         return file.exists() && file.isFile();
     }
 

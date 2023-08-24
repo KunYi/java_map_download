@@ -23,11 +23,11 @@ import com.jmd.ui.tab.b_download.panel.TaskStatusPanel;
 import com.jmd.ui.tab.b_download.panel.ResourceUsagePanel;
 
 import javax.swing.GroupLayout.Alignment;
-import java.io.Serial;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.Serial;
 
 @Component
 public class DownloadTaskPanel extends JPanel {

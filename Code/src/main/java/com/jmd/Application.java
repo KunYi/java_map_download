@@ -6,7 +6,6 @@ import com.jmd.browser.core.ChromiumEmbeddedCore;
 import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
-import com.jmd.util.CommonUtils;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;

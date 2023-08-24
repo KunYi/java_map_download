@@ -1,4 +1,4 @@
-package window;
+package window.frame;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
