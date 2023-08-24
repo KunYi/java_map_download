@@ -5,6 +5,8 @@
 
 #### 使用JetBrains Runtime 17，SpringBoot 3.1，JCEF版本为Chromium 111
 
+#### 目前作者比较忙，暂时不会更新，但是作者没有放弃该项目
+
 #### 介绍
 使用Java开发的地图瓦片图下载工具，支持以下XYZ瓦片图下载与合并。多线程瓦片图下载，最大限度地使用本机网络资源。
 - OpenStreetMap
