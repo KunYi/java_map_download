@@ -5,6 +5,8 @@
 
 #### 使用JetBrains Runtime 17，SpringBoot 3.1，JCEF版本为Chromium 111
 
+#### 目前作者比较忙，暂时不会更新，但是作者没有放弃该项目。目前已修复部分bug，新功能正在开发中
+
 #### 介绍
 使用Java开发的地图瓦片图下载工具，支持以下XYZ瓦片图下载与合并。多线程瓦片图下载，最大限度地使用本机网络资源。
 - OpenStreetMap
@@ -60,7 +62,8 @@
 1. 更新全国行政区信息（已完成，等待新版本发布）
 2. 添加保存瓦片为tiff格式（已完成，等待新版本发布）
 3. 瓦片合并将做成一个独立功能（开发中，将在下一版本中更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
-4. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
+4. 解决腾讯地图下载错误问题（已完成，等待新版本发布）
+5. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
 
 #### 主要功能
 XYZ瓦片图下载与拼接
