@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.jmd.common.StaticVar;
 import com.jmd.task.TaskExecFunc;
-import com.jmd.ui.tab.b_download.panel.TileMergeProgressPanel;
+import com.jmd.ui.tab.b_download.panel.TaskTileMergeProgressPanel;
 import com.jmd.ui.tab.b_download.panel.TaskStatusPanel;
 import com.jmd.ui.tab.b_download.panel.ResourceUsagePanel;
 
@@ -43,7 +43,7 @@ public class DownloadTaskPanel extends JPanel {
     @Autowired
     private ResourceUsagePanel resourceUsagePanel;
     @Autowired
-    private TileMergeProgressPanel tileMergeProgressPanel;
+    private TaskTileMergeProgressPanel taskTileMergeProgressPanel;
     @Autowired
     private TaskLogPanel taskLogPanel;
     @Autowired
@@ -134,7 +134,7 @@ public class DownloadTaskPanel extends JPanel {
         /* 资源使用量 */
 
         /* 瓦片图合并进度 */
-        this.mergePanel.addContent(this.tileMergeProgressPanel);
+        this.mergePanel.addContent(this.taskTileMergeProgressPanel);
         /* 瓦片图合并进度 */
 
         /* 任务日志 */

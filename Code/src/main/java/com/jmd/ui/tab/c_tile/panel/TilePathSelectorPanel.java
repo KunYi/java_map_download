@@ -25,7 +25,6 @@ public class TilePathSelectorPanel extends JPanel {
 
     private TileViewSubmitCallback callback;
     private String selectedPath;
-    private String lastDirPath = this.getCachedLastDirPath();
 
     private final JButton pathSelectorButton;
     private final JButton submitButton;
@@ -98,7 +97,8 @@ public class TilePathSelectorPanel extends JPanel {
                 if (e.getButton() == 1) {
                     var chooser = new JFileChooser();
                     chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                    if (lastDirPath != null && !"".equals(lastDirPath)) {
+                    var lastDirPath = ApplicationSetting.getSetting().getLastDirPath();
+                    if (lastDirPath != null && !lastDirPath.isEmpty() && new File(lastDirPath).isDirectory()) {
                         chooser.setCurrentDirectory(new File(lastDirPath));
                     }
                     chooser.setDialogTitle("选择瓦片路径");
@@ -107,9 +107,9 @@ public class TilePathSelectorPanel extends JPanel {
                     var file = chooser.getSelectedFile();
                     if (file != null) {
                         selectedPath = file.getAbsolutePath();
-                        lastDirPath = file.getAbsolutePath();
                         pathValueTextArea.setText(file.getAbsolutePath());
                         submitButton.setEnabled(true);
+                        ApplicationSetting.getSetting().setLastDirPath(file.getAbsolutePath());
                     }
                 }
             }
@@ -122,17 +122,6 @@ public class TilePathSelectorPanel extends JPanel {
                 }
             }
         });
-    }
-
-    private String getCachedLastDirPath() {
-        var ldp = ApplicationSetting.getSetting().getLastDirPath();
-        if (ldp != null) {
-            var ldp_dir = new File(ldp);
-            if (ldp_dir.isDirectory()) {
-                return ldp;
-            }
-        }
-        return null;
     }
 
     public String getTilePath() {

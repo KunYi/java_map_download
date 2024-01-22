@@ -12,7 +12,7 @@ import javax.swing.UIManager
 @Component
 class ApplicationTheme {
 
-    private val currentThemeType: Int = ApplicationSetting.getSetting().getThemeType()
+    private val currentThemeType: Int = ApplicationSetting.getSetting().themeType
     private val innerMqService = InnerMqService.getInstance()
 
     @PostConstruct
@@ -40,7 +40,7 @@ class ApplicationTheme {
         ApplicationSetting.getSetting().themeName = name
         ApplicationSetting.getSetting().themeType = type
         ApplicationSetting.getSetting().themeClazz = clazz
-        save()
+        ApplicationSetting.save()
         // 更新窗口
         if (currentThemeType == type) {
             SwingUtilities.invokeLater {

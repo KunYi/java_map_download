@@ -19,6 +19,7 @@ public class TaskCreateEntity {
 	private String oriImgType;
 	private String pathStyle;
 	private Boolean isCoverExists;
+	private Boolean isSaveMergeFile;
 	private Boolean isMergeTile;
 	private Integer mergeType;
 	private Integer errorHandlerType;

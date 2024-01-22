@@ -47,7 +47,7 @@ public class TaskStatusPanel extends JPanel {
         gbl_this.columnWidths = new int[]{0, 0, 0, 0};
         gbl_this.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         gbl_this.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_this.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_this.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         this.setLayout(gbl_this);
 
         /* 当前任务 */
@@ -59,14 +59,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_currentTitleLabel.gridy = 0;
         this.add(currentTitleLabel, gbc_currentTitleLabel);
 
-        currentContentLabel = new JLabel("");
-        currentContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.currentContentLabel = new JLabel("");
+        this.currentContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_currentContentLabel = new GridBagConstraints();
         gbc_currentContentLabel.anchor = GridBagConstraints.WEST;
         gbc_currentContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_currentContentLabel.gridx = 1;
         gbc_currentContentLabel.gridy = 0;
-        this.add(currentContentLabel, gbc_currentContentLabel);
+        this.add(this.currentContentLabel, gbc_currentContentLabel);
         /* 当前任务 */
 
         /* 地图类型 */
@@ -78,14 +78,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_mapTypeTitleLabel.gridy = 1;
         this.add(mapTypeTitleLabel, gbc_mapTypeTitleLabel);
 
-        mapTypeContentLabel = new JLabel("");
-        mapTypeContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.mapTypeContentLabel = new JLabel("");
+        this.mapTypeContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_mapTypeContentLabel = new GridBagConstraints();
         gbc_mapTypeContentLabel.anchor = GridBagConstraints.WEST;
         gbc_mapTypeContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_mapTypeContentLabel.gridx = 1;
         gbc_mapTypeContentLabel.gridy = 1;
-        this.add(mapTypeContentLabel, gbc_mapTypeContentLabel);
+        this.add(this.mapTypeContentLabel, gbc_mapTypeContentLabel);
         /* 地图类型 */
 
         /* 所选图层 */
@@ -97,14 +97,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_zoomsTitleLabel.gridy = 2;
         this.add(zoomsTitleLabel, gbc_zoomsTitleLabel);
 
-        zoomsContentLabel = new JLabel("");
-        zoomsContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.zoomsContentLabel = new JLabel("");
+        this.zoomsContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_zoomsContentLabel = new GridBagConstraints();
         gbc_zoomsContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_zoomsContentLabel.anchor = GridBagConstraints.WEST;
         gbc_zoomsContentLabel.gridx = 1;
         gbc_zoomsContentLabel.gridy = 2;
-        this.add(zoomsContentLabel, gbc_zoomsContentLabel);
+        this.add(this.zoomsContentLabel, gbc_zoomsContentLabel);
         /* 所选图层 */
 
         /* 瓦片格式 */
@@ -116,14 +116,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_imgTypeTitleLabel.gridy = 3;
         this.add(imgTypeTitleLabel, gbc_imgTypeTitleLabel);
 
-        imgTypeContentLabel = new JLabel("");
-        imgTypeContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.imgTypeContentLabel = new JLabel("");
+        this.imgTypeContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_imgTypeContentLabel = new GridBagConstraints();
         gbc_imgTypeContentLabel.anchor = GridBagConstraints.WEST;
         gbc_imgTypeContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_imgTypeContentLabel.gridx = 1;
         gbc_imgTypeContentLabel.gridy = 3;
-        this.add(imgTypeContentLabel, gbc_imgTypeContentLabel);
+        this.add(this.imgTypeContentLabel, gbc_imgTypeContentLabel);
         /* 瓦片格式 */
 
         /* 保存路径 */
@@ -135,14 +135,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_savePathTitleLabel.gridy = 4;
         this.add(savePathTitleLabel, gbc_savePathTitleLabel);
 
-        savePathContentLabel = new JLabel("");
-        savePathContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.savePathContentLabel = new JLabel("");
+        this.savePathContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_savePathContentLabel = new GridBagConstraints();
         gbc_savePathContentLabel.anchor = GridBagConstraints.WEST;
         gbc_savePathContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_savePathContentLabel.gridx = 1;
         gbc_savePathContentLabel.gridy = 4;
-        this.add(savePathContentLabel, gbc_savePathContentLabel);
+        this.add(this.savePathContentLabel, gbc_savePathContentLabel);
         /* 保存路径 */
 
         /* 命名风格 */
@@ -154,14 +154,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_pathStyleTitleLabel.gridy = 5;
         this.add(pathStyleTitleLabel, gbc_pathStyleTitleLabel);
 
-        pathStyleContentLabel = new JLabel("");
-        pathStyleContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.pathStyleContentLabel = new JLabel("");
+        this.pathStyleContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_pathStyleContentLabel = new GridBagConstraints();
         gbc_pathStyleContentLabel.anchor = GridBagConstraints.WEST;
         gbc_pathStyleContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_pathStyleContentLabel.gridx = 1;
         gbc_pathStyleContentLabel.gridy = 5;
-        this.add(pathStyleContentLabel, gbc_pathStyleContentLabel);
+        this.add(this.pathStyleContentLabel, gbc_pathStyleContentLabel);
         /* 命名风格 */
 
         /* 覆盖下载 */
@@ -173,14 +173,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_isCoverExistTitleLabel.gridy = 6;
         this.add(isCoverExistTitleLabel, gbc_isCoverExistTitleLabel);
 
-        isCoverExistContentLabel = new JLabel("");
-        isCoverExistContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.isCoverExistContentLabel = new JLabel("");
+        this.isCoverExistContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_isCoverExistContentLabel = new GridBagConstraints();
         gbc_isCoverExistContentLabel.anchor = GridBagConstraints.WEST;
         gbc_isCoverExistContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_isCoverExistContentLabel.gridx = 1;
         gbc_isCoverExistContentLabel.gridy = 6;
-        this.add(isCoverExistContentLabel, gbc_isCoverExistContentLabel);
+        this.add(this.isCoverExistContentLabel, gbc_isCoverExistContentLabel);
         /* 覆盖下载 */
 
         /* 瓦片总数 */
@@ -192,14 +192,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_tileAllCountTitleLabel.gridy = 7;
         this.add(tileAllCountTitleLabel, gbc_tileAllCountTitleLabel);
 
-        tileAllCountContentLabel = new JLabel("");
-        tileAllCountContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.tileAllCountContentLabel = new JLabel("");
+        this.tileAllCountContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_tileAllCountContentLabel = new GridBagConstraints();
         gbc_tileAllCountContentLabel.anchor = GridBagConstraints.WEST;
         gbc_tileAllCountContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_tileAllCountContentLabel.gridx = 1;
         gbc_tileAllCountContentLabel.gridy = 7;
-        this.add(tileAllCountContentLabel, gbc_tileAllCountContentLabel);
+        this.add(this.tileAllCountContentLabel, gbc_tileAllCountContentLabel);
         /* 瓦片总数 */
 
         /* 已下载数 */
@@ -211,14 +211,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_tileDownloadedCountTitleLabel.gridy = 8;
         this.add(tileDownloadedCountTitleLabel, gbc_tileDownloadedCountTitleLabel);
 
-        tileDownloadedCountContentLabel = new JLabel("");
-        tileDownloadedCountContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.tileDownloadedCountContentLabel = new JLabel("");
+        this.tileDownloadedCountContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_tileDownloadedCountContentLabel = new GridBagConstraints();
         gbc_tileDownloadedCountContentLabel.anchor = GridBagConstraints.WEST;
         gbc_tileDownloadedCountContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_tileDownloadedCountContentLabel.gridx = 1;
         gbc_tileDownloadedCountContentLabel.gridy = 8;
-        this.add(tileDownloadedCountContentLabel, gbc_tileDownloadedCountContentLabel);
+        this.add(this.tileDownloadedCountContentLabel, gbc_tileDownloadedCountContentLabel);
         /* 已下载数 */
 
         /* 下载进度 */
@@ -230,14 +230,14 @@ public class TaskStatusPanel extends JPanel {
         gbc_progressTitleLabel.gridy = 9;
         this.add(progressTitleLabel, gbc_progressTitleLabel);
 
-        progressContentLabel = new JLabel("");
-        progressContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.progressContentLabel = new JLabel("");
+        this.progressContentLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         var gbc_progressContentLabel = new GridBagConstraints();
         gbc_progressContentLabel.insets = new Insets(0, 0, 5, 0);
         gbc_progressContentLabel.anchor = GridBagConstraints.WEST;
         gbc_progressContentLabel.gridx = 1;
         gbc_progressContentLabel.gridy = 9;
-        this.add(progressContentLabel, gbc_progressContentLabel);
+        this.add(this.progressContentLabel, gbc_progressContentLabel);
         /* 下载进度 */
 
         try {

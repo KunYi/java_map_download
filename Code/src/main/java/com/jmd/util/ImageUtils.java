@@ -1,5 +1,6 @@
 package com.jmd.util;
 
+import com.jmd.rx.Topic;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.opencv.core.Mat;
@@ -58,6 +59,35 @@ public class ImageUtils {
             return Type.WEBP;
         }
         return null;
+    }
+
+    public static String getImageTypeName(int type) {
+        switch (type) {
+            case 0 -> {
+                return "同瓦片源";
+            }
+            case 1 -> {
+                return "PNG";
+            }
+            case 2 -> {
+                return "WEBP";
+            }
+            case 3 -> {
+                return "TIFF";
+            }
+            case 4 -> {
+                return "JPG - 低质量";
+            }
+            case 5 -> {
+                return "JPG - 中等质量";
+            }
+            case 6 -> {
+                return "JPG - 高质量";
+            }
+            default -> {
+                return "";
+            }
+        }
     }
 
     // 直接保存图片

@@ -15,12 +15,12 @@ repositories {
 
 plugins {
     java
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.lombok") version "1.8.22"
-    id("io.freefair.lombok") version "8.0.1"
-    id("org.springframework.boot") version "3.1.1"
-    id("io.spring.dependency-management") version "1.1.0"
+    kotlin("jvm") version "1.9.10"
+    kotlin("plugin.spring") version "1.9.10"
+    kotlin("plugin.lombok") version "1.9.10"
+    id("io.freefair.lombok") version "8.4"
+    id("org.springframework.boot") version "3.2.2"
+    id("io.spring.dependency-management") version "1.1.4"
 }
 
 dependencies {
@@ -32,14 +32,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp")
     implementation("io.reactivex.rxjava3:rxjava")
     implementation("org.xerial:sqlite-jdbc")
-    implementation("com.alibaba:druid-spring-boot-starter:1.2.18")
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2")
-    implementation("commons-io:commons-io:2.13.0")
-    implementation("com.alibaba.fastjson2:fastjson2:2.0.33")
-    implementation(files("lib/ui/flatlaf-3.0.jar"))
-    implementation(files("lib/ui/flatlaf-intellij-themes-3.0.jar"))
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3")
+    implementation("commons-io:commons-io:2.15.1")
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.45")
+    implementation(files("lib/ui/flatlaf-3.3.jar"))
+    implementation(files("lib/ui/flatlaf-intellij-themes-3.3.jar"))
     implementation(files("lib/ui/JTattoo-1.6.13.jar"))
-    implementation(files("lib/opencv/opencv-4.7.0-0.jar"))
+    implementation(files("lib/opencv/opencv-4.9.0-0.jar"))
 }
 
 sourceSets {

@@ -242,8 +242,13 @@ public class DownloadConfigFrame extends CommonSubFrame {
     }
 
     // 创建任务，打开面板
-    public void createNewTask(String url, List<Polygon> polygons, String tileName, String mapType, String oriImgType)
-            throws InterruptedException, InvocationTargetException {
+    public void createNewTask(
+            String url,
+            List<Polygon> polygons,
+            String tileName,
+            String mapType,
+            String oriImgType
+    ) throws InterruptedException, InvocationTargetException {
         SwingUtilities.invokeAndWait(() -> {
             this.setVisible(true);
         });
@@ -268,6 +273,7 @@ public class DownloadConfigFrame extends CommonSubFrame {
         taskCreate.setImgType(this.otherSettingPanel.getImgType());
         taskCreate.setOriImgType(this.oriImgType);
         taskCreate.setIsCoverExists(this.otherSettingPanel.isCoverExist());
+        taskCreate.setIsSaveMergeFile(this.otherSettingPanel.isSaveMergeFile());
         taskCreate.setIsMergeTile(this.otherSettingPanel.isMergeTile());
         taskCreate.setMergeType(this.otherSettingPanel.getMergeType());
         taskCreate.setErrorHandlerType(this.errorHandlerPanel.getErrorHandlerType());
@@ -278,18 +284,6 @@ public class DownloadConfigFrame extends CommonSubFrame {
     private void startNewTask() {
         var taskCreate = this.getTaskCreate();
         this.taskExec.createTask(taskCreate);
-        if (this.otherSettingPanel.isMergeFileSave()) {
-            var mergeInfo = new MergeInfoEntity();
-            mergeInfo.setImgType(taskCreate.getImgType());
-            mergeInfo.setOriImgType(taskCreate.getOriImgType());
-            mergeInfo.setSavePath(taskCreate.getSavePath());
-            mergeInfo.setPathStyle(taskCreate.getPathStyle());
-            try {
-                MyFileUtils.saveObj2File(mergeInfo, taskCreate.getSavePath() + "/merge_info.jmdmergefile");
-            } catch (IOException e) {
-                CommonDialog.alert(null, "保存瓦片合并配置失败");
-            }
-        }
     }
 
     private boolean isTaskExist(String path) {

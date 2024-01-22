@@ -7,6 +7,8 @@ import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.PrintStream;
 
+@Slf4j
 @SpringBootApplication
 public class Application {
 
@@ -27,7 +30,7 @@ public class Application {
     static {
         if (StaticVar.IS_Windows) {
             System.setProperty("sun.java2d.d3d", "true");
-            System.load(System.getProperty("user.dir") + "/native/opencv_java470.dll");
+            System.load(System.getProperty("user.dir") + "/native/opencv_java490.dll");
         } else if (StaticVar.IS_Mac) {
             System.setProperty("sun.java2d.metal", "true");
             System.load(System.getProperty("user.dir") + "/native/libopencv_java470.dylib");
@@ -42,7 +45,7 @@ public class Application {
         try {
             UIManager.setLookAndFeel(ApplicationSetting.getSetting().getThemeClazz());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("主题加载错误", e);
         }
         // 加载启动界面
         SwingUtilities.invokeLater(() -> {
@@ -64,8 +67,7 @@ public class Application {
             new Thread(() -> {
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
+                } catch (InterruptedException ignore) {
                 }
                 compositeDisposable.dispose();
                 isStartComplete = true;

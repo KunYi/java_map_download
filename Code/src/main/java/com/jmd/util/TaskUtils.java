@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.jmd.model.task.MergeInfoEntity;
 import com.jmd.model.task.TaskAllInfoEntity;
 import com.jmd.model.task.TaskBlockDivide;
 
@@ -29,6 +30,17 @@ public class TaskUtils {
             return null;
         }
         return taskAllInfo;
+    }
+
+    public static MergeInfoEntity getExistMergeInfoByFile(File file) {
+        MergeInfoEntity mergeInfo = null;
+        try {
+            mergeInfo = (MergeInfoEntity) MyFileUtils.readFile2Obj(file);
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return mergeInfo;
     }
 
     public static String getImageFileSuffix(int imgType, String oriImgType) {

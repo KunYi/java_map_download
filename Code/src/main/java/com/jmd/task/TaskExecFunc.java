@@ -13,6 +13,7 @@ import com.jmd.async.pool.scheduler.IntervalConfig;
 import com.jmd.model.task.*;
 import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
+import com.jmd.util.ImageUtils;
 import com.jmd.util.MyFileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,21 +73,21 @@ public class TaskExecFunc {
                 } else {
                     innerMqService.pub(Topic.TASK_STATUS_IS_COVER_EXIST, "否");
                 }
-                switch (taskCreate.getImgType()) {
-                    case 0 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "同瓦片源");
-                    case 1 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "PNG");
-                    case 2 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "WEBP");
-                    case 3 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "TIFF");
-                    case 4 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 低质量");
-                    case 5 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 中等质量");
-                    case 6 -> innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, "JPG - 高质量");
-                    default -> {
-                    }
-                }
+                innerMqService.pub(Topic.TASK_STATUS_IMG_TYPE, ImageUtils.getImageTypeName(taskCreate.getImgType()));
                 // 生成任务
-                TaskAllInfoEntity taskAllInfo = taskStep.tileDownloadTaskCreate(taskCreate);
+                var taskAllInfo = taskStep.tileDownloadTaskCreate(taskCreate);
                 // 保存下载任务
-                saveTaskFile(taskAllInfo);
+                saveTaskFile(taskAllInfo, taskAllInfo.getSavePath());
+                // 保存合并配置
+                if (taskCreate.getIsSaveMergeFile()) {
+                    var mergeInfo = new MergeInfoEntity();
+                    mergeInfo.setZoomList(taskCreate.getZoomList());
+                    mergeInfo.setImgType(taskCreate.getImgType());
+                    mergeInfo.setSavePath(taskCreate.getSavePath());
+                    mergeInfo.setPathStyle(taskCreate.getPathStyle());
+                    mergeInfo.setTaskAllInfo(taskAllInfo);
+                    saveMergeFile(mergeInfo, taskAllInfo.getSavePath());
+                }
                 // 显示任务信息
                 innerMqService.pub(Topic.TASK_STATUS_TILE_ALL_COUNT, String.valueOf(taskAllInfo.getAllRealCount()));
                 innerMqService.pub(Topic.TASK_STATUS_TILE_DOWNLOADED_COUNT, "0");
@@ -95,7 +96,6 @@ public class TaskExecFunc {
                 downloadTask(taskAllInfo);
                 return null;
             }
-
         };
         worker.execute();
     }
@@ -204,7 +204,7 @@ public class TaskExecFunc {
         // 保存下载任务
         if (TaskState.IS_TASKING) {
             taskAllInfo.setAllRunCount(progress.getCurrentCount());
-            saveTaskFile(taskAllInfo);
+            saveTaskFile(taskAllInfo, taskAllInfo.getSavePath());
         } else {
             if (!TaskState.IS_CANCEL) {
                 deleteTaskFile(taskAllInfo);
@@ -248,22 +248,22 @@ public class TaskExecFunc {
         if (z == 0) {
             return;
         }
-        int id = new Random().nextInt(1000000000);
         if (taskAllInfo.getIsMergeTile() && !taskAllInfo.getEachLayerTask().get(z).getIsMerged()) {
+            int id = new Random().nextInt(1000000000);
             innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在合成第" + z + "级地图");
             // 声明Mat
-            TileMergeMatWrap mat = new TileMergeMatWrap();
+            var mat = new TileMergeMatWrap();
             // 合并进度监视定时器
             innerMqService.pub(Topic.SET_INTERVAL, new IntervalConfig(id, new TileMergeMonitoringInterval(mat, (progress) -> {
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_PIXEL_COUNT, progress.getRunPixel() + "/" + progress.getAllPixel());
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_THREAD, String.valueOf(tileMergeExecutorPool.getActiveCount()));
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_PROGRESS, df2.format(progress.getPerc() * 100) + "%");
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PIXEL_COUNT, progress.getRunPixel() + "/" + progress.getAllPixel());
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_THREAD, String.valueOf(tileMergeExecutorPool.getActiveCount()));
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PROGRESS, df2.format(progress.getPerc() * 100) + "%");
             }), 100L));
             // 开始合并
             taskStep.mergeTileImage(mat, taskAllInfo, z, () -> {
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_PIXEL_COUNT, mat.getAllPixel() + "/" + mat.getAllPixel());
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_THREAD, "0");
-                innerMqService.pub(Topic.TILE_MERGE_PROCESS_PROGRESS, "100.00%");
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PIXEL_COUNT, mat.getAllPixel() + "/" + mat.getAllPixel());
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_THREAD, "0");
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PROGRESS, "100.00%");
                 // 结束合并进度监视定时器
                 innerMqService.pub(Topic.CLEAR_INTERVAL, id);
             });
@@ -285,7 +285,7 @@ public class TaskExecFunc {
         TaskState.IS_CANCEL = false;
         innerMqService.pub(Topic.CPU_PERCENTAGE_CLEAR, true);
         innerMqService.pub(Topic.RESOURCE_USAGE_CLEAR, true);
-        innerMqService.pub(Topic.TILE_MERGE_PROCESS_CLEAR, true);
+        innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_CLEAR, true);
         innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在下载");
         innerMqService.pub(Topic.TASK_STATUS_ENUM, TaskStatusEnum.START);
         downloadAmountInstance.reset();
@@ -351,11 +351,20 @@ public class TaskExecFunc {
     }
 
     // 保存下载任务
-    private void saveTaskFile(TaskAllInfoEntity taskAllInfo) {
+    private void saveTaskFile(TaskAllInfoEntity taskAllInfo, String path) {
         try {
-            MyFileUtils.saveObj2File(taskAllInfo, taskAllInfo.getSavePath() + "/task_info.jmd");
+            MyFileUtils.saveObj2File(taskAllInfo, path + "/task_info.jmd");
         } catch (IOException e) {
             log.error("Task File Save Error", e);
+        }
+    }
+
+    // 保存合并配置
+    private void saveMergeFile(MergeInfoEntity mergeInfo, String path) {
+        try {
+            MyFileUtils.saveObj2File(mergeInfo, path + "/merge_info.jmdmergefile");
+        } catch (IOException e) {
+            log.error("Merge File Save Error", e);
         }
     }
 

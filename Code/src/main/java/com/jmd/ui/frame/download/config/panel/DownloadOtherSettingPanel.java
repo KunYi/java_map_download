@@ -18,7 +18,7 @@ public class DownloadOtherSettingPanel extends JPanel {
     private final JComboBox<String> imgTypeComboBox;
     private final JComboBox<String> pathStyleDefaultComboBox;
     private final JCheckBox isCoverCheckBox;
-    private final JCheckBox mergeFileSaveCheckBox;
+    private final JCheckBox saveMergeFileCheckBox;
     private final JCheckBox mergeTileCheckBox;
     private final JLabel mergeTypeLabel;
     private final JComboBox<String> mergeTypeComboBox;
@@ -57,10 +57,10 @@ public class DownloadOtherSettingPanel extends JPanel {
         this.isCoverCheckBox.setFocusable(false);
         this.isCoverCheckBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
-        this.mergeFileSaveCheckBox = new JCheckBox("保存瓦片合并配置");
-        this.mergeFileSaveCheckBox.setFocusable(false);
-        this.mergeFileSaveCheckBox.setSelected(true);
-        this.mergeFileSaveCheckBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
+        this.saveMergeFileCheckBox = new JCheckBox("保存瓦片合并配置");
+        this.saveMergeFileCheckBox.setFocusable(false);
+        this.saveMergeFileCheckBox.setSelected(true);
+        this.saveMergeFileCheckBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         this.mergeTileCheckBox = new JCheckBox("下载完成后合并瓦片");
         this.mergeTileCheckBox.setFocusable(false);
@@ -77,11 +77,9 @@ public class DownloadOtherSettingPanel extends JPanel {
         this.mergeTypeComboBox.setModel(new DefaultComboBoxModel<>(new String[]{"自动", "WEBP", "JPG", "PNG"}));
         this.mergeTypeComboBox.setSelectedIndex(0);
 
-        this.mergeTipTextArea = new JTextArea("" +
-                "基于已下载的瓦片进行拼接合并，" +
+        this.mergeTipTextArea = new JTextArea("基于已下载的瓦片进行拼接合并，" +
                 "WEBP与PNG可保留透明度，JPG则使用黑色代替透明位置，但会获得更小的体积。\n" +
-                "自动：默认导出为WEBP，超过16383*16383导出为JPG，超过65535*65535导出为PNG。" +
-                "");
+                "自动：默认导出为WEBP，超过16383*16383导出为JPG，超过65535*65535导出为PNG。");
         this.mergeTipTextArea.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.mergeTipTextArea.setVisible(false);
         this.mergeTipTextArea.setLineWrap(true);
@@ -104,7 +102,7 @@ public class DownloadOtherSettingPanel extends JPanel {
                                                 .addComponent(pathStyleRadioButton1))
                                         .addComponent(this.pathStyleDefaultComboBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                         .addComponent(this.isCoverCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
-                                        .addComponent(this.mergeFileSaveCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
+                                        .addComponent(this.saveMergeFileCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                         .addComponent(this.mergeTileCheckBox, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, Short.MAX_VALUE)
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addComponent(this.mergeTypeLabel)
@@ -129,7 +127,7 @@ public class DownloadOtherSettingPanel extends JPanel {
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(this.isCoverCheckBox)
                                 .addPreferredGap(ComponentPlacement.RELATED)
-                                .addComponent(this.mergeFileSaveCheckBox)
+                                .addComponent(this.saveMergeFileCheckBox)
                                 .addPreferredGap(ComponentPlacement.RELATED)
                                 .addComponent(this.mergeTileCheckBox)
                                 .addPreferredGap(ComponentPlacement.RELATED)
@@ -168,8 +166,8 @@ public class DownloadOtherSettingPanel extends JPanel {
         return this.isCoverCheckBox.isSelected();
     }
 
-    public boolean isMergeFileSave() {
-        return this.mergeFileSaveCheckBox.isSelected();
+    public boolean isSaveMergeFile() {
+        return this.saveMergeFileCheckBox.isSelected();
     }
 
     public boolean isMergeTile() {
