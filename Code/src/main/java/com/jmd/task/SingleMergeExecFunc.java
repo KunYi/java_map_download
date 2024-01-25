@@ -34,17 +34,15 @@ public class SingleMergeExecFunc {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
-                // 显示任务信息
-                innerMqService.pub(Topic.MERGE_STATUS_LAYERS, mergeInfo.getZoomList().toString());
-                innerMqService.pub(Topic.MERGE_STATUS_SAVE_PATH, mergeInfo.getSavePath());
-                innerMqService.pub(Topic.MERGE_STATUS_PATH_STYLE, mergeInfo.getPathStyle());
-                innerMqService.pub(Topic.MERGE_STATUS_IMG_TYPE, ImageUtils.getImageTypeName(mergeInfo.getImgType()));
                 // 开始任务
                 TaskState.IS_MERGING = true;
                 var taskAllInfo = mergeInfo.getTaskAllInfo();
                 for (var inst : taskAllInfo.getEachLayerTask().values()) {
+                    innerMqService.pub(Topic.SINGLE_MERGE_STATUS_CURRENT, "正在合并第" + inst.getZ() + "级地图");
                     eachLayerTileMerge(taskAllInfo, inst.getZ());
                 }
+                innerMqService.pub(Topic.SINGLE_MERGE_STATUS_CURRENT, "合并任务完成");
+                innerMqService.pub(Topic.SINGLE_MERGE_CONSOLE_LOG, "合并任务完成");
                 TaskState.IS_MERGING = false;
                 callback.execute();
                 return null;
@@ -59,7 +57,6 @@ public class SingleMergeExecFunc {
             return;
         }
         int id = new Random().nextInt(1000000000);
-        innerMqService.pub(Topic.MERGE_STATUS_CURRENT, "正在合成第" + z + "级地图");
         // 声明Mat
         var mat = new TileMergeMatWrap();
         // 合并进度监视定时器
@@ -69,11 +66,11 @@ public class SingleMergeExecFunc {
             innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_PROGRESS, df2.format(progress.getPerc() * 100) + "%");
         }), 100L));
         // 开始合并
-        taskStep.mergeTileImage(mat, taskAllInfo, z, () -> {
+        taskStep.mergeTileImage(mat, taskAllInfo, z, Topic.SINGLE_MERGE_CONSOLE_LOG, () -> {
             innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_PIXEL_COUNT, mat.getAllPixel() + "/" + mat.getAllPixel());
             innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_THREAD, "0");
             innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_PROGRESS, "100.00%");
-            // 结束合并进度监视定时器
+            // 结束合并
             innerMqService.pub(Topic.CLEAR_INTERVAL, id);
         });
     }

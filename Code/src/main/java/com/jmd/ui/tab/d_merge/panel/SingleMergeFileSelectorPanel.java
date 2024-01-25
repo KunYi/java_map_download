@@ -2,11 +2,14 @@ package com.jmd.ui.tab.d_merge.panel;
 
 import com.jmd.ApplicationSetting;
 import com.jmd.common.StaticVar;
+import com.jmd.model.task.MergeInfoEntity;
 import com.jmd.rx.Topic;
-import com.jmd.task.TaskState;
+import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;
+import com.jmd.util.ImageUtils;
 import com.jmd.util.TaskUtils;
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -20,17 +23,22 @@ import java.io.File;
 import java.io.Serial;
 
 @Component
-public class MergeFileSelectorPanel extends JPanel {
+public class SingleMergeFileSelectorPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 8713308918946071631L;
 
+    private final InnerMqService innerMqService = InnerMqService.getInstance();
+
+    @Getter
     private final JButton fileSelectorButton;
     private final JLabel filePathLabel;
 
-    private String selectedFilePath;
+    @Getter
+    private MergeInfoEntity mergeInfo;
+    private File selectedFile;
 
-    public MergeFileSelectorPanel() {
+    public SingleMergeFileSelectorPanel() {
 
         this.fileSelectorButton = new JButton("选择文件");
         this.fileSelectorButton.setFocusable(false);
@@ -92,17 +100,40 @@ public class MergeFileSelectorPanel extends JPanel {
                     chooser.showOpenDialog(null);
                     var file = chooser.getSelectedFile();
                     if (file != null) {
-                        selectedFilePath = file.getAbsolutePath();
+                        selectedFile = file;
                         filePathLabel.setText(file.getAbsolutePath());
                         ApplicationSetting.getSetting().setLastDirPath(file.getParent());
+                        readFileInfo();
                     }
                 }
             }
         });
     }
 
-    public String getMergeFilePath() {
-        return this.selectedFilePath;
+    private void readFileInfo() {
+        if (!selectedFile.isFile() || !selectedFile.exists()) {
+            CommonDialog.alert("错误", "请选择配置文件");
+            return;
+        }
+        var mergeInfo = TaskUtils.getExistMergeInfoByFile(selectedFile);
+        if (mergeInfo == null) {
+            CommonDialog.alert("错误", "错误的合并配置文件");
+            return;
+        }
+        this.mergeInfo = mergeInfo;
+        // 显示任务信息
+        innerMqService.pub(Topic.SINGLE_MERGE_STATUS_CURRENT, "等待开始");
+        innerMqService.pub(Topic.SINGLE_MERGE_STATUS_LAYERS, mergeInfo.getZoomList().toString());
+        innerMqService.pub(Topic.SINGLE_MERGE_STATUS_SAVE_PATH, mergeInfo.getSavePath());
+        innerMqService.pub(Topic.SINGLE_MERGE_STATUS_PATH_STYLE, mergeInfo.getPathStyle());
+        innerMqService.pub(Topic.SINGLE_MERGE_STATUS_IMG_TYPE, ImageUtils.getImageTypeName(mergeInfo.getImgType()));
+        // 清空进度
+        innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_PIXEL_COUNT, "0/0");
+        innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_THREAD, "0");
+        innerMqService.pub(Topic.SINGLE_MERGE_PROCESS_PROGRESS, "0.00%");
+        // 清空日志
+        innerMqService.pub(Topic.SINGLE_MERGE_CONSOLE_CLEAR, true);
+        innerMqService.pub(Topic.SINGLE_MERGE_CONSOLE_LOG, "选择文件，等待开始任务");
     }
 
 }

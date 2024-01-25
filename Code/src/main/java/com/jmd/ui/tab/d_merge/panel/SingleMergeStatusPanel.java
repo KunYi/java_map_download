@@ -13,7 +13,7 @@ import java.awt.*;
 import java.io.Serial;
 
 @Component
-public class MergeStatusPanel extends JPanel {
+public class SingleMergeStatusPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = 1609822863496587388L;
@@ -151,19 +151,19 @@ public class MergeStatusPanel extends JPanel {
 
     private void subInnerMqMessage() throws Exception {
         this.client = this.innerMqService.createClient();
-        this.client.<String>sub(Topic.MERGE_STATUS_CURRENT, (res) -> {
+        this.client.<String>sub(Topic.SINGLE_MERGE_STATUS_CURRENT, (res) -> {
             SwingUtilities.invokeLater(() -> currentContentLabel.setText(res));
         });
-        this.client.<String>sub(Topic.MERGE_STATUS_LAYERS, (res) -> {
+        this.client.<String>sub(Topic.SINGLE_MERGE_STATUS_LAYERS, (res) -> {
             SwingUtilities.invokeLater(() -> zoomsContentLabel.setText(res));
         });
-        this.client.<String>sub(Topic.MERGE_STATUS_SAVE_PATH, (res) -> {
+        this.client.<String>sub(Topic.SINGLE_MERGE_STATUS_SAVE_PATH, (res) -> {
             SwingUtilities.invokeLater(() -> savePathContentLabel.setText(res));
         });
-        this.client.<String>sub(Topic.MERGE_STATUS_PATH_STYLE, (res) -> {
+        this.client.<String>sub(Topic.SINGLE_MERGE_STATUS_PATH_STYLE, (res) -> {
             SwingUtilities.invokeLater(() -> pathStyleContentLabel.setText(res));
         });
-        this.client.<String>sub(Topic.MERGE_STATUS_IMG_TYPE, (res) -> {
+        this.client.<String>sub(Topic.SINGLE_MERGE_STATUS_IMG_TYPE, (res) -> {
             SwingUtilities.invokeLater(() -> imgTypeContentLabel.setText(res));
         });
     }

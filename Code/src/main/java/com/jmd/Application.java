@@ -75,9 +75,9 @@ public class Application {
             }).start();
         }));
         // 重定向至ConsoleTextArea
-//        var out = new ApplicationOutputStream(ApplicationStore.consoleTextArea);
-//        System.setOut(new PrintStream(out)); // 设置输出重定向
-//        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
+        var out = new ApplicationOutputStream(ApplicationStore.consoleTextArea);
+        System.setOut(new PrintStream(out)); // 设置输出重定向
+        System.setErr(new PrintStream(out)); // 将错误输出也重定向,用于e.printStackTrace
         // Print
         Application.print();
         // 异步

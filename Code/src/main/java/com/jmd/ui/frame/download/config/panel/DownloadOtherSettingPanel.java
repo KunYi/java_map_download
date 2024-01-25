@@ -59,7 +59,6 @@ public class DownloadOtherSettingPanel extends JPanel {
 
         this.saveMergeFileCheckBox = new JCheckBox("保存瓦片合并配置");
         this.saveMergeFileCheckBox.setFocusable(false);
-        this.saveMergeFileCheckBox.setSelected(true);
         this.saveMergeFileCheckBox.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
 
         this.mergeTileCheckBox = new JCheckBox("下载完成后合并瓦片");

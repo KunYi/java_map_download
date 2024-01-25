@@ -359,12 +359,18 @@ public class TaskStepFunc {
     }
 
     // 合并图片
-    public void mergeTileImage(TileMergeMatWrap mat, TaskAllInfoEntity taskAllInfo, int zoom, TileMergeFirstFinishBack finishBack) {
+    public void mergeTileImage(
+            TileMergeMatWrap mat,
+            TaskAllInfoEntity taskAllInfo,
+            int zoom,
+            Topic sendTopic,
+            TileMergeFirstFinishBack finishBack
+    ) {
         if (zoom == 0) {
             return;
         }
         try {
-            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在合并第" + zoom + "级地图，请勿关闭程序 implemented by OpenCV");
+            this.innerMqService.pub(sendTopic, "正在合并第" + zoom + "级地图，请勿关闭程序 implemented by OpenCV");
             // 声明变量
             var taskInst = taskAllInfo.getEachLayerTask().get(zoom);
             var z = taskInst.getZ();
@@ -375,14 +381,14 @@ public class TaskStepFunc {
             long mergeImageWidth = StaticVar.TILE_WIDTH * (xEnd - xStart + 1);
             long mergeImageHeight = StaticVar.TILE_HEIGHT * (yEnd - yStart + 1);
             if (mergeImageWidth >= Integer.MAX_VALUE || mergeImageHeight >= Integer.MAX_VALUE) {
-                this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，宽度或高度大于int最大值" + Integer.MAX_VALUE + "，不予合并。");
+                this.innerMqService.pub(sendTopic, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，宽度或高度大于int最大值" + Integer.MAX_VALUE + "，不予合并。");
                 return;
             }
             var xiangsudaxiao = mergeImageWidth * mergeImageHeight;
-            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，像素大小："
+            this.innerMqService.pub(sendTopic, "合并后的图片width：" + mergeImageWidth + "，height：" + mergeImageHeight + "，像素大小："
                     + xiangsudaxiao);
             if (xiangsudaxiao > (long) Integer.MAX_VALUE) {
-                this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "该" + zoom + "级地图合并后像素大小大于int最大值" + Integer.MAX_VALUE + "，合并时间可能会稍长，建议低配置电脑不要执行超大尺寸合并");
+                this.innerMqService.pub(sendTopic, "该" + zoom + "级地图合并后像素大小大于int最大值" + Integer.MAX_VALUE + "，合并时间可能会稍长，建议低配置电脑不要执行超大尺寸合并");
             }
             // 开启线程
             mat.init((int) mergeImageWidth, (int) mergeImageHeight);
@@ -410,14 +416,14 @@ public class TaskStepFunc {
                 }
             }
             finishBack.execute();
-            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "正在写入至硬盘...");
+            this.innerMqService.pub(sendTopic, "正在写入至硬盘...");
             // 文件类型
             var outPath = MyFileUtils.checkFilePath(taskAllInfo.getSavePath() + "/tile-merge" + "/");
             var outName = "z=" + z;
             // opencv导出
             mat.output(outPath, outName, taskAllInfo.getMergeType());
             mat.destroy();
-            this.innerMqService.pub(Topic.DOWNLOAD_CONSOLE_LOG, "第" + zoom + "级地图合并完成");
+            this.innerMqService.pub(sendTopic, "第" + zoom + "级地图合并完成");
         } catch (Exception e) {
             e.printStackTrace();
         }

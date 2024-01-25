@@ -154,7 +154,7 @@ public class AboutFrame extends CommonSubFrame {
     private void init() {
         this.jdkTextLabel.setText(this.jdkVersion);
         this.jcefTextLabel.setText("JCEF " + this.jcefVersion);
-        this.openlayersTextLabel.setText("OpenLayers " + this.opencvVersion);
+        this.openlayersTextLabel.setText("OpenLayers " + this.openlayersVersion);
         this.angularTextLabel.setText("Angular " + this.angularVersion);
         this.opencvTextLabel.setText("OpenCV " + this.opencvVersion);
         this.tipTextArea.setText("Build日期：" + this.buildDate);

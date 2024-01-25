@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger
 class ProgressBeanPostProcessor : BeanPostProcessor, ApplicationListener<ContextRefreshedEvent> {
 
     private val count = AtomicInteger(0)
-    private val total = 232
+    private val total = 257
 
     @Throws(BeansException::class)
     override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {

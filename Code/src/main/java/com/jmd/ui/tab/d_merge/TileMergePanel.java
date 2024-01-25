@@ -5,8 +5,9 @@ import com.jmd.task.SingleMergeExecFunc;
 import com.jmd.task.TaskState;
 import com.jmd.ui.common.CommonContainerPanel;
 import com.jmd.ui.common.CommonDialog;
-import com.jmd.ui.tab.d_merge.panel.MergeFileSelectorPanel;
-import com.jmd.ui.tab.d_merge.panel.MergeStatusPanel;
+import com.jmd.ui.tab.d_merge.panel.SingleMergeFileSelectorPanel;
+import com.jmd.ui.tab.d_merge.panel.SingleMergeLogPanel;
+import com.jmd.ui.tab.d_merge.panel.SingleMergeStatusPanel;
 import com.jmd.ui.tab.d_merge.panel.SingleMergeProgressPanel;
 import com.jmd.util.TaskUtils;
 import jakarta.annotation.PostConstruct;
@@ -32,11 +33,13 @@ public class TileMergePanel extends JPanel {
     private SingleMergeExecFunc mergeExec;
 
     @Autowired
-    private MergeFileSelectorPanel mergeFileSelectorPanel;
+    private SingleMergeFileSelectorPanel singleMergeFileSelectorPanel;
     @Autowired
-    private MergeStatusPanel mergeStatusPanel;
+    private SingleMergeStatusPanel singleMergeStatusPanel;
     @Autowired
     private SingleMergeProgressPanel singleMergeProgressPanel;
+    @Autowired
+    private SingleMergeLogPanel singleMergeLogPanel;
 
     private final CommonContainerPanel filePanel;
     private final CommonContainerPanel statusPanel;
@@ -93,16 +96,20 @@ public class TileMergePanel extends JPanel {
     private void init() {
 
         /* 配置文件 */
-        this.filePanel.addContent(this.mergeFileSelectorPanel);
+        this.filePanel.addContent(this.singleMergeFileSelectorPanel);
         /* 配置文件 */
 
         /* 任务状态 */
-        this.statusPanel.addContent(this.mergeStatusPanel);
+        this.statusPanel.addContent(this.singleMergeStatusPanel);
         /* 任务状态 */
 
         /* 合并进度 */
         this.mergePanel.addContent(this.singleMergeProgressPanel);
         /* 合并进度 */
+
+        /* 任务日志 */
+        this.logPanel.addContent(this.singleMergeLogPanel);
+        /* 任务日志 */
 
         this.startButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -120,24 +127,16 @@ public class TileMergePanel extends JPanel {
             CommonDialog.alert("错误", "正在合并中");
             return;
         }
-        var path = this.mergeFileSelectorPanel.getMergeFilePath();
-        if (path == null || path.isEmpty()) {
-            CommonDialog.alert("错误", "请选择配置文件");
-            return;
-        }
-        var file = new File(path);
-        if (!file.isFile() || !file.exists()) {
-            CommonDialog.alert("错误", "请选择配置文件");
-            return;
-        }
-        var mergeInfo = TaskUtils.getExistMergeInfoByFile(file);
+        var mergeInfo = this.singleMergeFileSelectorPanel.getMergeInfo();
         if (mergeInfo == null) {
             CommonDialog.alert("错误", "错误的合并配置文件");
             return;
         }
         this.startButton.setEnabled(false);
+        this.singleMergeFileSelectorPanel.getFileSelectorButton().setEnabled(false);
         this.mergeExec.start(mergeInfo, () -> {
             this.startButton.setEnabled(true);
+            this.singleMergeFileSelectorPanel.getFileSelectorButton().setEnabled(true);
         });
     }
 

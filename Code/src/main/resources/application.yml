@@ -3,13 +3,13 @@ logging.file.name: ./log/application.log
 
 setting:
   build:
-    date: 2023-06-28
+    date: 2024-01-25
   version:
     jdk: JetBrains Runtime 17
     jcef: 111
-    openlayers: 7.3.0
-    angular: 16.0.4
-    opencv: 4.7.0
+    openlayers: 8.2.0
+    angular: 17.1.10
+    opencv: 4.9.0
   git:
     address: https://gitee.com/CrimsonHu/java_map_download
   web:

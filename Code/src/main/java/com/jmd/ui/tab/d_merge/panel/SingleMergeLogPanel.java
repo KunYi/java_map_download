@@ -1,4 +1,4 @@
-package com.jmd.ui.tab.b_download.panel;
+package com.jmd.ui.tab.d_merge.panel;
 
 import com.jmd.common.StaticVar;
 import com.jmd.rx.Topic;
@@ -14,7 +14,7 @@ import java.io.Serial;
 import java.text.SimpleDateFormat;
 
 @Component
-public class TaskLogPanel extends JPanel {
+public class SingleMergeLogPanel extends JPanel {
 
     @Serial
     private static final long serialVersionUID = -1939864312267681290L;
@@ -25,7 +25,7 @@ public class TaskLogPanel extends JPanel {
 
     private final JTextArea textArea;
 
-    public TaskLogPanel() {
+    public SingleMergeLogPanel() {
 
         this.setLayout(new BorderLayout());
 
@@ -56,8 +56,8 @@ public class TaskLogPanel extends JPanel {
 
     private void subInnerMqMessage() throws Exception {
         this.client = this.innerMqService.createClient();
-        this.client.sub(Topic.DOWNLOAD_CONSOLE_LOG, this::consoleLog);
-        this.client.sub(Topic.DOWNLOAD_CONSOLE_CLEAR, (res) -> {
+        this.client.sub(Topic.SINGLE_MERGE_CONSOLE_LOG, this::consoleLog);
+        this.client.sub(Topic.SINGLE_MERGE_CONSOLE_CLEAR, (res) -> {
             this.clearConsole();
         });
     }

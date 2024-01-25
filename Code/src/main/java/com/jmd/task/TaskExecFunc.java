@@ -60,7 +60,12 @@ public class TaskExecFunc {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() {
+                // 清空日志
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_CLEAR, true);
+                // 清空进度
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PIXEL_COUNT, "0/0");
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_THREAD, "0");
+                innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PROGRESS, "0.00%");
                 // 显示任务信息
                 innerMqService.pub(Topic.DOWNLOAD_CONSOLE_PROGRESS, 0);
                 innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在计算下载量");
@@ -86,7 +91,7 @@ public class TaskExecFunc {
                     mergeInfo.setSavePath(taskCreate.getSavePath());
                     mergeInfo.setPathStyle(taskCreate.getPathStyle());
                     mergeInfo.setTaskAllInfo(taskAllInfo);
-                    saveMergeFile(mergeInfo, taskAllInfo.getSavePath());
+                    saveMergeFile(mergeInfo, taskAllInfo.getSavePath(), "merge_info", 0);
                 }
                 // 显示任务信息
                 innerMqService.pub(Topic.TASK_STATUS_TILE_ALL_COUNT, String.valueOf(taskAllInfo.getAllRealCount()));
@@ -250,7 +255,7 @@ public class TaskExecFunc {
         }
         if (taskAllInfo.getIsMergeTile() && !taskAllInfo.getEachLayerTask().get(z).getIsMerged()) {
             int id = new Random().nextInt(1000000000);
-            innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在合成第" + z + "级地图");
+            innerMqService.pub(Topic.TASK_STATUS_CURRENT, "正在合并第" + z + "级地图");
             // 声明Mat
             var mat = new TileMergeMatWrap();
             // 合并进度监视定时器
@@ -260,7 +265,7 @@ public class TaskExecFunc {
                 innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PROGRESS, df2.format(progress.getPerc() * 100) + "%");
             }), 100L));
             // 开始合并
-            taskStep.mergeTileImage(mat, taskAllInfo, z, () -> {
+            taskStep.mergeTileImage(mat, taskAllInfo, z, Topic.DOWNLOAD_CONSOLE_LOG, () -> {
                 innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PIXEL_COUNT, mat.getAllPixel() + "/" + mat.getAllPixel());
                 innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_THREAD, "0");
                 innerMqService.pub(Topic.TASK_TILE_MERGE_PROCESS_PROGRESS, "100.00%");
@@ -360,9 +365,15 @@ public class TaskExecFunc {
     }
 
     // 保存合并配置
-    private void saveMergeFile(MergeInfoEntity mergeInfo, String path) {
+    private void saveMergeFile(MergeInfoEntity mergeInfo, String path, String name, int count) {
+        var filePathAndName = path + "/" + name + "_" + count + ".jmdmergefile";
+        var file = new File(filePathAndName);
+        if (file.exists() && file.isFile()) {
+            count = count + 1;
+            this.saveMergeFile(mergeInfo, path, name, count);
+        }
         try {
-            MyFileUtils.saveObj2File(mergeInfo, path + "/merge_info.jmdmergefile");
+            MyFileUtils.saveObj2File(mergeInfo, filePathAndName);
         } catch (IOException e) {
             log.error("Merge File Save Error", e);
         }
