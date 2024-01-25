@@ -3,9 +3,7 @@
 #### 本处为主仓库，github为备份仓库（github只在新版本发布时同步最新代码）
 #### github仓库地址：https://github.com/kurimuson/java_map_download
 
-#### 使用JetBrains Runtime 17，SpringBoot 3.1，JCEF版本为Chromium 111
-
-#### 目前作者比较忙，暂时不会更新，但是作者没有放弃该项目。目前已修复部分bug，新功能正在开发中
+#### 使用JetBrains Runtime 17，SpringBoot 3.2，JCEF版本为Chromium 111
 
 #### 介绍
 使用Java开发的地图瓦片图下载工具，支持以下XYZ瓦片图下载与合并。多线程瓦片图下载，最大限度地使用本机网络资源。
@@ -30,13 +28,13 @@
 各位若有瓦片图纠偏的思路欢迎留言讨论
 
 #### Build下载地址（已打包的可执行程序，解压即可运行）
-- 更新日期：2023-06-28（下载最新版注意该更新时间）
+- 更新日期：2024-01-25（下载最新版注意该更新时间）
 - 重要提示：下载谷歌地图需正确使用代理，不能下载就是代理没设置好
 - 若无法打开，请将文件夹改为英文，并注意文件夹所在详细路径是否为全英文
 - 使用多网盘发布，防止链接失效（阿里云盘不允许分享压缩包，故不使用）
 - 百度网盘：https://pan.baidu.com/s/1CA7sdH6zL4OjJxVydKwrWQ  密码：mdve 
 - 天翼云盘：https://cloud.189.cn/t/IBFrIzIFZz6j 密码: 5bgb
-- 联通云盘：https://pan.wo.cn/s/2N1u0E1184 密码: uqVN
+- 联通云盘：https://pan.wo.cn/s/1w0k2f29179 密码: lv3d
 
 #### 软件说明
 1. 使用SpringBoot+Swing+Angular开发的桌面程序
@@ -57,13 +55,6 @@
 ![输入图片说明](Other/image/frame/tile-view-setting.png)
 ![输入图片说明](Other/image/frame/tile-view-frame-1.png)
 ![输入图片说明](Other/image/frame/tile-view-browser.png)
-
-#### 下版本功能预览
-1. 更新全国行政区信息（已完成，等待新版本发布）
-2. 添加保存瓦片为tiff格式（已完成，等待新版本发布）
-3. 瓦片合并将做成一个独立功能（开发中，将在下一版本中更新）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7CA35)
-4. 解决腾讯地图下载错误问题（已完成，等待新版本发布）
-5. 使用滤镜功能实现自定义风格瓦片图下载（该功能已推上计划日程）[关联issue](https://gitee.com/CrimsonHu/java_map_download/issues/I7B3XK)
 
 #### 主要功能
 XYZ瓦片图下载与拼接
@@ -111,6 +102,7 @@ XYZ瓦片图下载与拼接
 ![输入图片说明](Other/image/frame/theme-7.png)
 
 #### 更新历史
+- 2023-01-25：添加瓦片合并独立功能，现在可以在下载完成后再合并了。更新依赖，修复腾讯地图无法下载问题
 - 2023-06-28：添加本地瓦片预览功能，添加本地瓦片图web服务功能；优化代码，更换为gradle构建项目，部分代码使用kotlin重构
 - 2023-05-30：添加桌面悬浮窗，优化错误瓦片处理，优化自定义图层
 - 2023-04-09：优化大量代码，添加[自定义图层功能](https://gitee.com/CrimsonHu/java_map_download/issues/I6KPWN)，添加webp支持，优化拼接大图导出格式
@@ -125,7 +117,7 @@ XYZ瓦片图下载与拼接
 - 2020-11-27：初步添加错误瓦片图自动重新下载功能，解决无法下载天地图的问题
 
 #### 代码运行说明
-1. 开发环境：JetBrains Runtime 17，Angular 16
+1. 开发环境：JetBrains Runtime 17，Angular 17
 2. 项目运行需指定JBRSDK17，因为使用gradle.kts构建项目，故只能在IDEA中运行，并注意gradle也需要指定该JDK
 3. 在lib目录下opencv(原版备份).jar文件中，提取出其中的native文件，在Code目录下创建名为native的文件夹，将其放入
 ![输入图片说明](Other/image/other/opencv.png)
@@ -135,7 +127,7 @@ XYZ瓦片图下载与拼接
 ![输入图片说明](Other/image/other/web.png)
 
 #### JetBrains Runtime下载地址
-- https://github.com/JetBrains/JetBrainsRuntime/tree/jbr17
-- 在Binaries for developers这一栏中下载“JBR with JCEF”，文件名以“jbrsdk_jcef”开头的
+- https://github.com/JetBrains/JetBrainsRuntime
+- 在Release页面中，Binaries for developers这一栏，下载“JBR with JCEF”，文件名以“jbrsdk_jcef”开头的
 
 
