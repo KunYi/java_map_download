@@ -45,9 +45,9 @@ public class TileMergeMatWrap {
         int tileWidth = StaticVar.TILE_WIDTH;
         int tileHeight = StaticVar.TILE_HEIGHT;
         if (flag) {
-            // 读取图片
-            var tileMat = Imgcodecs.imread(pathAndName, Imgcodecs.IMREAD_UNCHANGED);
             try {
+                // 读取图片
+                var tileMat = Imgcodecs.imread(pathAndName, Imgcodecs.IMREAD_UNCHANGED);
                 // 转换图片至RGBA格式
                 Imgproc.cvtColor(tileMat, tileMat, Imgproc.COLOR_BGR2BGRA);
                 // 确定坐标位置
