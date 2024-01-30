@@ -1,6 +1,6 @@
 # 地图瓦片图下载器
 
-#### 本处为主仓库，github为备份仓库（github只在新版本发布时同步最新代码）
+#### 本处为主仓库，github为备份仓库（本人github账号被卡在2FA，且由于网络原因，一无法过2FA验证，二提交代码非常困难，故github备用仓库不再更新）
 #### github仓库地址：https://github.com/kurimuson/java_map_download
 
 #### 使用JetBrains Runtime 17，SpringBoot 3.2，JCEF版本为Chromium 111
