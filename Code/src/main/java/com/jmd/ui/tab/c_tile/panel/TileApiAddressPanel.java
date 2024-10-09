@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.Serial;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -89,15 +92,39 @@ public class TileApiAddressPanel extends JPanel {
                         CommonDialog.alert(null, "请选择瓦片路径并加载");
                         return;
                     }
-                    try {
-                        var desktop = Desktop.getDesktop();
-                        desktop.browse(new URI(browserViewAddress));
-                    } catch (IOException | URISyntaxException e1) {
-                        e1.printStackTrace();
+                    openBrowser(browserViewAddress);
+                }
+            }
+
+            private void openBrowser(String url) {
+                try {
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                        Desktop.getDesktop().browse(new URI(url));
+                    } else if (StaticVar.IS_LINUX) {
+                        // For Linux, try common browsers
+                        String[] browsers = { "xdg-open", "google-chrome", "firefox", "mozilla", "opera" };
+                        String browser = Arrays.stream(browsers)
+                                .filter(b -> {
+                                    try {
+                                        Process p = Runtime.getRuntime().exec(new String[] { "which", b });
+                                        return p.waitFor(3, TimeUnit.SECONDS) && p.exitValue() == 0;
+                                    } catch (Exception e) {
+                                        return false;
+                                    }
+                                })
+                                .findFirst()
+                                .orElseThrow(() -> new Exception("No known browser found"));
+                        Runtime.getRuntime().exec(new String[] { browser, url });
+                    } else {
+                        throw new UnsupportedOperationException("Cannot open browser on this platform");
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    CommonDialog.alert(null, "无法打开浏览器: " + e.getMessage());
                 }
             }
         });
+
         this.copyLocalApiAddressButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
@@ -112,5 +139,4 @@ public class TileApiAddressPanel extends JPanel {
             }
         });
     }
-
 }
