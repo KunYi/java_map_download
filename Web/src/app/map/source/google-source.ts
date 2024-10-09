@@ -19,7 +19,7 @@ export class GoogleSource {
 
 	constructor() {
 		// 谷歌地图-普通图-带标注
-		const GoogleNormal_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=m%40781&hl=zh-CN&gl=CN&x={x}&y={y}&z={z}';
+		const GoogleNormal_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=m%40781&hl=zh-TW&gl=TW&x={x}&y={y}&z={z}';
 		this.GoogleNormal_Name = 'Google-Normal';
 		this.GoogleNormal_Source = [
 			{
@@ -30,7 +30,7 @@ export class GoogleSource {
 			},
 		];
 		// 谷歌地图-地形图-带标注
-		const GoogleTerrain_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=p%40781&hl=zh-CN&gl=CN&x={x}&y={y}&z={z}';
+		const GoogleTerrain_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=p%40781&hl=zh-TW&gl=TW&x={x}&y={y}&z={z}';
 		this.GoogleTerrain_Name = 'Google-Terrain';
 		this.GoogleTerrain_Source = [
 			{
@@ -41,7 +41,7 @@ export class GoogleSource {
 			},
 		];
 		// 谷歌地图-影像图-带标注
-		const GoogleSatellite_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=y%40781&hl=zh-CN&gl=CN&x={x}&y={y}&z={z}';
+		const GoogleSatellite_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=y%40781&hl=zh-TW&gl=TW&x={x}&y={y}&z={z}';
 		this.GoogleSatellite_Name = 'Google-Satellite';
 		this.GoogleSatellite_Source = [
 			{
@@ -52,7 +52,7 @@ export class GoogleSource {
 			}
 		];
 		// 谷歌地图-影像图-无标注
-		const GoogleSatelliteNone_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=s%40781&hl=zh-CN&gl=CN&x={x}&y={y}&z={z}';
+		const GoogleSatelliteNone_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=s%40781&hl=zh-TW&gl=TW&x={x}&y={y}&z={z}';
 		this.GoogleSatelliteNone_Name = 'Google-Satellite-None';
 		this.GoogleSatelliteNone_Source = [
 			{
@@ -63,7 +63,7 @@ export class GoogleSource {
 			},
 		];
 		// 谷歌地图-路网图-带标注
-		const GoogleStreet_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=h%40781&hl=zh-CN&gl=CN&x={x}&y={y}&z={z}';
+		const GoogleStreet_URL = 'https://mt{1-3}.google.com/maps/vt?lyrs=h%40781&hl=zh-TW&gl=TW&x={x}&y={y}&z={z}';
 		this.GoogleStreet_Name = 'Google-Street';
 		this.GoogleStreet_Source = [
 			{
