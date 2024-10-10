@@ -34,7 +34,7 @@ public class LayerSelectorPanel extends JPanel {
 
     private static final String OSM_NAME = "OSM(wgs84)(可能需要代理)";
     private static final String TIAN_NAME = "天地图(wgs84)";
-    private static final String GOOGLE_NAME = "谷歌地图(gcj02)(可能需要代理)";
+    private static final String GOOGLE_NAME = "谷歌地图(wgs84)(可能需要代理)";
     private static final String AMAP_NAME = "高德地图(gcj02)";
     private static final String TENCENT_NAME = "腾讯地图(gcj02)";
     private static final String BING_NAME = "必应地图(gcj02)";
