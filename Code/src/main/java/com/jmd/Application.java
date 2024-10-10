@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.jmd.ui.StartupWindow;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.io.File;
 import java.io.PrintStream;
 
 @Slf4j
@@ -35,8 +36,22 @@ public class Application {
             System.setProperty("sun.java2d.metal", "true");
             System.load(System.getProperty("user.dir") + "/native/libopencv_java470.dylib");
         } else if (StaticVar.IS_LINUX) {
-            System.load(System.getProperty("user.dir") + "/native/libopencv_java470.so");
+            final String opencv490name = System.getProperty("user.dir") + "/native/libopencv_java490.so";
+            if (isFileExist(opencv490name)) {
+                System.load(opencv490name);
+            } else {
+                final String opencv470name = System.getProperty("user.dir") + "/native/libopencv_java470.so";
+                if (isFileExist(opencv470name)) {
+                    System.load(opencv470name);
+                }
+            }
         }
+    }
+
+    static private boolean isFileExist(final String filename)
+    {
+        final File file = new File(filename);
+        return file.exists() && !file.isDirectory();
     }
 
     public static void main(String[] args) {
