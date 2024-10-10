@@ -26,7 +26,7 @@ export class GoogleSource {
 				name: 'Normal', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleNormal_URL }),
 				url: GoogleNormal_URL,
-				coordinateType: 'gcj02',
+				coordinateType: 'wgs84',
 			},
 		];
 		// 谷歌地图-地形图-带标注
@@ -37,7 +37,7 @@ export class GoogleSource {
 				name: 'Terrain', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleTerrain_URL }),
 				url: GoogleTerrain_URL,
-				coordinateType: 'gcj02',
+				coordinateType: 'wgs84',
 			},
 		];
 		// 谷歌地图-影像图-带标注
@@ -48,7 +48,7 @@ export class GoogleSource {
 				name: 'Satellite', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleSatellite_URL }),
 				url: GoogleSatellite_URL,
-				coordinateType: 'gcj02',
+				coordinateType: 'wgs84',
 			}
 		];
 		// 谷歌地图-影像图-无标注
@@ -59,7 +59,7 @@ export class GoogleSource {
 				name: 'Satellite-None', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleSatelliteNone_URL }),
 				url: GoogleSatelliteNone_URL,
-				coordinateType: 'gcj02',
+				coordinateType: 'wgs84',
 			},
 		];
 		// 谷歌地图-路网图-带标注
@@ -70,7 +70,7 @@ export class GoogleSource {
 				name: 'Street', type: 'XYZ_URL', support: true, oriImgType: 'PNG',
 				source: new ol.source.XYZ({ url: GoogleStreet_URL }),
 				url: GoogleStreet_URL,
-				coordinateType: 'gcj02',
+				coordinateType: 'wgs84',
 			},
 		];
 	}
