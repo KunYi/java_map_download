@@ -14,6 +14,8 @@ import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jmd.ui.StartupWindow;
+import com.jmd.util.I18nUtil;
+
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
@@ -60,7 +62,7 @@ public class Application {
         try {
             UIManager.setLookAndFeel(ApplicationSetting.getSetting().getThemeClazz());
         } catch (Exception e) {
-            log.error("主题加载错误", e);
+            log.error("Failed:Load theme", e);
         }
         // 加载启动界面
         SwingUtilities.invokeLater(() -> {
@@ -70,14 +72,14 @@ public class Application {
         compositeDisposable.add(ProgressBeanPostProcessor.observe().subscribe((result) -> {
             // 监听SpringBoot启动进度
             SwingUtilities.invokeLater(() -> {
-                StartupWindow.getInstance().getProgressLabel().setText("正在加载：" + result.getPerc() + "%");
+                StartupWindow.getInstance().getProgressLabel().setText(I18nUtil.getString("app.loading") + ":" + result.getPerc() + "%");
                 StartupWindow.getInstance().getBeanNameLabel().setText(result.getBeanName());
                 StartupWindow.getInstance().getProgressBar().setValue(result.getPerc());
             });
         }, (e) -> {
         }, () -> {
             // SpringBoot启动完成
-            StartupWindow.getInstance().getProgressLabel().setText("加载完成：100%");
+            StartupWindow.getInstance().getProgressLabel().setText(I18nUtil.getString("app.loaded"));
             StartupWindow.getInstance().getProgressBar().setValue(100);
             new Thread(() -> {
                 try {

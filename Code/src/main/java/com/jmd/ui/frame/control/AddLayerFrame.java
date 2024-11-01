@@ -7,6 +7,8 @@ import com.jmd.rx.Topic;
 import com.jmd.rx.service.InnerMqService;
 import com.jmd.ui.common.CommonDialog;
 import com.jmd.ui.common.CommonSubFrame;
+import com.jmd.util.I18nUtil;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.io.Serial;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.html.HTML;
 
 @Component
 public class AddLayerFrame extends CommonSubFrame {
@@ -44,12 +47,12 @@ public class AddLayerFrame extends CommonSubFrame {
 
     public AddLayerFrame() {
 
-        var nameInputLabel = new JLabel("标题：");
+        var nameInputLabel = new JLabel(I18nUtil.getString("addLayerFrame.nameLabel"));
         nameInputLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         this.nameInputTextField = new JTextField();
 
-        var typeSelectLabel = new JLabel("坐标类型：");
+        var typeSelectLabel = new JLabel(I18nUtil.getString("addLayerFrame.typeLabel"));
         typeSelectLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         this.typeWgs84RadioButton = new JRadioButton("wgs84");
@@ -64,7 +67,7 @@ public class AddLayerFrame extends CommonSubFrame {
         btnGroup1.add(this.typeWgs84RadioButton);
         btnGroup1.add(this.typeGcj02RadioButton);
 
-        var oriImgTypeSelectLabel = new JLabel("图片类型：");
+        var oriImgTypeSelectLabel = new JLabel(I18nUtil.getString("addLayerFrame.imageTypeLabel"));
 
         this.pngRadioButton = new JRadioButton("png");
         this.pngRadioButton.setSelected(true);
@@ -88,22 +91,22 @@ public class AddLayerFrame extends CommonSubFrame {
         btnGroup2.add(this.tiffRadioButton);
         btnGroup2.add(this.jpgRadioButton);
 
-        var proxyLabel = new JLabel("瓦片资源访问方式：");
+        var proxyLabel = new JLabel(I18nUtil.getString("addLayerFrame.proxyLabel"));
         proxyLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
-        this.proxyCloseRadioButton = new JRadioButton("内嵌浏览器页面直接访问");
+        this.proxyCloseRadioButton = new JRadioButton(I18nUtil.getString("addLayerFrame.proxy.directAccess"));
         this.proxyCloseRadioButton.setSelected(true);
         this.proxyCloseRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
-
-        this.proxyOpenRadioButton = new JRadioButton("通过本程序okhttp代理访问（解决瓦片跨域问题）");
+        this.proxyOpenRadioButton = new JRadioButton(I18nUtil.getString("addLayerFrame.proxy.okhttp"));
         this.proxyOpenRadioButton.setSelected(false);
         this.proxyOpenRadioButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
+
 
         var btnGroup3 = new ButtonGroup();
         btnGroup3.add(this.proxyCloseRadioButton);
         btnGroup3.add(this.proxyOpenRadioButton);
 
-        var urlInputLabel = new JLabel("地址：（请严格按照{x}{y}{z}的格式填写地址）");
+        var urlInputLabel = new JLabel(I18nUtil.getString("addLayerFrame.urlLabel"));
         urlInputLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_12);
 
         var urlInputScrollPane = new JScrollPane();
@@ -111,7 +114,7 @@ public class AddLayerFrame extends CommonSubFrame {
         this.urlInputTextArea.setLineWrap(true);
         urlInputScrollPane.setViewportView(this.urlInputTextArea);
 
-        this.okButton = new JButton("确定");
+        this.okButton = new JButton(I18nUtil.getString("addLayerFrame.okButton"));
         this.okButton.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.okButton.setFocusable(false);
 
@@ -186,8 +189,8 @@ public class AddLayerFrame extends CommonSubFrame {
                 .addPreferredGap(ComponentPlacement.RELATED).addComponent(okButton).addContainerGap()));
         this.getContentPane().setLayout(groupLayout);
 
-        this.setTitle("添加自定义图层");
-        this.setSize(new Dimension(400, 435));
+        this.setTitle(I18nUtil.getString("addLayerFrame.title"));
+        this.setSize(new Dimension(460, 435));
         this.setVisible(false);
         this.setResizable(false);
 
@@ -259,18 +262,18 @@ public class AddLayerFrame extends CommonSubFrame {
         String url = this.urlInputTextArea.getText();
         // 判断非空
         if (name == null || "".equals(name)) {
-            CommonDialog.alert(null, "标题不能为空");
+            CommonDialog.alert(null, I18nUtil.getString("dialog.nameEmpty"));
             return;
         }
         if (url == null || "".equals(url)) {
-            CommonDialog.alert(null, "地址不能为空");
+            CommonDialog.alert(null, I18nUtil.getString("dialog.urlEmpty"));
             return;
         }
         // 检测重复
         var addedLayers = ApplicationSetting.getSetting().getAddedLayers();
         for (var layer : addedLayers) {
             if (name.equals(layer.getName())) {
-                CommonDialog.alert(null, "图层名不能重复");
+                CommonDialog.alert(null, I18nUtil.getString("dialog.duplicateLayerName"));
                 return;
             }
         }

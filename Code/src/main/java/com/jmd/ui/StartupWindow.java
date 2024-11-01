@@ -9,6 +9,8 @@ import javax.swing.*;
 import com.jmd.common.StaticVar;
 
 import com.jmd.ui.common.IconLabel;
+import com.jmd.util.I18nUtil;
+
 import lombok.Getter;
 
 import java.awt.BorderLayout;
@@ -41,7 +43,7 @@ public class StartupWindow extends JWindow {
         backgroundPanel.setLayout(null);
         getContentPane().add(backgroundPanel);
 
-        var titleLabel = new JLabel("地图下载器");
+        var titleLabel = new JLabel(I18nUtil.getString("app.title"));
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         titleLabel.setBounds(251, 10, 139, 21);
@@ -55,7 +57,7 @@ public class StartupWindow extends JWindow {
         runtimeLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         backgroundPanel.add(runtimeLabel);
 
-        this.progressLabel = new JLabel("正在加载");
+        this.progressLabel = new JLabel(I18nUtil.getString("app.loading"));
         this.progressLabel.setForeground(Color.BLACK);
         this.progressLabel.setBounds(10, 273, 100, 18);
         this.progressLabel.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);

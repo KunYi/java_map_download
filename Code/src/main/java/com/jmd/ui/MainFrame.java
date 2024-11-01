@@ -18,6 +18,7 @@ import com.jmd.ui.tab.c_tile.TileViewPanel;
 import com.jmd.ui.tab.d_merge.TileMergePanel;
 import com.jmd.util.CommonUtils;
 import com.jmd.util.ImageUtils;
+import com.jmd.util.I18nUtil;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class MainFrame extends JFrame {
             this.setIconImage(image);
         }
 
-        this.setTitle("地图下载器");
+        this.setTitle(I18nUtil.getString("app.title"));
         this.setSize(new Dimension(1280, 720));
         this.setMinimumSize(new Dimension(1150, 650));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -126,11 +127,11 @@ public class MainFrame extends JFrame {
         this.setJMenuBar(this.mainMenuBar);
 
         /* Tabbed主界面 */
-        this.tabbedPane.addTab("地图操作", null, mapControlPanel, null);
-        this.tabbedPane.addTab("下载任务", null, downloadTaskPanel, null);
-        this.tabbedPane.addTab("瓦片预览", null, tileViewPanel, null);
-        this.tabbedPane.addTab("瓦片合并", null, tileMergePanel, null);
-        this.tabbedPane.addTab("系统日志", null, systemLogPanel, null);
+        this.tabbedPane.addTab(I18nUtil.getString("tab.map"), null, mapControlPanel, null);
+        this.tabbedPane.addTab(I18nUtil.getString("tab.download"), null, downloadTaskPanel, null);
+        this.tabbedPane.addTab(I18nUtil.getString("tab.preview"), null, tileViewPanel, null);
+        this.tabbedPane.addTab(I18nUtil.getString("tab.merge"), null, tileMergePanel, null);
+        this.tabbedPane.addTab(I18nUtil.getString("tab.log"), null, systemLogPanel, null);
 
         /* 悬浮窗 */
         if (ApplicationSetting.getSetting().getFloatingWindowShow()) {

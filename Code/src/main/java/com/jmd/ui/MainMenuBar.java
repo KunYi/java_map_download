@@ -31,6 +31,7 @@ import com.jmd.model.theme.ThemeEntity;
 import com.jmd.task.TaskExecFunc;
 import com.jmd.ui.tab.a_map.panel.BottomInfoPanel;
 import com.jmd.util.TaskUtils;
+import com.jmd.util.I18nUtil;
 
 @Component
 public class MainMenuBar extends JMenuBar {
@@ -79,59 +80,59 @@ public class MainMenuBar extends JMenuBar {
 
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-        this.styleMenu = new JMenu("主题");
+        this.styleMenu = new JMenu(I18nUtil.getString("menu.theme"));
         this.styleMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.add(this.styleMenu);
 
-        var browserMenu = new JMenu("浏览器");
+        var browserMenu = new JMenu(I18nUtil.getString("menu.browser"));
         browserMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.add(browserMenu);
 
-        this.refreshMenuItem = new JMenuItem("刷新");
+        this.refreshMenuItem = new JMenuItem(I18nUtil.getString("menu.refresh"));
         this.refreshMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         browserMenu.add(this.refreshMenuItem);
 
-        this.revertMenuItem = new JMenuItem("清除缓存");
+        this.revertMenuItem = new JMenuItem(I18nUtil.getString("menu.clearCache"));
         this.revertMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         browserMenu.add(this.revertMenuItem);
 
-        var taskMenu = new JMenu("任务");
+        var taskMenu = new JMenu(I18nUtil.getString("menu.tasks"));
         taskMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.add(taskMenu);
 
-        this.loadTaskMenuItem = new JMenuItem("导入未完成的下载");
+        this.loadTaskMenuItem = new JMenuItem(I18nUtil.getString("menu.importDownloads"));
         this.loadTaskMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         taskMenu.add(this.loadTaskMenuItem);
 
-        this.downloadAllWorldMenuItem = new JMenuItem("直接下载世界地图");
+        this.downloadAllWorldMenuItem = new JMenuItem(I18nUtil.getString("menu.downloadWorldMap"));
         this.downloadAllWorldMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         taskMenu.add(this.downloadAllWorldMenuItem);
 
-        var settingMenu = new JMenu("设置");
+        var settingMenu = new JMenu(I18nUtil.getString("menu.settings"));
         settingMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.add(settingMenu);
 
-        this.proxyMenuItem = new JMenuItem("代理设置");
+        this.proxyMenuItem = new JMenuItem(I18nUtil.getString("menu.proxySettings"));
         this.proxyMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         settingMenu.add(this.proxyMenuItem);
 
-        this.floatingMenuItem = new JMenuItem("悬浮窗");
+        this.floatingMenuItem = new JMenuItem(I18nUtil.getString("menu.floatingWindow"));
         this.floatingMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         settingMenu.add(this.floatingMenuItem);
 
-        var otherMenu = new JMenu("其他");
+        var otherMenu = new JMenu(I18nUtil.getString("menu.others"));
         otherMenu.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         this.add(otherMenu);
 
-        this.aboutMenuItem = new JMenuItem("关于");
+        this.aboutMenuItem = new JMenuItem(I18nUtil.getString("menu.about"));
         this.aboutMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         otherMenu.add(this.aboutMenuItem);
 
-        this.licenseMenuItem = new JMenuItem("license");
+        this.licenseMenuItem = new JMenuItem(I18nUtil.getString("menu.license"));
         this.licenseMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         otherMenu.add(this.licenseMenuItem);
 
-        this.donateMenuItem = new JMenuItem("捐赠开发者");
+        this.donateMenuItem = new JMenuItem(I18nUtil.getString("menu.donate"));
         this.donateMenuItem.setFont(StaticVar.FONT_SourceHanSansCNNormal_13);
         otherMenu.add(this.donateMenuItem);
 
@@ -185,8 +186,10 @@ public class MainMenuBar extends JMenuBar {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     mapViewBrowserPanel.clearLocalStorage();
-                    var f = CommonDialog.confirm("确认", "已清除缓存，是否刷新页面？");
-                    if (f) {
+                    final var confirmTitle = I18nUtil.getString("dialog.confirmTitle");
+                    final var cacheClearedMessage = I18nUtil.getString("dialog.cacheCleared");
+                    boolean shouldRefresh = CommonDialog.confirm(confirmTitle, cacheClearedMessage);
+                    if (shouldRefresh) {
                         mapViewBrowserPanel.reload();
                     }
                 }
@@ -198,7 +201,7 @@ public class MainMenuBar extends JMenuBar {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     if (TaskState.IS_TASKING) {
-                        CommonDialog.alert(null, "当前正在进行下载任务");
+                        CommonDialog.alert(null, I18nUtil.getString("dialog.taskInProgress"));
                         return;
                     }
                     var file = selectTaskFile();
@@ -208,7 +211,7 @@ public class MainMenuBar extends JMenuBar {
                             innerMqService.pub(Topic.MAIN_FRAME_SELECTED_INDEX, 1);
                             taskExec.loadTask(taskAllInfo);
                         } else {
-                            CommonDialog.alert(null, "导入失败，任务文件已损坏");
+                            CommonDialog.alert(null, I18nUtil.getString("dialog.importFailed"));
                         }
                     }
                 }
@@ -220,7 +223,7 @@ public class MainMenuBar extends JMenuBar {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == 1) {
                     if (TaskState.IS_TASKING) {
-                        CommonDialog.alert(null, "当前正在进行下载任务");
+                        CommonDialog.alert(null, I18nUtil.getString("dialog.taskInProgress"));
                         return;
                     }
                     mapViewBrowserPanel.sendMessageByWebsocket(WsSendTopic.SUBMIT_WORLD_DOWNLOAD, null);
@@ -307,7 +310,7 @@ public class MainMenuBar extends JMenuBar {
         chooser.setFileFilter(new FileFilter() {
             @Override
             public String getDescription() {
-                return "地图下载任务(*.jmd)";
+                return I18nUtil.getString("fileChooser.fileDescription");
             }
 
             @Override
@@ -316,8 +319,8 @@ public class MainMenuBar extends JMenuBar {
                 return end.endsWith(".jmd") || f.isDirectory();
             }
         });
-        chooser.setDialogTitle("选择未完成的下载任务...");
-        chooser.setApproveButtonText("导入");
+        chooser.setDialogTitle(I18nUtil.getString("fileChooser.title"));
+        chooser.setApproveButtonText(I18nUtil.getString("fileChooser.approveButton"));
         chooser.setMultiSelectionEnabled(true);
         chooser.showOpenDialog(null);
         return chooser.getSelectedFile();
