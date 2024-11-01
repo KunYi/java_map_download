@@ -39,7 +39,7 @@ abstract class CommonSubFrame : JFrame() {
     private fun subInnerMqMessage() {
         this.client = innerMqService.createClient()
         this.client?.sub(
-            Topic.UPDATE_UI, OnMessageCallback { res: Any? ->
+            Topic.UPDATE_UI, OnMessageCallback { _: Any? ->
                 SwingUtilities.invokeLater { SwingUtilities.updateComponentTreeUI(this) }
             }
         )

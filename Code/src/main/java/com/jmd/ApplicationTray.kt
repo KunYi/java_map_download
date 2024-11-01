@@ -25,10 +25,10 @@ object ApplicationTray {
                 val popupMenu = PopupMenu()
                 val openItem = MenuItem("show")
                 openItem.font = StaticVar.FONT_SourceHanSansCNNormal_12
-                openItem.addActionListener { e: ActionEvent? -> innerMqService.pub(Topic.MAIN_FRAME_SHOW, true) }
+                openItem.addActionListener { _: ActionEvent? -> innerMqService.pub(Topic.MAIN_FRAME_SHOW, true) }
                 val exitItem = MenuItem("exit")
                 exitItem.font = StaticVar.FONT_SourceHanSansCNNormal_12
-                exitItem.addActionListener { e: ActionEvent? -> Application.exit() }
+                exitItem.addActionListener { _: ActionEvent? -> Application.exit() }
                 popupMenu.add(openItem)
                 popupMenu.add(exitItem)
                 val trayIcon = TrayIcon(image, "地图下载器", popupMenu)
